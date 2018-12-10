@@ -1,0 +1,22 @@
+<div class="card">
+    <div class="card-header">
+        {{pageTitle}}
+    </div>
+    <div class="card-body p-0">
+        <div *ngIf='!list || !list.length' class="p-3">
+            <p>No exercises added yet.</p>
+        </div>
+        <div *ngIf='list && list.length'>
+            <div class="table-responsive">
+                <table class="table m-0">
+                    <tbody>
+                        <tr *ngFor='let item of list'>
+                            <td style="width: 1px;"><i class="fas fa-{{item.icon}}"></i></td>
+                            <td>{{item.name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
