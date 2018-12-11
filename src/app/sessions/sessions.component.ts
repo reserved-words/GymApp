@@ -7,21 +7,22 @@ import * as moment from 'moment';
 })
 export class SessionsComponent {
     pageTitle: string = "Sessions";
+    sessionIcon: string = "calendar-alt";
     list: any[] = [
         {
-            day: moment(new Date('2018-12-09 10:00:00')).format("dddd"), 
-            date: moment(new Date('2018-12-09 10:00:00')).format("DD/MM/YYYY"),
-            time: moment(new Date('2018-12-09 10:00:00')).format("HH:mm"),
+            date: new Date('2018-12-09 10:00:00')
         },
         {
-            day: moment(new Date('2018-12-06 19:00:00')).format("dddd"), 
-            date: moment(new Date('2018-12-06 19:00:00')).format("DD/MM/YYYY"),
-            time: moment(new Date('2018-12-06 19:00:00')).format("HH:mm")
+            date: new Date('2018-12-06 19:00:00')
         },
         {
-            day: moment(new Date('2018-12-03 19:00:00')).format("dddd"), 
-            date: moment(new Date('2018-12-03 19:00:00')).format("DD/MM/YYYY"), 
-            time: moment(new Date('2018-12-03 19:00:00')).format("HH:mm")
+            date: new Date('2018-12-03 19:00:00')
         },
     ];
+    add(): void {
+        alert("Add exercise!");
+    }
+    edit(): void {
+        alert("Edit exercise!");
+    }
 }

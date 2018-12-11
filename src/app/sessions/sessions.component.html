@@ -7,18 +7,24 @@
                 <p>No sessions added yet.</p>
             </div>
             <div *ngIf='list && list.length'>
-                <div class="table-responsive">
-                    <table class="table m-0">
-                        <tbody>
-                            <tr *ngFor='let item of list'>
-                                <td style="width: 1px;"><i class="fas fa-calendar-alt"></i></td>
-                                <td>{{item.day}}</td>
-                                <td>{{item.date}}</td>
-                                <td>{{item.time}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <table class="table m-0">
+                    <tbody>
+                        <tr *ngFor='let item of list'>
+                            <td style="width: 1px;"><i class="fas fa-{{sessionIcon}}"></i></td>
+                            <td>{{item.date | date:'EEE'}}</td>
+                            <td>{{item.date | date:'dd/LL/yyyy'}}</td>
+                            <td>{{item.date | date:'HH\:mm'}}</td>
+                            <td style="width: 1px; text-align: right;">
+                                <button class="btn btn-sm btn-primary"
+                                        (click)='edit()'>
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+            <button class="btn btn-primary btn-sm"
+                    (click)='add()'>Add New</button>
         </div>
     </div>

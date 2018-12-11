@@ -1,0 +1,40 @@
+<div class="card">
+    <div class="card-header">
+        {{pageTitle}}: {{name}}
+    </div>
+    <div class="card-body">
+        <form>
+            <input [(ngModel)]='id' type="hidden" name="id" />
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="Name" class="control-label">Name</label>
+                    <input [(ngModel)]='name' type="text" name="Name" class="form-control" />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="MinReps" class="control-label">Minimum Reps</label>
+                    <input [(ngModel)]='minReps' type="number" name="MinReps" class="form-control" />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="MaxReps" class="control-label">Maximum Reps</label>
+                    <input [(ngModel)]='maxReps' type="number" name="MaxReps" class="form-control" />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="NumSets" class="control-label">Number of Sets</label>
+                    <input [(ngModel)]='numSets' type="number" name="NumSets" class="form-control" />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <button class="btn btn-primary btn-sm"
+                            (click)='save()'>Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
