@@ -2,7 +2,8 @@ import { Component } from "@angular/core";
 
 @Component({
     selector: 'gym-exercise',
-    templateUrl: './exercise.component.html'
+    templateUrl: './exercise.component.html',
+    styleUrls: ['./exercise.component.css']
 })
 export class ExerciseComponent {
     pageTitle: string = 'Edit Exercise';

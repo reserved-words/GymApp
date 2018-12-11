@@ -3,7 +3,8 @@ import { ISession } from "../interfaces/session";
 
 @Component({
     selector: 'gym-sessions',
-    templateUrl: 'sessions.component.html'
+    templateUrl: 'sessions.component.html',
+    styleUrls: ['sessions.component.css']
 })
 export class SessionsComponent {
     pageTitle: string = "Sessions";

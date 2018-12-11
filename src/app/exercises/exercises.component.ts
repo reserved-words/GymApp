@@ -3,7 +3,8 @@ import { IExercise } from "../interfaces/exercise";
 
 @Component({
     selector: 'gym-exercises',
-    templateUrl: 'exercises.component.html'
+    templateUrl: 'exercises.component.html',
+    styleUrls: [ 'exercises.component.css' ]
 })
 export class ExercisesComponent {
     pageTitle: string = 'Exercises';
