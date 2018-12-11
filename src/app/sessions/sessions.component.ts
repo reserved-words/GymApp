@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import * as moment from 'moment';
+import { ISession } from "../interfaces/session";
 
 @Component({
     selector: 'gym-sessions',
@@ -8,16 +8,10 @@ import * as moment from 'moment';
 export class SessionsComponent {
     pageTitle: string = "Sessions";
     sessionIcon: string = "calendar-alt";
-    list: any[] = [
-        {
-            date: new Date('2018-12-09 10:00:00')
-        },
-        {
-            date: new Date('2018-12-06 19:00:00')
-        },
-        {
-            date: new Date('2018-12-03 19:00:00')
-        },
+    list: ISession[] = [
+        { id:1, date: new Date('2018-12-09 10:00:00') },
+        { id:2, date: new Date('2018-12-06 19:00:00') },
+        { id:3, date: new Date('2018-12-03 19:00:00') },
     ];
     add(): void {
         alert("Add exercise!");
