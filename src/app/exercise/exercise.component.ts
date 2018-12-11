@@ -1,17 +1,30 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { IExercise } from "../interfaces/exercise";
 
 @Component({
     selector: 'gym-exercise',
     templateUrl: './exercise.component.html',
     styleUrls: ['./exercise.component.css']
 })
-export class ExerciseComponent {
+export class ExerciseComponent implements OnInit {
     pageTitle: string = 'Edit Exercise';
-    id: number = 1;
-    name: string = 'Bench press';
-    minReps: number = 4;
-    maxReps: number = 6;
-    numSets: number = 5;
+    exercise: IExercise;
+
+    constructor(){
+        this.exercise = {
+            id: 1,
+            icon: 'dumbbell',
+            name: 'Bench press',
+            minReps: 4,
+            maxReps: 6,
+            numSets: 5
+        };
+    }
+
+    ngOnInit(): void {
+        console.log('In OnInit');
+    }
+    
     save(): void {
         alert("Save");
     }
