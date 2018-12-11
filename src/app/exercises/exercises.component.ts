@@ -16,4 +16,7 @@ export class ExercisesComponent {
         { id:7, name: "Squat", icon: "dumbbell" },
         { id:8, name: "Tricep extension", icon: "dumbbell" }
     ];
+    edit(): void {
+        alert("Edit exercise!");
+    }
 }
