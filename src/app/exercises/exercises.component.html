@@ -13,6 +13,12 @@
                         <tr *ngFor='let item of list'>
                             <td style="width: 1px;"><i class="fas fa-{{item.icon}}"></i></td>
                             <td>{{item.name}}</td>
+                            <td style="width: 1px; text-align: right;">
+                                <button class="btn btn-sm btn-primary"
+                                (click)='edit()'>
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
