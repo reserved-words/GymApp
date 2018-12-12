@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { IExercise } from "../interfaces/exercise";
+import { IExercise } from "../shared/interfaces/exercise";
 
 @Component({
     selector: 'gym-exercise',
@@ -17,7 +17,8 @@ export class ExerciseComponent implements OnInit {
             name: 'Bench press',
             minReps: 4,
             maxReps: 6,
-            numSets: 5
+            numSets: 5,
+            minIncrement: 2.5
         };
     }
 

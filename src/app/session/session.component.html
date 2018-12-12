@@ -1,0 +1,126 @@
+<div class="card">
+    <div class="card-header">
+        {{session.date | date:'EEE dd/LL/yyyy HH\:mm'}}
+    </div>
+    <div class="card-body">
+        <div *ngIf='!session.exercises || !session.exercises.length' class="p-3">
+            <p>No exercises added yet.</p>
+        </div>
+        <div *ngIf='session.exercises && session.exercises.length'>
+            <div class="card" *ngFor='let item of session.exercises'>
+                <div class="card-header">
+                    {{item.type}}
+                </div>
+                <div class="card-body p-0">
+                    <table class="table m-0">
+                        <tbody>
+                            <tr *ngFor='let set of item.warmup'>
+                                <td>
+                                    <span *ngIf="set.done">{{set.reps}}</span>
+                                    <div *ngIf="!set.done" class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-sm"
+                                            (click)='set.decreaseWeight()'>-</button>
+                                        </div>
+                                        <input [(ngModel)]='set.reps' type="number" class="form-control">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm"
+                                            (click)='set.increaseReps()'>+</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="min-width">*</td>
+                                <td>
+                                    <span *ngIf="set.done">{{set.weight}}kg</span>
+                                    <div *ngIf="!set.done" class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-sm"
+                                            (click)='set.decreaseWeight()'>-</button>
+                                        </div>
+                                        <input [(ngModel)]='set.weight' type="number" class="form-control">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm"
+                                            (click)='set.increaseWeight()'>+</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="min-width">
+                                    <span *ngIf="!set.done">kg</span>
+                                </td>
+                                <td class="min-width">
+                                        <button *ngIf="set.done"
+                                        class="btn btn-sm btn-secondary"
+                                        (click)='edit()'>
+                                    <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button *ngIf="!set.done"
+                                            class="btn btn-sm btn-success"
+                                            (click)='set.markDone()'>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngFor='let set of item.sets'>
+                                <td>
+                                    <span *ngIf="set.done">{{set.reps}}</span>
+                                    <div *ngIf="!set.done" class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-sm"
+                                            (click)='set.decreaseWeight()'>-</button>
+                                        </div>
+                                        <input [(ngModel)]='set.reps' type="number" class="form-control">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm"
+                                            (click)='set.increaseReps()'>+</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="min-width">*</td>
+                                <td>
+                                    <span *ngIf="set.done">{{set.weight}}kg</span>
+                                    <div *ngIf="!set.done" class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-sm"
+                                            (click)='set.decreaseWeight()'>-</button>
+                                        </div>
+                                        <input [(ngModel)]='set.weight' type="number" class="form-control">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-sm"
+                                            (click)='set.increaseWeight()'>+</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="min-width">
+                                    <span *ngIf="!set.done">kg</span>
+                                </td>
+                                <td class="min-width">
+                                        <button *ngIf="set.done"
+                                        class="btn btn-sm btn-secondary"
+                                        (click)='edit()'>
+                                    <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button *ngIf="!set.done"
+                                            class="btn btn-sm btn-success"
+                                            (click)='set.markDone()'>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="p-3">
+                        <button class="btn btn-sm btn-primary" (click)='item.addWarmUpSet()'>Add Warm-Up Set</button>
+                        <button class="btn btn-sm btn-primary" (click)='item.addSet()'>Add Set</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-3">
+            <button class="btn btn-primary btn-sm"
+                (click)='addExercise()'>Add New Exercise</button>
+                <button class="btn btn-sm btn-success">
+                    Session Complete
+                </button>
+        </div>
+    </div>
+</div>

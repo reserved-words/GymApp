@@ -5,4 +5,5 @@ export interface IExercise {
     minReps: number;
     maxReps: number;
     numSets: number;
+    minIncrement: number;
 }
