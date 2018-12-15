@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import { ExercisesComponent } from './exercises/exercises.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { ExerciseComponent } from './exercise/exercise.component';
+import { SessionComponent } from './session/session.component';
+import { SetComponent } from './shared/set.component';
 
 @NgModule({
   declarations: [
     AppComponent, 
     ExercisesComponent,
     SessionsComponent,
-    ExerciseComponent],
+    ExerciseComponent,
+    SessionComponent,
+    SetComponent],
   imports: [ // External modules
     BrowserModule, 
     FormsModule

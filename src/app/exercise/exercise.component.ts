@@ -1,16 +1,24 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
+import { IExercise } from "../shared/interfaces/exercise";
+import { ExerciseService } from "./exercise.service";
 
 @Component({
     selector: 'gym-exercise',
-    templateUrl: './exercise.component.html'
+    templateUrl: './exercise.component.html',
+    styleUrls: ['./exercise.component.css']
 })
-export class ExerciseComponent {
+export class ExerciseComponent implements OnInit {
+    @Input() id: number;
     pageTitle: string = 'Edit Exercise';
-    id: number = 1;
-    name: string = 'Bench press';
-    minReps: number = 4;
-    maxReps: number = 6;
-    numSets: number = 5;
+    exercise: IExercise;
+
+    constructor(private exerciseService: ExerciseService){
+    }
+
+    ngOnInit(): void {
+        this.exercise = this.exerciseService.getExercise(this.id);
+    }
+    
     save(): void {
         alert("Save");
     }

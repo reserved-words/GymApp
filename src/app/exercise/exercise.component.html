@@ -1,32 +1,38 @@
 <div class="card">
     <div class="card-header">
-        {{pageTitle}}: {{name}}
+        {{pageTitle}}: {{exercise.name}}
     </div>
     <div class="card-body">
         <form>
-            <input [(ngModel)]='id' type="hidden" name="id" />
+            <input [(ngModel)]='exercise.id' type="hidden" name="id" />
             <div class="row form-group">
                 <div class="col-12">
                     <label for="Name" class="control-label">Name</label>
-                    <input [(ngModel)]='name' type="text" name="Name" class="form-control" />
+                    <input [(ngModel)]='exercise.name' type="text" name="Name" class="form-control" />
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-12">
                     <label for="MinReps" class="control-label">Minimum Reps</label>
-                    <input [(ngModel)]='minReps' type="number" name="MinReps" class="form-control" />
+                    <input [(ngModel)]='exercise.minReps' type="number" name="MinReps" class="form-control" />
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-12">
                     <label for="MaxReps" class="control-label">Maximum Reps</label>
-                    <input [(ngModel)]='maxReps' type="number" name="MaxReps" class="form-control" />
+                    <input [(ngModel)]='exercise.maxReps' type="number" name="MaxReps" class="form-control" />
                 </div>
             </div>
             <div class="row form-group">
                 <div class="col-12">
                     <label for="NumSets" class="control-label">Number of Sets</label>
-                    <input [(ngModel)]='numSets' type="number" name="NumSets" class="form-control" />
+                    <input [(ngModel)]='exercise.numSets' type="number" name="NumSets" class="form-control" />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="MinIncrement" class="control-label">Minimum Weight Increment</label>
+                    <input [(ngModel)]='exercise.minIncrement' type="number" name="MinIncrement" class="form-control" />
                 </div>
             </div>
             <div class="row form-group">
