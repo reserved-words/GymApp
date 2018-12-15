@@ -10,11 +10,6 @@ input[type=number] {
   padding: 0;
 }
 
-button {
-  height: 2rem;
-  width: 2rem;
-}
-
 div.input-group button {
   margin: 0;
   width: 1.5rem;
@@ -25,30 +20,4 @@ div.input-group button {
 
 div.input-group {
   text-align: center;
-}
-
-div.table {
-  display: table;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-div.table-row {
-  display: table-row;
-  padding: 0;
-  margin: 0;
-  vertical-align: middle;
-}
-
-div.table-cell {
-  display: table-cell;
-  text-align: center;
-  padding: 0.2rem;
-  margin: 0;
-  vertical-align: middle;
-}
-
-div.table-row div.table-cell:last-child {
-  text-align: right;
 }

@@ -7,21 +7,19 @@
             <p>No exercises added yet.</p>
         </div>
         <div *ngIf='list && list.length'>
-            <div class="table-responsive">
-                <table class="table m-0">
-                    <tbody>
-                        <tr *ngFor='let item of list'>
-                            <td style="width: 1px;"><i class="fas fa-{{item.icon}}"></i></td>
-                            <td>{{item.name}}</td>
-                            <td style="width: 1px; text-align: right;">
-                                <button class="btn btn-sm btn-primary"
-                                (click)='edit()'>
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="table">
+                <div class="table-row" *ngFor='let item of list'>
+                    <div class="table-cell icon-text">
+                        <i class="fas fa-{{item.icon}}"></i>
+                        <span>{{item.name}}</span>
+                    </div>
+                    <div class="table-cell">
+                        <button class="btn btn-sm btn-primary"
+                        (click)='edit()'>
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

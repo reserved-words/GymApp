@@ -2,7 +2,7 @@
     <div class="card-header">
         {{pageTitle}}: {{exercise.name}}
     </div>
-    <div class="card-body">
+    <div class="card-body p-2">
         <form>
             <input [(ngModel)]='exercise.id' type="hidden" name="id" />
             <div class="row form-group">
@@ -35,11 +35,9 @@
                     <input [(ngModel)]='exercise.minIncrement' type="number" name="MinIncrement" class="form-control" />
                 </div>
             </div>
-            <div class="row form-group">
-                <div class="col-12">
-                    <button class="btn btn-primary btn-sm"
-                            (click)='save()'>Save</button>
-                </div>
+            <div class="footer-buttons">
+                <button class="btn btn-primary btn-sm"
+                    (click)='save()'>Save</button>
             </div>
         </form>
     </div>

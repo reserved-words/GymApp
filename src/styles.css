@@ -2,14 +2,61 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
-div.card-header {
- font-size: large;
+button {
+  height: 2rem;
 }
 
-div.card {
-  margin-top: 10px
+button.square {
+  width: 2rem;
 }
 
-.table {
-  margin-top: 10px
+div.table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+div.table-row {
+  display: table-row;
+  padding: 0;
+  margin: 0;
+  vertical-align: middle;
+}
+
+div.table-cell {
+  display: table-cell;
+  text-align: left;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  margin: 0;
+  vertical-align: middle;
+}
+
+div.table div.table-row:last-child div.table-cell {
+  padding-bottom: 0.5rem;
+}
+
+div.table-row-center div.table-cell {
+  text-align: center;
+}
+
+div.table-row div.table-cell:last-child {
+  text-align: right;
+}
+
+div.icon-text i {
+  margin-right: 0.75rem;
+}
+
+div.footer-buttons {
+  padding: 0;
+  text-align: center;
+}
+
+div.footer-buttons button {
+  margin: 0.5rem 0.5rem 0.5rem 0;
+}
+
+div.footer-buttons button:last-child {
+  margin: 0.5rem 0 0.5rem 0;
 }
