@@ -21,33 +21,13 @@
   
   <div class="table-row table-row-center" *ngIf="!set.done">
     <div class="table-cell">
-        <div class="input-group">
-          <div class="input-group-prepend">
-              <button class="btn btn-sm"
-              (click)='set.decreaseReps()'>-</button>
-          </div>
-          <input [(ngModel)]='set.reps' type="number" class="form-control">
-          <div class="input-group-append">
-              <button class="btn btn-sm"
-              (click)='set.increaseReps()'>+</button>
-          </div>
-        </div>
-    </div>
+        <gym-num [value]='set.reps' [stepSize]='1'></gym-num>
+      </div>
     <div class="table-cell" style="width: 1px;">
       *
     </div>
     <div class="table-cell">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <button class="btn btn-sm"
-              (click)='set.decreaseWeight()'>-</button>
-        </div>
-        <input [(ngModel)]='set.weight' type="number" class="form-control">
-        <div class="input-group-append">
-          <button class="btn btn-sm"
-              (click)='set.increaseWeight()'>+</button>
-        </div>
-      </div>
+      <gym-num [value]='set.weight' [stepSize]='stepSize'></gym-num>
     </div>
     <div class="table-cell" style="width: 1px;">
       <button class="btn btn-sm btn-success square"

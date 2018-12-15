@@ -12,7 +12,7 @@ export class SessionService {
         
         var session = new Session(1, new Date(), false);
 
-        var bp = new SessionExercise("Bench Press");
+        var bp = new SessionExercise("Bench Press", 2.5);
         bp.warmup = [
             new ExerciseSet(10,8,true),
             new ExerciseSet(15,5,true)

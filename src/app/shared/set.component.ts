@@ -10,4 +10,5 @@ import { ISet } from "./interfaces/set";
 export class SetComponent {
     @Input() set: ISet;
     @Input() exerciseFinished: boolean;
+    @Input() stepSize: number;
 }

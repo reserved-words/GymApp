@@ -7,10 +7,12 @@ export class SessionExercise implements ISessionExercise {
     type: string;    
     warmup: ISet[];
     sets: ISet[];
-    constructor(t){
+    minIncrement: number;
+    constructor(t, minIncrement: number){
         this.type = t;
         this.warmup = [];
         this.sets = [];
+        this.minIncrement = minIncrement;
     }
     addWarmUpSet(): void {
         if (this.warmup.length){

@@ -15,7 +15,7 @@ export class Session implements ISession {
     }
     
     addExercise():void {
-        this.exercises.push(new SessionExercise("?"));
+        this.exercises.push(new SessionExercise("?", 2.5));
     }
     markComplete(): void {
         this.complete = true;

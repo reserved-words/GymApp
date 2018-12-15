@@ -13,10 +13,10 @@
                 </div>
                 <div class="card-body p-0">
                     <div *ngFor='let set of item.warmup'>
-                        <gym-set [set]='set' [exerciseFinished]='item.finished'></gym-set>
+                        <gym-set [set]='set' [exerciseFinished]='item.finished' [stepSize]='item.minIncrement'></gym-set>
                     </div>
                     <div *ngFor='let set of item.sets'>
-                        <gym-set [set]='set' [exerciseFinished]='item.finished'></gym-set>
+                        <gym-set [set]='set' [exerciseFinished]='item.finished' [stepSize]='item.minIncrement'></gym-set>
                     </div>
                     <div *ngIf='!session.complete' class="pl-2 pr-2">
                         <div *ngIf='item.finished' class="footer-buttons">

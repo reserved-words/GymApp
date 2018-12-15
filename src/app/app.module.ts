@@ -8,6 +8,7 @@ import { SessionsComponent } from './sessions/sessions.component';
 import { ExerciseComponent } from './exercise/exercise.component';
 import { SessionComponent } from './session/session.component';
 import { SetComponent } from './shared/set.component';
+import { NumComponent } from './shared/num.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SetComponent } from './shared/set.component';
     SessionsComponent,
     ExerciseComponent,
     SessionComponent,
-    SetComponent],
+    SetComponent,
+    NumComponent],
   imports: [ // External modules
     BrowserModule, 
     FormsModule

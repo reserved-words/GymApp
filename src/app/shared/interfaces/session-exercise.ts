@@ -5,6 +5,7 @@ export interface ISessionExercise {
     warmup: ISet[];
     sets: ISet[];
     finished: boolean;
+    minIncrement: number;
     addWarmUpSet(): void;
     addSet(): void;
     markFinished();
