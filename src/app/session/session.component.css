@@ -5,3 +5,7 @@ input[type=number] {
 div {
     line-height: 1rem;
 }
+
+button {
+    margin-right: 0.2rem;
+}

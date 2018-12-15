@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { IExercise } from "../shared/interfaces/exercise";
+import { ExerciseService } from "./exercise.service";
 
 @Component({
     selector: 'gym-exercise',
@@ -7,23 +8,15 @@ import { IExercise } from "../shared/interfaces/exercise";
     styleUrls: ['./exercise.component.css']
 })
 export class ExerciseComponent implements OnInit {
+    @Input() id: number;
     pageTitle: string = 'Edit Exercise';
     exercise: IExercise;
 
-    constructor(){
-        this.exercise = {
-            id: 1,
-            icon: 'dumbbell',
-            name: 'Bench press',
-            minReps: 4,
-            maxReps: 6,
-            numSets: 5,
-            minIncrement: 2.5
-        };
+    constructor(private exerciseService: ExerciseService){
     }
 
     ngOnInit(): void {
-        console.log('In OnInit');
+        this.exercise = this.exerciseService.getExercise(this.id);
     }
     
     save(): void {
