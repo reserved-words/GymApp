@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { ISession } from "../shared/interfaces/session";
 import { SessionExercise } from "../shared/model/session-exercise";
 import { ExerciseSet } from "../shared/model/exercise-set";
+import { Session } from "../shared/model/session";
 
 @Injectable({
     providedIn: 'root'
@@ -9,11 +10,7 @@ import { ExerciseSet } from "../shared/model/exercise-set";
 export class SessionService {
     getSession(id: number): ISession {
         
-        var session = {
-            id: 1,
-            date: new Date(),
-            exercises: []
-        };
+        var session = new Session(1, new Date(), false);
 
         var bp = new SessionExercise("Bench Press");
         bp.warmup = [

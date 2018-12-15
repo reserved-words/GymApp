@@ -1,6 +1,5 @@
 import { Component, Input } from "@angular/core";
 import { ISession } from "../shared/interfaces/session";
-import { ExerciseSet } from "../shared/model/exercise-set";
 import { SessionExercise } from "../shared/model/session-exercise";
 import { SessionService } from "./session.service";
 
@@ -16,10 +15,6 @@ export class SessionComponent {
 
     constructor(private sessionService: SessionService){
         
-    }
-
-    addExercise() {
-        this.session.exercises.push(new SessionExercise("?"));
     }
 
     ngOnInit(){

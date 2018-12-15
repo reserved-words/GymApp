@@ -3,6 +3,7 @@ import { ISet } from "../interfaces/set";
 import { ExerciseSet } from "./exercise-set";
 
 export class SessionExercise implements ISessionExercise {
+    finished: boolean;
     type: string;    
     warmup: ISet[];
     sets: ISet[];
@@ -32,5 +33,17 @@ export class SessionExercise implements ISessionExercise {
         else {
             this.sets.push(new ExerciseSet(0,0,false));
         }
+    }
+    markFinished() {
+        this.finished = true;
+        for (var i in this.warmup){
+            this.warmup[i].markDone();
+        }
+        for (var i in this.sets){
+            this.sets[i].markDone();
+        }
+    }
+    markNotFinished() {
+        this.finished = false;
     }
 }

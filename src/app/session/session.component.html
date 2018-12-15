@@ -13,24 +13,42 @@
                 </div>
                 <div class="card-body p-0">
                     <div *ngFor='let set of item.warmup'>
-                        <gym-set [set]='set'></gym-set>
+                        <gym-set [set]='set' [exerciseFinished]='item.finished'></gym-set>
                     </div>
                     <div *ngFor='let set of item.sets'>
-                        <gym-set [set]='set'></gym-set>
+                        <gym-set [set]='set' [exerciseFinished]='item.finished'></gym-set>
                     </div>
-                    <div class="p-3">
-                        <button class="btn btn-sm btn-primary" (click)='item.addWarmUpSet()'>Add Warm-Up</button>
-                        <button class="btn btn-sm btn-primary" (click)='item.addSet()'>Add Set</button>
+                    <div *ngIf='!session.complete' class="p-2">
+                        <div *ngIf='item.finished'>
+                            <button class="btn btn-sm btn-primary" (click)='item.markNotFinished()'>Not Finished</button>
+                        </div>
+                        <div *ngIf='!item.finished'>
+                            <button class="btn btn-sm btn-primary" (click)='item.addWarmUpSet()'>Add Warm-Up</button>
+                            <button class="btn btn-sm btn-primary" (click)='item.addSet()'>Add Set</button>
+                            <button class="btn btn-sm btn-success" (click)='item.markFinished()'>Finished</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="p-3">
-            <button class="btn btn-primary btn-sm"
-                (click)='addExercise()'>Add Exercise</button>
-                <button class="btn btn-sm btn-success">
-                    Session Complete
+        <div class="pt-2">
+            <div *ngIf='!session.complete'>
+                <button class="btn btn-primary btn-sm"
+                    (click)='session.addExercise()'>
+                    Add Exercise
                 </button>
+                <button class="btn btn-sm btn-primary">
+                    Save
+                </button>
+                <button class="btn btn-sm btn-success"
+                    (click)='session.markComplete()'>
+                    Complete
+                </button>
+            </div>
+            <button *ngIf='session.complete' class="btn btn-sm btn-primary"
+                (click)='session.markNotComplete()'>
+                Edit
+            </button>
         </div>
     </div>
 </div>
