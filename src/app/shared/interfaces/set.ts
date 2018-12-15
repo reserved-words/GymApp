@@ -7,4 +7,5 @@ export interface ISet {
     increaseWeight(): void;
     decreaseWeight(): void;
     markDone(): void;
+    markNotDone(): void;
 }

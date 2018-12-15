@@ -24,4 +24,7 @@ export class ExerciseSet implements ISet {
     markDone(): void {
         this.done = true;
     }
+    markNotDone(): void {
+        this.done = false;
+    }
 }

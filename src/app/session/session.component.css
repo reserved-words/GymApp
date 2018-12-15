@@ -2,10 +2,6 @@ input[type=number] {
     text-align: center;
 }
 
-td {
-    text-align: center;
-}
-
-td.min-width {
-    width: 1px;
+div {
+    line-height: 1rem;
 }
