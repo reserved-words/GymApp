@@ -8,12 +8,12 @@ import { tap, catchError } from "rxjs/operators";
     providedIn: 'root'
 })
 export class ExerciseService {
-    private exerciseUrl = 'api/exercises/exercise.json';
+    private exerciseUrl = 'http://127.0.0.1:5984/gymapp/';
 
     constructor(private http: HttpClient){}
 
-    getExercise(id: number): Observable<IExercise> {
-        return this.http.get<IExercise>(this.exerciseUrl).pipe(
+    getExercise(id: string): Observable<IExercise> {
+        return this.http.get<IExercise>(this.exerciseUrl + id).pipe(
             tap(data => console.log("All: " + JSON.stringify(data))),
             catchError(this.handleError)
         );

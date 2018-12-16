@@ -17,7 +17,7 @@ export class ExerciseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.exerciseService.getExercise(this.id).subscribe(
+        this.exerciseService.getExercise('8663e791d5fa6934e5c99737be01985e').subscribe(
             ex => this.exercise = ex,
             error => this.errorMessage = <any>error
         );

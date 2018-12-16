@@ -9,13 +9,13 @@ import { tap, catchError } from "rxjs/operators";
     providedIn: 'root'
 })
 export class SessionService {
-    sessionUrl: string = 'api/sessions/session.json';
+    sessionUrl: string = 'http://127.0.0.1:5984/gymapp/';
 
     constructor(private http: HttpClient){}
 
-    getSession(id: number): Observable<ISession> {
+    getSession(id: string): Observable<ISession> {
         
-        return this.http.get<ISession>(this.sessionUrl).pipe(
+        return this.http.get<ISession>(this.sessionUrl + id).pipe(
             tap(data => console.log(JSON.stringify(data))),
             catchError(this.handleError)
         );

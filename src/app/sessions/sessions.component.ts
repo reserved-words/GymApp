@@ -10,7 +10,7 @@ import { SessionsService } from "./sessions.service";
 export class SessionsComponent {
     pageTitle: string = "Sessions";
     sessionIcon: string = "calendar-alt";
-    list: ISession[];
+    list: ISession[] = [];
     errorMessage: string;
 
     constructor(private sessionsService: SessionsService){
@@ -25,7 +25,11 @@ export class SessionsComponent {
 
     ngOnInit(): void {
         this.sessionsService.getSessions().subscribe(
-            result => this.list = result,
+            result => {
+                for (var i in result.rows){
+                    this.list.push(result.rows[i].value);
+                }
+            },
             error => this.errorMessage = <any>error
         );
     }

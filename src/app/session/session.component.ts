@@ -31,7 +31,7 @@ export class SessionComponent {
     }
 
     ngOnInit(){
-        this.sessionService.getSession(this.id).subscribe(
+        this.sessionService.getSession('8663e791d5fa6934e5c99737be009dba').subscribe(
             s => {
                 this.session = s;
             },
