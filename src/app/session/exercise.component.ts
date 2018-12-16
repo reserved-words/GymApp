@@ -10,6 +10,7 @@ import { ISessionExercise } from "../shared/interfaces/session-exercise";
 export class SessionExerciseComponent {
     @Input() exercise: ISessionExercise;
     @Input() sessionStatus: string;
+    collapsed: boolean = true;
 
     addWarmUpSet(): void {
         if (this.exercise.warmup.length){
@@ -44,5 +45,8 @@ export class SessionExerciseComponent {
     }
     markNotFinished() {
         this.exercise.finished = false;
+    }
+    toggleCollapsed(): void {
+        this.collapsed = !this.collapsed;
     }
 }

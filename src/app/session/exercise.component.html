@@ -1,37 +1,27 @@
-<div class="card">
-    <div class="card-header">
-        {{exercise.type}}        
+<div class="card mb-0">
+    <div class="card-header d-flex" (click)="toggleCollapsed()">
+        <span>
+            {{exercise.type}}
+        </span>   
+        <span class="ml-auto">
+            <i *ngIf='collapsed' class="fas fa-caret-down"></i>
+            <i *ngIf='!collapsed' class="fas fa-caret-up"></i>
+        </span>     
     </div>
-    <div class="card-body p-0">
-        <div class="table">
-            <div class="table-row">
-                <div class="table-cell">
-                    Warm Ups
-                </div>
-                <div class="table-cell">
-                    <button *ngIf='!exercise.finished' class="btn btn-sm btn-primary square" (click)='addWarmUpSet()'>
-                        <i class="fas fa-plus-square"></i>
-                    </button>    
-                </div>
+    <div [class]="collapsed ? 'collapse' : 'collapse show'">
+        <div class="card-body p-1">
+            <div class="p-1">
+                Warm Ups <i *ngIf='!exercise.finished' class="fas fa-plus-square" (click)='addWarmUpSet()'></i>
             </div>
-        </div>
-        <div *ngFor='let set of exercise.warmup'>
-            <gym-set [set]='set' [exerciseFinished]='exercise.finished' [stepSize]='exercise.minIncrement' [sessionStatus]='sessionStatus'></gym-set>
-        </div>
-        <div class="table">
-            <div class="table-row">
-                <div class="table-cell">
-                    Sets
-                </div>
-                <div class="table-cell">
-                    <button *ngIf='!exercise.finished' class="btn btn-sm btn-primary square" (click)='addSet()'>
-                        <i class="fas fa-plus-square"></i>
-                    </button>    
-                </div>
+            <div *ngFor='let set of exercise.warmup'>
+                <gym-set [set]='set' [exerciseFinished]='exercise.finished' [stepSize]='exercise.minIncrement' [sessionStatus]='sessionStatus'></gym-set>
             </div>
-        </div>
-        <div *ngFor='let set of exercise.sets'>
-            <gym-set [set]='set' [exerciseFinished]='exercise.finished' [stepSize]='exercise.minIncrement' [sessionStatus]='sessionStatus'></gym-set>
+            <div class="p-1">
+                Sets <i *ngIf='!exercise.finished' class="fas fa-plus-square" (click)='addSet()'></i>
+            </div>
+            <div *ngFor='let set of exercise.sets'>
+                <gym-set [set]='set' [exerciseFinished]='exercise.finished' [stepSize]='exercise.minIncrement' [sessionStatus]='sessionStatus'></gym-set>
+            </div>
         </div>
     </div>
 </div>
