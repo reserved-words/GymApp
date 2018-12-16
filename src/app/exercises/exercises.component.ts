@@ -12,7 +12,7 @@ export class ExercisesComponent {
     list: IExercise[] = [];
     errorMessage: string;
 
-    constructor(private exercisesService: ExercisesService){
+    constructor(private service: ExercisesService){
     }
 
     edit(): void {
@@ -20,8 +20,12 @@ export class ExercisesComponent {
     }
 
     ngOnInit(): void {
-        this.exercisesService.getExercises().subscribe(
-            exercises => this.list = exercises,
+        this.service.getExercises().subscribe(
+            results => {
+                for (var index in results.rows){
+                    this.list.push(results.rows[index].value);
+                }
+            },
             error => this.errorMessage = <any>error
         );
     }

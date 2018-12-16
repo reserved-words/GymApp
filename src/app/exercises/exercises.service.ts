@@ -4,17 +4,18 @@ import { Observable, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 
 import { IExercise } from "../shared/interfaces/exercise";
+import { IQueryResults } from "../shared/interfaces/queryResults";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ExercisesService {
-    private exercisesUrl = 'api/exercises/exercises.json';
+    private exercisesUrl = 'http://127.0.0.1:5984/gymapp/_design/exerciseDesignDoc/_view/exercises';
 
     constructor(private http: HttpClient){}
 
-    getExercises(): Observable<IExercise[]> {
-        return this.http.get<IExercise[]>(this.exercisesUrl).pipe(
+    getExercises(): Observable<IQueryResults<IExercise>> {
+        return this.http.get<IQueryResults<IExercise>>(this.exercisesUrl).pipe(
             tap(data => console.log("All: " + JSON.stringify(data))),
             catchError(this.handleError)
         );
