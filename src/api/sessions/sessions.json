@@ -1,0 +1,116 @@
+[
+    {
+        "_id": "8663e791d5fa6934e5c99737be009dba",
+        "_rev": "1-d79be226484b0e5e2b0d0810ccd509d4",
+        "type": "session",
+        "date": "2018-12-01 19:00",
+        "exercises": [
+            {
+                "type": "Bench Press",
+                "sets": [
+                    {
+                        "weight": 20,
+                        "reps": 4,
+                        "quantity": 1
+                    },
+                    {
+                        "weight": 20,
+                        "reps": 5,
+                        "quantity": 4
+                    }
+                ],
+                "warmup": [
+                    {
+                        "weight": 15,
+                        "reps": 5,
+                        "quantity": 5
+                    },
+                    {
+                        "weight": 10,
+                        "reps": 5,
+                        "quantity": 5
+                    }
+                ]
+            },
+            {
+                "type": "Squat",
+                "sets": [
+                    {
+                        "weight": 20,
+                        "reps": 4,
+                        "quantity": 1
+                    },
+                    {
+                        "weight": 20,
+                        "reps": 5,
+                        "quantity": 4
+                    }
+                ],
+                "warmup": [
+                    {
+                        "weight": 15,
+                        "reps": 5,
+                        "quantity": 5
+                    },
+                    {
+                        "weight": 10,
+                        "reps": 5,
+                        "quantity": 5
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": "7263e791d5fa6934e5c99737ce009dba",
+        "_rev": "1-72bfe226484b0e5e2b0d0810ccd509d4",
+        "type": "session",
+        "date": "2018-12-15 10:00",
+        "exercises": [
+            {
+                "type": "Bench Press",
+                "sets": [
+                    {
+                        "weight": 22.5,
+                        "reps": 5,
+                        "quantity": 1
+                    }
+                ],
+                "warmup": [
+                    {
+                        "weight": 15,
+                        "reps": 5,
+                        "quantity": 1
+                    },
+                    {
+                        "weight": 10,
+                        "reps": 8,
+                        "quantity": 1
+                    }
+                ]
+            },
+            {
+                "type": "Squat",
+                "sets": [
+                    {
+                        "weight": 22.5,
+                        "reps": 5,
+                        "quantity": 5
+                    }
+                ],
+                "warmup": [
+                    {
+                        "weight": 15,
+                        "reps": 5,
+                        "quantity": 1
+                    },
+                    {
+                        "weight": 10,
+                        "reps": 8,
+                        "quantity": 1
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser'; // Always needed
 import { NgModule } from '@angular/core'; // Always needed
-import { FormsModule } from '@angular/forms' // Needed for ngModel directive
+import { FormsModule } from '@angular/forms'; // Needed for ngModel directive
+import { HttpClientModule } from '@angular/common/http'; // Needed for HTTP requests
 
 import { AppComponent } from './app.component';
 import { ExercisesComponent } from './exercises/exercises.component';
@@ -21,7 +22,8 @@ import { NumComponent } from './shared/num.component';
     NumComponent],
   imports: [ // External modules
     BrowserModule, 
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   bootstrap: [AppComponent]
 })

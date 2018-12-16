@@ -10,6 +10,7 @@ import { ExercisesService } from "./exercises.service";
 export class ExercisesComponent {
     pageTitle: string = 'Exercises';
     list: IExercise[] = [];
+    errorMessage: string;
 
     constructor(private exercisesService: ExercisesService){
     }
@@ -19,6 +20,9 @@ export class ExercisesComponent {
     }
 
     ngOnInit(): void {
-        this.list = this.exercisesService.getExercises();
+        this.exercisesService.getExercises().subscribe(
+            exercises => this.list = exercises,
+            error => this.errorMessage = <any>error
+        );
     }
 }
