@@ -11,4 +11,12 @@ export class SetComponent {
     @Input() set: ISet;
     @Input() exerciseFinished: boolean;
     @Input() stepSize: number;
+
+    onWeightValueChanged(newValue: number): void {
+        this.set.weight = newValue;
+    }
+    
+    onRepsValueChanged(newValue: number): void {
+        this.set.reps = newValue;
+    }
 }
