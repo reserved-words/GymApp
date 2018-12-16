@@ -3,7 +3,6 @@ import { IExercise } from "../shared/interfaces/exercise";
 import { ExerciseService } from "./exercise.service";
 
 @Component({
-    selector: 'gym-exercise',
     templateUrl: './exercise.component.html',
     styleUrls: ['./exercise.component.css']
 })

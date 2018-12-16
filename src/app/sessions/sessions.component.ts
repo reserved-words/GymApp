@@ -3,7 +3,6 @@ import { ISession } from "../shared/interfaces/session";
 import { SessionsService } from "./sessions.service";
 
 @Component({
-    selector: 'gym-sessions',
     templateUrl: 'sessions.component.html',
     styleUrls: ['sessions.component.css']
 })
