@@ -13,7 +13,7 @@
     </div>
     <div class="table-cell">
       <button *ngIf='!exerciseFinished' class="btn btn-sm btn-secondary square"
-          (click)='set.markNotDone()'>
+          (click)='markNotDone()'>
         <i class="fas fa-edit"></i>
       </button>
     </div>
@@ -31,7 +31,7 @@
     </div>
     <div class="table-cell" style="width: 1px;">
       <button class="btn btn-sm btn-success square"
-              (click)='set.markDone()'>
+              (click)='markDone()'>
         <i class="fas fa-check"></i>
       </button>
     </div>

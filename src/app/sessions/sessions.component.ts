@@ -11,18 +11,22 @@ export class SessionsComponent {
     pageTitle: string = "Sessions";
     sessionIcon: string = "calendar-alt";
     list: ISession[];
+    errorMessage: string;
 
     constructor(private sessionsService: SessionsService){
     }
 
     add(): void {
-        alert("Add exercise!");
+        alert("Add session!");
     }
     edit(): void {
-        alert("Edit exercise!");
+        alert("Edit session!");
     }
 
     ngOnInit(): void {
-        this.list = this.sessionsService.getSessions();
+        this.sessionsService.getSessions().subscribe(
+            result => this.list = result,
+            error => this.errorMessage = <any>error
+        );
     }
 }

@@ -1,6 +1,5 @@
 import { Component, Input } from "@angular/core";
 import { ISession } from "../shared/interfaces/session";
-import { SessionExercise } from "../shared/model/session-exercise";
 import { SessionService } from "./session.service";
 
 @Component({
@@ -12,12 +11,31 @@ export class SessionComponent {
     @Input() id: number;
     pageTitle: string = "Session";
     session: ISession;
+    errorMessage: string;
 
     constructor(private sessionService: SessionService){
         
     }
 
+    addExercise():void {
+        this.session.exercises.push({ "type" : "?", "warmup": [], "sets": [], "finished": false, "minIncrement": 2.5 });
+    }
+    markComplete(): void {
+        this.session.complete = true;
+        for (var i in this.session.exercises){
+            this.session.exercises[i].finished = true;
+        }
+    }
+    markNotComplete(): void {
+        this.session.complete = false;
+    }
+
     ngOnInit(){
-        this.session = this.sessionService.getSession(this.id)
+        this.sessionService.getSession(this.id).subscribe(
+            s => {
+                this.session = s;
+            },
+            error => this.errorMessage = <any>error
+        );
     }
 }

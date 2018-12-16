@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { ISet } from "./interfaces/set";
+import { ISet } from "../shared/interfaces/set";
 
 
 @Component({
@@ -7,7 +7,7 @@ import { ISet } from "./interfaces/set";
     templateUrl: 'set.component.html',
     styleUrls: ['set.component.css']
 })
-export class SetComponent {
+export class SessionSetComponent {
     @Input() set: ISet;
     @Input() exerciseFinished: boolean;
     @Input() stepSize: number;
@@ -18,5 +18,13 @@ export class SetComponent {
     
     onRepsValueChanged(newValue: number): void {
         this.set.reps = newValue;
+    }
+
+    markDone(): void {
+        this.set.done = true;
+    }
+
+    markNotDone(): void {
+        this.set.done = false;
     }
 }

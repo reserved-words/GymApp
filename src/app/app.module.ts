@@ -8,7 +8,8 @@ import { ExercisesComponent } from './exercises/exercises.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { ExerciseComponent } from './exercise/exercise.component';
 import { SessionComponent } from './session/session.component';
-import { SetComponent } from './shared/set.component';
+import { SessionExerciseComponent } from './session/exercise.component';
+import { SessionSetComponent } from './session/set.component';
 import { NumComponent } from './shared/num.component';
 
 @NgModule({
@@ -18,7 +19,8 @@ import { NumComponent } from './shared/num.component';
     SessionsComponent,
     ExerciseComponent,
     SessionComponent,
-    SetComponent,
+    SessionExerciseComponent,
+    SessionSetComponent,
     NumComponent],
   imports: [ // External modules
     BrowserModule, 

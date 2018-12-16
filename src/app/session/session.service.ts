@@ -1,33 +1,37 @@
 import { Injectable } from "@angular/core";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+
 import { ISession } from "../shared/interfaces/session";
-import { SessionExercise } from "../shared/model/session-exercise";
-import { ExerciseSet } from "../shared/model/exercise-set";
-import { Session } from "../shared/model/session";
+import { Observable, throwError } from "rxjs";
+import { tap, catchError } from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
 })
 export class SessionService {
-    getSession(id: number): ISession {
+    sessionUrl: string = 'api/sessions/session.json';
+
+    constructor(private http: HttpClient){}
+
+    getSession(id: number): Observable<ISession> {
         
-        var session = new Session(1, new Date(), false);
-
-        var bp = new SessionExercise("Bench Press", 2.5);
-        
-        bp.warmup = [
-            new ExerciseSet(10,8,true),
-            new ExerciseSet(15,5,true)
-        ];
-
-        bp.sets = [
-            new ExerciseSet(20,5,true),
-            new ExerciseSet(20,5,true),
-            new ExerciseSet(20,5,false),
-            new ExerciseSet(20,5,false),
-            new ExerciseSet(20,5,false),
-        ];
-
-        session.exercises.push(bp);
-        return session;
+        return this.http.get<ISession>(this.sessionUrl).pipe(
+            tap(data => console.log(JSON.stringify(data))),
+            catchError(this.handleError)
+        );
     } 
+
+    private handleError(err: HttpErrorResponse){
+        let errorMessage = '';
+        if (err.error instanceof ErrorEvent){
+            // A client-side or network error occurred
+            errorMessage = `An error occurred: ${err.error.message}`;
+        }
+        else {
+            // The back end returned an unsuccessful response code
+            errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(errorMessage);    
+    }
 }
