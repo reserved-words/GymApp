@@ -14,16 +14,12 @@
                         <span>{{item.date | date:'EEE'}}</span>
                     </div>
                     <div class="table-cell">
-                        {{item.date | date:'dd/LL/yyyy'}}
+                        <a [routerLink]="['/sessions', item._id]">
+                            {{item.date | date:'dd/LL/yyyy'}}
+                        </a>
                     </div>
                     <div class="table-cell">
                         {{item.date | date:'HH\:mm'}}
-                    </div>
-                    <div class="table-cell">
-                        <button class="btn btn-sm btn-primary square"
-                                (click)='edit()'>
-                            <i class="fas fa-edit"></i>
-                        </button>
                     </div>
                 </div>
             </div>

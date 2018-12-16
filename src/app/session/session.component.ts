@@ -1,19 +1,29 @@
 import { Component, Input } from "@angular/core";
 import { ISession } from "../shared/interfaces/session";
 import { SessionService } from "./session.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     templateUrl: "session.component.html",
     styleUrls: ["session.component.css"]
 })
 export class SessionComponent {
-    @Input() id: number;
     pageTitle: string = "Session";
     session: ISession;
     errorMessage: string;
 
-    constructor(private sessionService: SessionService){
+    constructor(private service: SessionService, private route: ActivatedRoute){
         
+    }
+
+    ngOnInit(){
+        let id = this.route.snapshot.paramMap.get('id');
+        this.service.getSession(id).subscribe(
+            s => {
+                this.session = s;
+            },
+            error => this.errorMessage = <any>error
+        );
     }
 
     addExercise():void {
@@ -27,14 +37,5 @@ export class SessionComponent {
     }
     markNotComplete(): void {
         this.session.complete = false;
-    }
-
-    ngOnInit(){
-        this.sessionService.getSession('8663e791d5fa6934e5c99737be009dba').subscribe(
-            s => {
-                this.session = s;
-            },
-            error => this.errorMessage = <any>error
-        );
     }
 }

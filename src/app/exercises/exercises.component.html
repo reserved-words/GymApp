@@ -6,21 +6,13 @@
         <div *ngIf='!list || !list.length' class="p-3">
             <p>No exercises added yet.</p>
         </div>
-        <div *ngIf='list && list.length'>
-            <div class="table">
-                <div class="table-row" *ngFor='let item of list'>
-                    <div class="table-cell icon-text">
-                        <i class="fas fa-dumbbell"></i>
-                        <span>{{item.name}}</span>
-                    </div>
-                    <div class="table-cell">
-                        <button class="btn btn-sm btn-primary"
-                                (click)='edit()'>
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </div>
+        <ul *ngIf='list && list.length' class="list-unstyled">
+            <li *ngFor='let item of list'>
+                <div class="table-cell icon-text">
+                    <i class="fas fa-dumbbell"></i>
+                    <a [routerLink]="['/exercises', item._id]">{{item.name}}</a>
                 </div>
-            </div>
-        </div>
+            </li>
+        </ul>
     </div>
 </div>
