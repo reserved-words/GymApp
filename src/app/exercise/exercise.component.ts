@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { IExercise } from "../shared/interfaces/exercise";
 import { ExerciseService } from "./exercise.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ExerciseGuard } from "./exercise.guard";
 
 @Component({
     templateUrl: './exercise.component.html',

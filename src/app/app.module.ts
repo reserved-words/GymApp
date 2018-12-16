@@ -14,6 +14,8 @@ import { SessionSetComponent } from './session/set.component';
 import { NumComponent } from './shared/num.component';
 import { ChartsComponent } from './charts/charts.component';
 import { ChartComponent } from './charts/chart.component';
+import { ExerciseGuard } from './exercise/exercise.guard';
+import { SessionGuard } from './session/session.guard';
 
 @NgModule({
   declarations: [
@@ -33,9 +35,9 @@ import { ChartComponent } from './charts/chart.component';
     HttpClientModule,
     RouterModule.forRoot([
       { path: 'exercises', component: ExercisesComponent },
-      { path: 'exercises/:id', component: ExerciseComponent },
+      { path: 'exercises/:id', component: ExerciseComponent, canActivate: [ExerciseGuard] },
       { path: 'sessions', component: SessionsComponent },
-      { path: 'sessions/:id', component: SessionComponent },
+      { path: 'sessions/:id', component: SessionComponent, canActivate: [SessionGuard] },
       { path: 'charts', component: ChartsComponent },
       { path: 'charts/:id', component: ChartComponent },
       { path: '', redirectTo: 'sessions', pathMatch: 'full' },
