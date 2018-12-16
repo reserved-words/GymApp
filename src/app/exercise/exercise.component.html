@@ -1,5 +1,6 @@
 <div class="card" *ngIf='exercise'>
-    <div class="card-header">
+    <div class="card-header icon-text">
+            <i class="fas fa-dumbbell"></i>
         {{pageTitle}}: {{exercise.name}}
     </div>
     <div class="card-body p-2">
@@ -36,8 +37,16 @@
                 </div>
             </div>
             <div class="footer-buttons">
+                <button class="btn btn-secondary btn-sm"
+                    (click)='onBack()'>
+                    <i class="fas fa-caret-left"></i>
+                    Back
+                </button>
                 <button class="btn btn-primary btn-sm"
-                    (click)='onSave()'>Save</button>
+                    (click)='onSave()'>
+                    <i class="fas fa-save"></i>
+                    Save
+                </button>
             </div>
         </form>
     </div>

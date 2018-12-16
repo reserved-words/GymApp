@@ -24,6 +24,10 @@ export class ExerciseComponent implements OnInit {
             error => this.errorMessage = <any>error
         );
     }
+
+    onBack(): void {
+        this.router.navigate(['/exercises']);
+    }
     
     onSave(): void {
         // save

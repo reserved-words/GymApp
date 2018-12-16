@@ -1,33 +1,38 @@
 <div class="card" *ngIf='session'>
-    <div class="card-header">
+    <div class="card-header icon-text">
+        <i class="far fa-calendar-alt"></i>
         {{session.date | date:'EEE dd/LL/yyyy HH\:mm'}}
     </div>
     <div class="card-body p-2">
-        <div *ngIf='!session.exercises || !session.exercises.length' class="p-3">
+        <div *ngIf='!hasExercises' class="p-3">
             <p>No exercises added yet.</p>
         </div>
-        <div *ngIf='session.exercises && session.exercises.length'>
+        <div *ngIf='hasExercises'>
             <gym-session-exercise *ngFor='let item of session.exercises' [exercise]='item' [sessionStatus]='sessionStatus'></gym-session-exercise>
         </div>
         <div class="footer-buttons">
-            <button *ngIf='sessionStatus != "completed"'
-                class="btn btn-primary btn-sm"
-                (click)='addExercise()'>
-                Add
-            </button>
-            <button *ngIf='sessionStatus != "completed"'
-                    class="btn btn-sm btn-primary"
-                    (click)='onSave()'>
-                Save
-            </button>
-            <button *ngIf='sessionStatus === "started"'
-                    class="btn btn-sm btn-success"
-                    (click)='markComplete()'>
-                Complete
-            </button>
             <button class="btn btn-sm btn-secondary"
                 (click)='onBack()'>
+                <i class="fas fa-caret-left"></i>
                 Back
+            </button>
+            <button *ngIf='isEditable'
+                class="btn btn-primary btn-sm"
+                (click)='addExercise()'>
+                <i class="fas fa-dumbbell"></i>
+                Add
+            </button>
+            <button *ngIf='isEditable'
+                    class="btn btn-sm btn-primary"
+                    (click)='onSave()'>
+                    <i class="fas fa-save"></i>
+                    Save
+            </button>
+            <button *ngIf='started'
+                    class="btn btn-sm btn-success"
+                    (click)='markComplete()'>
+                    <i class="fas fa-check"></i>
+                Complete
             </button>
         </div>
     </div>

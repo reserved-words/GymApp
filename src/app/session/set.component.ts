@@ -9,9 +9,8 @@ import { ISet } from "../shared/interfaces/set";
 })
 export class SessionSetComponent {
     @Input() set: ISet;
-    @Input() exerciseFinished: boolean;
+    @Input() isEditable: boolean;
     @Input() stepSize: number;
-    @Input() sessionStatus: string;
 
     onWeightValueChanged(newValue: number): void {
         this.set.weight = newValue;

@@ -13,16 +13,16 @@
             <p>No sessions planned yet.</p>
         </div>
         <div *ngIf='planned && planned.length'>
-            <div class="table">
-                <div class="table-row" *ngFor='let item of planned'>
-                    <div class="table-cell icon-text">
-                        <i class="fas fa-clipboard-list"></i>
-                        <a [routerLink]="['/sessions', item.id]">Session {{item.index}}</a>
-                    </div>
-                    <div class="table-cell">
-                    </div>
-                </div>
-            </div>
+            <table class="table table-striped m-0">
+                <tbody>
+                    <tr *ngFor='let item of planned'>
+                        <td class="icon-text" (click)='goToSession(item.id)'>
+                            <i class="far fa-file"></i>
+                            <span>Session {{item.index}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -36,22 +36,22 @@
             <p>No sessions completed yet.</p>
         </div>
         <div *ngIf='completed && completed.length'>
-            <div class="table">
-                <div class="table-row" *ngFor='let item of completed'>
-                    <div class="table-cell icon-text">
-                        <i class="fas fa-{{sessionIcon}}"></i>
-                        <span>{{item.date | date:'EEE'}}</span>
-                    </div>
-                    <div class="table-cell">
-                        <a [routerLink]="['/sessions', item._id]">
+            <table class="table table-striped m-0">
+                <tbody>
+                    <tr *ngFor='let item of completed'>
+                        <td class="icon-text" (click)='goToSession(item._id)'>
+                            <i class="far fa-calendar-alt"></i>
+                            <span>{{item.date | date:'EEE'}}</span>
+                        </td>
+                        <td (click)='goToSession(item._id)'>
                             {{item.date | date:'dd/LL/yyyy'}}
-                        </a>
-                    </div>
-                    <div class="table-cell">
-                        {{item.date | date:'HH\:mm'}}
-                    </div>
-                </div>
-            </div>
+                        </td>
+                        <td (click)='goToSession(item._id)'>
+                            {{item.date | date:'HH\:mm'}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

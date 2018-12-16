@@ -1,4 +1,4 @@
-<div class="card mb-0">
+<div class="card mt-1">
     <div class="card-header d-flex" (click)="toggleCollapsed()">
         <span>
             {{exercise.type}}
@@ -9,18 +9,18 @@
         </span>     
     </div>
     <div [class]="collapsed ? 'collapse' : 'collapse show'">
-        <div class="card-body p-1">
-            <div class="p-1">
-                Warm Ups <i *ngIf='!exercise.finished' class="fas fa-plus-square" (click)='addWarmUpSet()'></i>
+        <div class="card-body p-0">
+            <div class="m-0 p-2 text-center" style="background-color: silver; color: black;">
+                Warm Ups <i *ngIf='!exercise.finished' class="fas fa-temperature-low" (click)='addWarmUpSet()'></i>
             </div>
-            <div *ngFor='let set of exercise.warmup'>
-                <gym-set [set]='set' [exerciseFinished]='exercise.finished' [stepSize]='exercise.minIncrement' [sessionStatus]='sessionStatus'></gym-set>
+            <div *ngFor='let set of exercise.warmup' style="background-color: silver; color: black;">
+                <gym-set [set]='set' [isEditable]='areSetsEditable' [stepSize]='exercise.minIncrement'></gym-set>
             </div>
-            <div class="p-1">
-                Sets <i *ngIf='!exercise.finished' class="fas fa-plus-square" (click)='addSet()'></i>
+            <div class="m-0 p-2  text-center" style="background-color: gray; color: white;">
+                Sets <i *ngIf='!exercise.finished' class="fas fa-fire" (click)='addSet()'></i>
             </div>
-            <div *ngFor='let set of exercise.sets'>
-                <gym-set [set]='set' [exerciseFinished]='exercise.finished' [stepSize]='exercise.minIncrement' [sessionStatus]='sessionStatus'></gym-set>
+            <div *ngFor='let set of exercise.sets' style="background-color: gray; color: white;">
+                <gym-set [set]='set' [isEditable]='areSetsEditable' [stepSize]='exercise.minIncrement'></gym-set>
             </div>
         </div>
     </div>

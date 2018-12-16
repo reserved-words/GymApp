@@ -44,7 +44,7 @@ div.table-row div.table-cell:last-child {
   text-align: right;
 }
 
-div.icon-text i {
+.icon-text i {
   margin-right: 0.75rem;
 }
 

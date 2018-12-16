@@ -9,7 +9,6 @@ import { Router } from "@angular/router";
 })
 export class SessionsComponent {
     pageTitle: string = "Sessions";
-    sessionIcon: string = "calendar-alt";
     completed: ISession[] = [];
     planned: any[] = [];
     errorMessage: string;
@@ -22,6 +21,9 @@ export class SessionsComponent {
     }
     edit(): void {
         alert("Edit session!");
+    }
+    goToSession(id: string){
+        this.router.navigate(['/sessions/' + id]);
     }
     startNextSession(): void {
         if (this.planned.length){

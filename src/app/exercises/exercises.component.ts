@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { IExercise } from "../shared/interfaces/exercise";
 import { ExercisesService } from "./exercises.service";
+import { Router } from "@angular/router";
 
 @Component({
     templateUrl: 'exercises.component.html',
@@ -11,11 +12,11 @@ export class ExercisesComponent {
     list: IExercise[] = [];
     errorMessage: string;
 
-    constructor(private service: ExercisesService){
+    constructor(private service: ExercisesService, private router: Router){
     }
 
-    edit(): void {
-        alert("Edit exercise!");
+    goToExercise(id: string) :void {
+        this.router.navigate(['exercises/' + id]);
     }
 
     ngOnInit(): void {

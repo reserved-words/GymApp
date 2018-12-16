@@ -11,6 +11,11 @@ export class SessionExerciseComponent {
     @Input() exercise: ISessionExercise;
     @Input() sessionStatus: string;
     collapsed: boolean = true;
+    areSetsEditable: boolean;
+
+    ngOnInit(): void{
+        this.areSetsEditable = this.sessionStatus === "started" && !this.exercise.finished;
+    }
 
     addWarmUpSet(): void {
         if (this.exercise.warmup.length){
@@ -42,9 +47,11 @@ export class SessionExerciseComponent {
         for (var i in this.exercise.sets){
             this.exercise.sets[i].done = true;
         }
+        this.areSetsEditable = false;
     }
     markNotFinished() {
         this.exercise.finished = false;
+        this.areSetsEditable = true;
     }
     toggleCollapsed(): void {
         this.collapsed = !this.collapsed;

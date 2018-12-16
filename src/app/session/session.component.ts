@@ -12,6 +12,8 @@ export class SessionComponent {
     session: ISession;
     errorMessage: string;
     started: boolean;
+    hasExercises: boolean;
+    isEditable: boolean;
     sessionStatus: string;
 
     constructor(private service: SessionService, private route: ActivatedRoute, private router: Router){
@@ -32,6 +34,8 @@ export class SessionComponent {
                 if (this.started){
                     this.session.date = new Date();
                 }
+                this.hasExercises = this.session.exercises.length > 0;
+                this.isEditable = !this.session.complete;
             },
             error => this.errorMessage = <any>error
         );
@@ -39,6 +43,7 @@ export class SessionComponent {
 
     addExercise():void {
         this.session.exercises.push({ "type" : "?", "warmup": [], "sets": [], "finished": false, "minIncrement": 2.5 });
+        this.hasExercises = true;
     }
     markComplete(): void {
         // Save time completed
