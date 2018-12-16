@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { ISession } from "../shared/interfaces/session";
 import { SessionsService } from "./sessions.service";
+import { Router } from "@angular/router";
 
 @Component({
     templateUrl: 'sessions.component.html',
@@ -9,10 +10,11 @@ import { SessionsService } from "./sessions.service";
 export class SessionsComponent {
     pageTitle: string = "Sessions";
     sessionIcon: string = "calendar-alt";
-    list: ISession[] = [];
+    completed: ISession[] = [];
+    planned: any[] = [];
     errorMessage: string;
-
-    constructor(private sessionsService: SessionsService){
+    
+    constructor(private service: SessionsService, private router: Router){
     }
 
     add(): void {
@@ -21,12 +23,27 @@ export class SessionsComponent {
     edit(): void {
         alert("Edit session!");
     }
+    startNextSession(): void {
+        if (this.planned.length){
+            let nextSessionID = this.planned[0].id;
+            this.router.navigate(['/sessions/start/' + nextSessionID]);
+        }
+    }
 
     ngOnInit(): void {
-        this.sessionsService.getSessions().subscribe(
+        this.service.getCompletedSessions().subscribe(
             result => {
                 for (var i in result.rows){
-                    this.list.push(result.rows[i].value);
+                    this.completed.push(result.rows[i].value);
+                }
+            },
+            error => this.errorMessage = <any>error
+        );
+        this.service.getPlannedSessions().subscribe(
+            result => {
+                for (var i in result.rows){
+                    var index = parseInt(i) + 1;
+                    this.planned.push({ index: index, id: result.rows[i].value._id });
                 }
             },
             error => this.errorMessage = <any>error

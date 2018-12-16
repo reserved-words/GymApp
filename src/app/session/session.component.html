@@ -7,30 +7,27 @@
             <p>No exercises added yet.</p>
         </div>
         <div *ngIf='session.exercises && session.exercises.length'>
-            <gym-session-exercise *ngFor='let item of session.exercises' [exercise]='item' [sessionComplete]='session.complete'></gym-session-exercise>
+            <gym-session-exercise *ngFor='let item of session.exercises' [exercise]='item' [sessionStatus]='sessionStatus'></gym-session-exercise>
         </div>
-        <div class="footer-buttons" *ngIf='!session.complete'>
-            <button class="btn btn-primary btn-sm"
+        <div class="footer-buttons">
+            <button *ngIf='sessionStatus != "completed"'
+                class="btn btn-primary btn-sm"
                 (click)='addExercise()'>
-                Add Exercise
+                Add
             </button>
-            <button class="btn btn-sm btn-primary"
+            <button *ngIf='sessionStatus != "completed"'
+                    class="btn btn-sm btn-primary"
                     (click)='onSave()'>
                 Save
             </button>
-            <button class="btn btn-sm btn-success"
+            <button *ngIf='sessionStatus === "started"'
+                    class="btn btn-sm btn-success"
                     (click)='markComplete()'>
                 Complete
             </button>
-        </div>
-        <div class="footer-buttons" *ngIf='session.complete'>
             <button class="btn btn-sm btn-secondary"
                 (click)='onBack()'>
                 Back
-            </button>
-            <button class="btn btn-sm btn-primary"
-                (click)='markNotComplete()'>
-                Edit
             </button>
         </div>
     </div>

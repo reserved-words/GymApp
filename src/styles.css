@@ -60,3 +60,7 @@ div.footer-buttons button {
 div.footer-buttons button:last-child {
   margin: 0.5rem 0 0.5rem 0;
 }
+
+div.card {
+  margin-bottom: 1rem;
+}

@@ -38,6 +38,7 @@ import { SessionGuard } from './session/session.guard';
       { path: 'exercises/:id', component: ExerciseComponent, canActivate: [ExerciseGuard] },
       { path: 'sessions', component: SessionsComponent },
       { path: 'sessions/:id', component: SessionComponent, canActivate: [SessionGuard] },
+      { path: 'sessions/:start/:id', component: SessionComponent, canActivate: [SessionGuard] },
       { path: 'charts', component: ChartsComponent },
       { path: 'charts/:id', component: ChartComponent },
       { path: '', redirectTo: 'sessions', pathMatch: 'full' },

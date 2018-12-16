@@ -13,7 +13,7 @@ constructor(private router: Router){}
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     let id = next.url[1].path;
-    if (!id || id.length > 40){
+    if (!id || id.length > 100){
       alert("Invalid Session ID");
       this.router.navigate(['/sessions']);
       return false;

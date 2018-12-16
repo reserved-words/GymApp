@@ -1,14 +1,43 @@
+<button class="btn btn-primary" 
+        style="width: 100%; height: 2.5rem; margin-bottom: 1rem;"
+        (click)="startNextSession()">
+    Start Next Session
+</button>
+
 <div class="card">
     <div class="card-header">
-        {{pageTitle}}
+        Planned Sessions
     </div>
     <div class="card-body p-0">
-        <div *ngIf='!list || !list.length' class="p-3">
-            <p>No sessions added yet.</p>
+        <div *ngIf='!planned || !planned.length' class="p-3">
+            <p>No sessions planned yet.</p>
         </div>
-        <div *ngIf='list && list.length'>
+        <div *ngIf='planned && planned.length'>
             <div class="table">
-                <div class="table-row" *ngFor='let item of list'>
+                <div class="table-row" *ngFor='let item of planned'>
+                    <div class="table-cell icon-text">
+                        <i class="fas fa-clipboard-list"></i>
+                        <a [routerLink]="['/sessions', item.id]">Session {{item.index}}</a>
+                    </div>
+                    <div class="table-cell">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Completed Sessions
+    </div>
+    <div class="card-body p-0">
+        <div *ngIf='!completed || !completed.length' class="p-3">
+            <p>No sessions completed yet.</p>
+        </div>
+        <div *ngIf='completed && completed.length'>
+            <div class="table">
+                <div class="table-row" *ngFor='let item of completed'>
                     <div class="table-cell icon-text">
                         <i class="fas fa-{{sessionIcon}}"></i>
                         <span>{{item.date | date:'EEE'}}</span>
@@ -23,10 +52,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="footer-buttons">
-            <button class="btn btn-primary btn-sm"
-                (click)='add()'>Add New</button>
         </div>
     </div>
 </div>

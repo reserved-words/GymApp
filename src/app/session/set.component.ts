@@ -11,6 +11,7 @@ export class SessionSetComponent {
     @Input() set: ISet;
     @Input() exerciseFinished: boolean;
     @Input() stepSize: number;
+    @Input() sessionStatus: string;
 
     onWeightValueChanged(newValue: number): void {
         this.set.weight = newValue;

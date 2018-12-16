@@ -9,7 +9,7 @@ import { ISessionExercise } from "../shared/interfaces/session-exercise";
 })
 export class SessionExerciseComponent {
     @Input() exercise: ISessionExercise;
-    @Input() sessionComplete: boolean;
+    @Input() sessionStatus: string;
 
     addWarmUpSet(): void {
         if (this.exercise.warmup.length){

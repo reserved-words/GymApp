@@ -9,16 +9,25 @@ import { IQueryResults } from "../shared/interfaces/queryResults";
     providedIn: 'root'
 })
 export class SessionsService {
-    private sessionsUrl: string = 'http://127.0.0.1:5984/gymapp/_design/sessionDesignDoc/_view/sessions';
+    private completedSessionsUrl: string = 'http://127.0.0.1:5984/gymapp/_design/sessionDesignDoc/_view/completedSessions?descending=true';
+    private plannedSessionsUrl: string = 'http://127.0.0.1:5984/gymapp/_design/sessionDesignDoc/_view/upcomingSessions';
 
     constructor(private http: HttpClient){}
 
-    getSessions(): Observable<IQueryResults<ISession>>{
-        return this.http.get<IQueryResults<ISession>>(this.sessionsUrl).pipe(
+    getCompletedSessions(): Observable<IQueryResults<ISession>>{
+        return this.getSessions(this.completedSessionsUrl);
+    };
+
+    getPlannedSessions(): Observable<IQueryResults<ISession>>{
+        return this.getSessions(this.plannedSessionsUrl);
+    };
+
+    private getSessions(url: string){
+        return this.http.get<IQueryResults<ISession>>(url).pipe(
             tap(data => console.log("Add: " + JSON.stringify(data))),
             catchError(this.handleError)
         );
-    };
+    }
 
     private handleError(err: HttpErrorResponse){
         let errorMessage = '';
