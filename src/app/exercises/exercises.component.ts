@@ -3,15 +3,15 @@ import { IExercise } from "../shared/interfaces/exercise";
 import { ExercisesService } from "./exercises.service";
 
 @Component({
-    selector: 'gym-exercises',
     templateUrl: 'exercises.component.html',
     styleUrls: [ 'exercises.component.css' ]
 })
 export class ExercisesComponent {
     pageTitle: string = 'Exercises';
     list: IExercise[] = [];
+    errorMessage: string;
 
-    constructor(private exercisesService: ExercisesService){
+    constructor(private service: ExercisesService){
     }
 
     edit(): void {
@@ -19,6 +19,13 @@ export class ExercisesComponent {
     }
 
     ngOnInit(): void {
-        this.list = this.exercisesService.getExercises();
+        this.service.getExercises().subscribe(
+            results => {
+                for (var index in results.rows){
+                    this.list.push(results.rows[index].value);
+                }
+            },
+            error => this.errorMessage = <any>error
+        );
     }
 }

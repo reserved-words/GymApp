@@ -1,0 +1,11 @@
+<div class="input-group">
+    <div class="input-group-prepend">
+        <button class="btn btn-sm"
+            (click)='decrease()'>-</button>
+    </div>
+    <input [(ngModel)]='value' type="number" class="form-control">
+    <div class="input-group-append">
+        <button class="btn btn-sm"
+            (click)='increase()'>+</button>
+    </div>
+</div>

@@ -1,15 +1,36 @@
 import { Injectable } from "@angular/core";
 import { ISession } from "../shared/interfaces/session";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { Observable, throwError } from "rxjs";
+import { tap, catchError } from "rxjs/operators";
+import { IQueryResults } from "../shared/interfaces/queryResults";
 
 @Injectable({
     providedIn: 'root'
 })
 export class SessionsService {
-    getSessions(): ISession[]{
-        return [
-            { id:1, date: new Date('2018-12-09 10:00:00'), exercises: [] },
-            { id:2, date: new Date('2018-12-06 19:00:00'), exercises: [] },
-            { id:3, date: new Date('2018-12-03 19:00:00'), exercises: [] },
-        ];
+    private sessionsUrl: string = 'http://127.0.0.1:5984/gymapp/_design/sessionDesignDoc/_view/sessions';
+
+    constructor(private http: HttpClient){}
+
+    getSessions(): Observable<IQueryResults<ISession>>{
+        return this.http.get<IQueryResults<ISession>>(this.sessionsUrl).pipe(
+            tap(data => console.log("Add: " + JSON.stringify(data))),
+            catchError(this.handleError)
+        );
     };
+
+    private handleError(err: HttpErrorResponse){
+        let errorMessage = '';
+        if (err.error instanceof ErrorEvent){
+            // A client-side or network error occurred
+            errorMessage = `An error occurred: ${err.error.message}`;
+        }
+        else {
+            // The back end returned an unsuccessful response code
+            errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(errorMessage);    
+    }
 }

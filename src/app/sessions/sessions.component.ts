@@ -3,26 +3,33 @@ import { ISession } from "../shared/interfaces/session";
 import { SessionsService } from "./sessions.service";
 
 @Component({
-    selector: 'gym-sessions',
     templateUrl: 'sessions.component.html',
     styleUrls: ['sessions.component.css']
 })
 export class SessionsComponent {
     pageTitle: string = "Sessions";
     sessionIcon: string = "calendar-alt";
-    list: ISession[];
+    list: ISession[] = [];
+    errorMessage: string;
 
     constructor(private sessionsService: SessionsService){
     }
 
     add(): void {
-        alert("Add exercise!");
+        alert("Add session!");
     }
     edit(): void {
-        alert("Edit exercise!");
+        alert("Edit session!");
     }
 
     ngOnInit(): void {
-        this.list = this.sessionsService.getSessions();
+        this.sessionsService.getSessions().subscribe(
+            result => {
+                for (var i in result.rows){
+                    this.list.push(result.rows[i].value);
+                }
+            },
+            error => this.errorMessage = <any>error
+        );
     }
 }

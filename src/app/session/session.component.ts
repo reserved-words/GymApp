@@ -1,28 +1,48 @@
 import { Component, Input } from "@angular/core";
 import { ISession } from "../shared/interfaces/session";
-import { ExerciseSet } from "../shared/model/exercise-set";
-import { SessionExercise } from "../shared/model/session-exercise";
 import { SessionService } from "./session.service";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
-    selector: "gym-session",
     templateUrl: "session.component.html",
     styleUrls: ["session.component.css"]
 })
 export class SessionComponent {
-    @Input() id: number;
     pageTitle: string = "Session";
     session: ISession;
+    errorMessage: string;
 
-    constructor(private sessionService: SessionService){
+    constructor(private service: SessionService, private route: ActivatedRoute, private router: Router){
         
     }
 
-    addExercise() {
-        this.session.exercises.push(new SessionExercise("?"));
+    ngOnInit(){
+        let id = this.route.snapshot.paramMap.get('id');
+        this.service.getSession(id).subscribe(
+            s => {
+                this.session = s;
+            },
+            error => this.errorMessage = <any>error
+        );
     }
 
-    ngOnInit(){
-        this.session = this.sessionService.getSession(this.id)
+    addExercise():void {
+        this.session.exercises.push({ "type" : "?", "warmup": [], "sets": [], "finished": false, "minIncrement": 2.5 });
+    }
+    markComplete(): void {
+        this.session.complete = true;
+        for (var i in this.session.exercises){
+            this.session.exercises[i].finished = true;
+        }
+    }
+    markNotComplete(): void {
+        this.session.complete = false;
+    }
+    onBack(): void {
+        this.router.navigate(['/sessions']);
+    }
+    onSave(): void {
+        // save
+        this.router.navigate(['/sessions']);
     }
 }

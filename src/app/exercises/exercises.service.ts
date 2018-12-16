@@ -1,20 +1,37 @@
 import { Injectable } from "@angular/core";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { Observable, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+
 import { IExercise } from "../shared/interfaces/exercise";
+import { IQueryResults } from "../shared/interfaces/queryResults";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ExercisesService {
-    getExercises(): IExercise[] {
-        return [
-            { id:1, name: "Bench press", icon: "dumbbell", minReps:4, maxReps: 6, numSets: 5, minIncrement: 2.5 },
-            { id:2, name: "Chin-up", icon: "dumbbell", minReps:4, maxReps: 10, numSets: 4, minIncrement: 2.5 },
-            { id:3, name: "Deadlift", icon: "dumbbell", minReps:5, maxReps: 5, numSets: 5, minIncrement: 2.5 },
-            { id:4, name: "Dip", icon: "dumbbell", minReps:4, maxReps: 10, numSets: 4, minIncrement: 2.5 },
-            { id:5, name: "Pull-up", icon: "dumbbell", minReps:4, maxReps: 10, numSets: 4, minIncrement: 2.5 },
-            { id:6, name: "Shoulder press", icon: "dumbbell", minReps:4, maxReps: 6, numSets: 5, minIncrement: 2.5 },
-            { id:7, name: "Squat", icon: "dumbbell", minReps:5, maxReps: 5, numSets: 5, minIncrement: 2.5 },
-            { id:8, name: "Tricep extension", icon: "dumbbell", minReps:8, maxReps: 12, numSets: 4, minIncrement: 3.75 }
-        ];
+    private exercisesUrl = 'http://127.0.0.1:5984/gymapp/_design/exerciseDesignDoc/_view/exercises';
+
+    constructor(private http: HttpClient){}
+
+    getExercises(): Observable<IQueryResults<IExercise>> {
+        return this.http.get<IQueryResults<IExercise>>(this.exercisesUrl).pipe(
+            tap(data => console.log("All: " + JSON.stringify(data))),
+            catchError(this.handleError)
+        );
     } 
+
+    private handleError(err: HttpErrorResponse){
+        let errorMessage = '';
+        if (err.error instanceof ErrorEvent){
+            // A client-side or network error occurred
+            errorMessage = `An error occurred: ${err.error.message}`;
+        }
+        else {
+            // The back end returned an unsuccessful response code
+            errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(errorMessage);    
+    }
 }

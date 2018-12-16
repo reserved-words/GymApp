@@ -4,4 +4,5 @@ export interface ISession {
     id: number;
     date: Date;
     exercises: ISessionExercise[];
+    complete: boolean;
 }
