@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 import { ISession } from "../shared/interfaces/session";
 import { SessionService } from "./session.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     templateUrl: "session.component.html",
@@ -12,7 +12,7 @@ export class SessionComponent {
     session: ISession;
     errorMessage: string;
 
-    constructor(private service: SessionService, private route: ActivatedRoute){
+    constructor(private service: SessionService, private route: ActivatedRoute, private router: Router){
         
     }
 
@@ -37,5 +37,12 @@ export class SessionComponent {
     }
     markNotComplete(): void {
         this.session.complete = false;
+    }
+    onBack(): void {
+        this.router.navigate(['/sessions']);
+    }
+    onSave(): void {
+        // save
+        this.router.navigate(['/sessions']);
     }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { IExercise } from "../shared/interfaces/exercise";
 import { ExerciseService } from "./exercise.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     templateUrl: './exercise.component.html',
@@ -12,7 +12,7 @@ export class ExerciseComponent implements OnInit {
     exercise: IExercise;
     errorMessage: string;
 
-    constructor(private service: ExerciseService, private route: ActivatedRoute){
+    constructor(private service: ExerciseService, private route: ActivatedRoute, private router: Router){
     }
 
     ngOnInit(): void {
@@ -24,7 +24,8 @@ export class ExerciseComponent implements OnInit {
         );
     }
     
-    save(): void {
-        alert("Save");
+    onSave(): void {
+        // save
+        this.router.navigate(['/exercises']);
     }
 }
