@@ -3,28 +3,21 @@ import { ISet } from "../shared/interfaces/set";
 
 
 @Component({
-    selector: 'gym-set',
+    selector: 'gym-planned-set',
     templateUrl: 'set.component.html',
     styleUrls: ['set.component.css']
 })
-export class SessionSetComponent {
+export class PlannedSetComponent {
     @Input() set: ISet;
-    @Input() isEditable: boolean;
     @Input() stepSize: number;
 
     onWeightValueChanged(newValue: number): void {
         this.set.weight = newValue;
     }
-    
     onRepsValueChanged(newValue: number): void {
         this.set.reps = newValue;
     }
-
-    markDone(): void {
-        this.set.done = true;
-    }
-
-    markNotDone(): void {
-        this.set.done = false;
+    onQuantityValueChanged(newValue: number): void {
+        this.set.quantity = newValue;
     }
 }

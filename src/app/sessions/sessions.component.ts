@@ -1,7 +1,8 @@
 import { Component } from "@angular/core";
-import { ISession } from "../shared/interfaces/session";
+import { ICompletedSession } from "../shared/interfaces/completed-session";
 import { SessionsService } from "./sessions.service";
 import { Router } from "@angular/router";
+import { IPlannedSession } from "../shared/interfaces/planned-session";
 
 @Component({
     templateUrl: 'sessions.component.html',
@@ -9,7 +10,7 @@ import { Router } from "@angular/router";
 })
 export class SessionsComponent {
     pageTitle: string = "Sessions";
-    completed: ISession[] = [];
+    completed: ICompletedSession[] = [];
     planned: any[] = [];
     errorMessage: string;
     
@@ -22,13 +23,16 @@ export class SessionsComponent {
     edit(): void {
         alert("Edit session!");
     }
-    goToSession(id: string){
-        this.router.navigate(['/sessions/' + id]);
+    goToCompletedSession(id: string){
+        this.router.navigate(['/sessions/completed/' + id]);
+    }
+    goToPlannedSession(id: string){
+        this.router.navigate(['/sessions/planned/' + id]);
     }
     startNextSession(): void {
         if (this.planned.length){
             let nextSessionID = this.planned[0].id;
-            this.router.navigate(['/sessions/start/' + nextSessionID]);
+            this.router.navigate(['/sessions/start']);
         }
     }
 

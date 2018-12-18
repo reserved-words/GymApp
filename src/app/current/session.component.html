@@ -1,14 +1,14 @@
-<div class="card" *ngIf='session'>
+<div class="card">
     <div class="card-header icon-text">
         <i class="far fa-calendar-alt"></i>
-        {{session.date | date:'EEE dd/LL/yyyy HH\:mm'}}
+        {{timeStarted | date:'EEE dd/LL/yyyy HH\:mm'}}
     </div>
     <div class="card-body p-2">
         <div *ngIf='!hasExercises' class="p-3">
             <p>No exercises added yet.</p>
         </div>
         <div *ngIf='hasExercises'>
-            <gym-session-exercise *ngFor='let item of session.exercises' [exercise]='item' [sessionStatus]='sessionStatus'></gym-session-exercise>
+            <gym-current-exercise *ngFor='let item of exercises' [exercise]='item'></gym-current-exercise>
         </div>
         <div class="footer-buttons">
             <button class="btn btn-sm btn-secondary"
@@ -16,20 +16,17 @@
                 <i class="fas fa-caret-left"></i>
                 Back
             </button>
-            <button *ngIf='isEditable'
-                class="btn btn-primary btn-sm"
-                (click)='addExercise()'>
+            <button class="btn btn-primary btn-sm"
+                    (click)='addExercise()'>
                 <i class="fas fa-dumbbell"></i>
                 Add
             </button>
-            <button *ngIf='isEditable'
-                    class="btn btn-sm btn-primary"
+            <button class="btn btn-sm btn-primary"
                     (click)='onSave()'>
                     <i class="fas fa-save"></i>
                     Save
             </button>
-            <button *ngIf='started'
-                    class="btn btn-sm btn-success"
+            <button class="btn btn-sm btn-success"
                     (click)='markComplete()'>
                     <i class="fas fa-check"></i>
                 Complete

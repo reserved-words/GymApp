@@ -16,7 +16,7 @@
             <table class="table table-striped m-0">
                 <tbody>
                     <tr *ngFor='let item of planned'>
-                        <td class="icon-text" (click)='goToSession(item.id)'>
+                        <td class="icon-text" (click)='goToPlannedSession(item.id)'>
                             <i class="far fa-file"></i>
                             <span>Session {{item.index}}</span>
                         </td>
@@ -39,15 +39,15 @@
             <table class="table table-striped m-0">
                 <tbody>
                     <tr *ngFor='let item of completed'>
-                        <td class="icon-text" (click)='goToSession(item._id)'>
+                        <td class="icon-text" (click)='goToCompletedSession(item._id)'>
                             <i class="far fa-calendar-alt"></i>
-                            <span>{{item.date | date:'EEE'}}</span>
+                            <span>{{item.started | date:'EEE'}}</span>
                         </td>
-                        <td (click)='goToSession(item._id)'>
-                            {{item.date | date:'dd/LL/yyyy'}}
+                        <td (click)='goToCompletedSession(item._id)'>
+                            {{item.started | date:'dd/LL/yyyy'}}
                         </td>
-                        <td (click)='goToSession(item._id)'>
-                            {{item.date | date:'HH\:mm'}}
+                        <td (click)='goToCompletedSession(item._id)'>
+                            {{item.started | date:'HH\:mm'}}
                         </td>
                     </tr>
                 </tbody>

@@ -1,20 +1,18 @@
 import { Component, Input } from "@angular/core";
-import { ISessionExercise } from "../shared/interfaces/session-exercise";
+import { ICurrentExercise } from "../shared/interfaces/current-exercise";
 
 
 @Component({
-    selector: 'gym-session-exercise',
+    selector: 'gym-current-exercise',
     templateUrl: 'exercise.component.html',
     styleUrls: ['exercise.component.css']
 })
-export class SessionExerciseComponent {
-    @Input() exercise: ISessionExercise;
+export class CurrentExerciseComponent {
+    @Input() exercise: ICurrentExercise;
     @Input() sessionStatus: string;
     collapsed: boolean = true;
-    areSetsEditable: boolean;
 
     ngOnInit(): void{
-        this.areSetsEditable = this.sessionStatus === "started" && !this.exercise.finished;
     }
 
     addWarmUpSet(): void {
@@ -39,19 +37,17 @@ export class SessionExerciseComponent {
             this.exercise.sets.push({ reps: 1, weight: 0, done: false });
         }
     }
-    markFinished() {
-        this.exercise.finished = true;
+    markDone() {
+        this.exercise.done = true;
         for (var i in this.exercise.warmup){
             this.exercise.warmup[i].done = true;
         }
         for (var i in this.exercise.sets){
             this.exercise.sets[i].done = true;
         }
-        this.areSetsEditable = false;
     }
     markNotFinished() {
-        this.exercise.finished = false;
-        this.areSetsEditable = true;
+        this.exercise.done = false;
     }
     toggleCollapsed(): void {
         this.collapsed = !this.collapsed;

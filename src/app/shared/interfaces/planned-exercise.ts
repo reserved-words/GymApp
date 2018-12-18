@@ -1,9 +1,8 @@
 import { ISet } from "./set";
 
-export interface ISessionExercise {
+export interface IPlannedExercise {
     type: string;
     warmup: ISet[];
     sets: ISet[];
-    finished: boolean;
     minIncrement: number;
 }

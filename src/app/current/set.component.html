@@ -1,0 +1,26 @@
+
+<div class="table">
+  <div class="table-row table-row-center" *ngIf="!set.done">
+    <div class="table-cell">
+        <gym-num [value]='set.reps' [stepSize]='1' (valueChanged)='onRepsValueChanged($event)'></gym-num>
+      </div>
+    <div class="table-cell" style="width: 1px;">
+        <i class="fas fa-times"></i>
+    </div>
+    <div class="table-cell">
+      <gym-num [value]='set.weight' [stepSize]='stepSize' (valueChanged)='onWeightValueChanged($event)'></gym-num>
+    </div>
+    <div class="table-cell" style="width: 1px;">
+      <i class="fas fa-check"
+         (click)='markDone()'>
+      </i>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
