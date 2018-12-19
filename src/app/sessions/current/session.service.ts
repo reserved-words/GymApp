@@ -1,20 +1,21 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 
-import { ICompletedSession } from "../shared/interfaces/completed-session";
 import { Observable, throwError } from "rxjs";
 import { tap, catchError } from "rxjs/operators";
+import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
+import { IQueryResults } from "src/app/shared/interfaces/queryResults";
 
 @Injectable({
     providedIn: 'root'
 })
 export class SessionService {
-    sessionUrl: string = 'http://127.0.0.1:5984/gymapp/';
+    nextSessionUrl: string = 'http://127.0.0.1:5984/gymapp/_design/sessionDesignDoc/_view/plannedSessions?limit=1';
 
     constructor(private http: HttpClient){}
 
-    getSession(id: string): Observable<ICompletedSession> {        
-        return this.http.get<ICompletedSession>(this.sessionUrl + id).pipe(
+    getNextSession(): Observable<IQueryResults<IPlannedSession>> {
+        return this.http.get<IQueryResults<IPlannedSession>>(this.nextSessionUrl).pipe(
             tap(data => console.log(JSON.stringify(data))),
             catchError(this.handleError)
         );

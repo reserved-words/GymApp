@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
-import { ICompletedSession } from "../shared/interfaces/completed-session";
 import { SessionsService } from "./sessions.service";
 import { Router } from "@angular/router";
-import { IPlannedSession } from "../shared/interfaces/planned-session";
+import { IPlannedSession } from "../../shared/interfaces/planned-session";
+import { ICompletedSession } from "../../shared/interfaces/completed-session";
 
 @Component({
     templateUrl: 'sessions.component.html',

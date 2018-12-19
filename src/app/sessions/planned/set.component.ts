@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { ISet } from "../shared/interfaces/set";
+import { ISet } from "src/app/shared/interfaces/set";
 
 
 @Component({

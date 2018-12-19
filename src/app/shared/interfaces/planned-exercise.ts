@@ -1,4 +1,4 @@
-import { ISet } from "./set";
+import { ISet } from "src/app/shared/interfaces/set";
 
 export interface IPlannedExercise {
     type: string;

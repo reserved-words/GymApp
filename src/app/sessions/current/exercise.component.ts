@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { ICurrentExercise } from "../shared/interfaces/current-exercise";
+import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 
 
 @Component({

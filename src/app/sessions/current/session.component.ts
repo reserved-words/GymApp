@@ -1,8 +1,8 @@
 import { Component, Input } from "@angular/core";
 import { SessionService } from "./session.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ICurrentExercise } from "../shared/interfaces/current-exercise";
-import { IPlannedSession } from "../shared/interfaces/planned-session";
+import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
+import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 
 @Component({
     templateUrl: "session.component.html",

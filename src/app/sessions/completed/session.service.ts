@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 
 import { Observable, throwError } from "rxjs";
 import { tap, catchError } from "rxjs/operators";
-import { IPlannedSession } from "../shared/interfaces/planned-session";
+import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 
 @Injectable({
     providedIn: 'root'
@@ -13,9 +13,8 @@ export class SessionService {
 
     constructor(private http: HttpClient){}
 
-    getSession(id: string): Observable<IPlannedSession> {
-        
-        return this.http.get<IPlannedSession>(this.sessionUrl + id).pipe(
+    getSession(id: string): Observable<ICompletedSession> {        
+        return this.http.get<ICompletedSession>(this.sessionUrl + id).pipe(
             tap(data => console.log(JSON.stringify(data))),
             catchError(this.handleError)
         );

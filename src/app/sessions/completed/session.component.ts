@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
-import { ICompletedSession } from "../shared/interfaces/completed-session";
 import { SessionService } from "./session.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 
 @Component({
     templateUrl: "session.component.html",

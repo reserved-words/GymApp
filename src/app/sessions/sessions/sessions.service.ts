@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { ICompletedSession } from "../shared/interfaces/completed-session";
+import { ICompletedSession } from "../../shared/interfaces/completed-session";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { tap, catchError } from "rxjs/operators";
-import { IQueryResults } from "../shared/interfaces/queryResults";
-import { IPlannedSession } from "../shared/interfaces/planned-session";
+import { IQueryResults } from "../../shared/interfaces/queryResults";
+import { IPlannedSession } from "../../shared/interfaces/planned-session";
 
 @Injectable({
     providedIn: 'root'

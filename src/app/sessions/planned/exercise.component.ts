@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { IPlannedExercise } from "../shared/interfaces/planned-exercise";
+import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 
 
 @Component({
