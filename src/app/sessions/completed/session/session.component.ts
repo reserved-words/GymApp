@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { SessionService } from "./session.service";
+import { CompletedSessionService } from "../../../services/sessions/completed-session.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 
@@ -13,7 +13,7 @@ export class CompletedSessionComponent {
     errorMessage: string;
     hasExercises: boolean;
 
-    constructor(private service: SessionService, private route: ActivatedRoute, private router: Router){
+    constructor(private service: CompletedSessionService, private route: ActivatedRoute, private router: Router){
         
     }
 

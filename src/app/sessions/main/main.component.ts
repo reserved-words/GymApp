@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { SessionsService } from "./main.service";
+import { SessionsService } from "../../services/sessions/sessions.service";
 import { Router } from "@angular/router";
 import { ICompletedSession } from "../../shared/interfaces/completed-session";
 

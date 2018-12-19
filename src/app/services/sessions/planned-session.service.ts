@@ -8,7 +8,7 @@ import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 @Injectable({
     providedIn: 'root'
 })
-export class SessionService {
+export class PlannedSessionService {
     sessionUrl: string = 'http://127.0.0.1:5984/gymapp/';
 
     constructor(private http: HttpClient){}

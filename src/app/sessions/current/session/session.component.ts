@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { SessionService } from "./session.service";
+import { CurrentSessionService } from "../../../services/sessions/current-session.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
@@ -16,7 +16,7 @@ export class CurrentSessionComponent {
     timeStarted: Date;
     timeCompleted: Date;
 
-    constructor(private service: SessionService, private route: ActivatedRoute, private router: Router){        
+    constructor(private service: CurrentSessionService, private route: ActivatedRoute, private router: Router){        
     }
 
     ngOnInit(){

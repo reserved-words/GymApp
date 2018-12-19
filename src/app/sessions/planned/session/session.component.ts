@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { SessionService } from "./session.service";
+import { PlannedSessionService } from "../../../services/sessions/planned-session.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 
@@ -13,7 +13,7 @@ export class PlannedSessionComponent {
     errorMessage: string;
     hasExercises: boolean;
 
-    constructor(private service: SessionService, private route: ActivatedRoute, private router: Router){
+    constructor(private service: PlannedSessionService, private route: ActivatedRoute, private router: Router){
         
     }
 
