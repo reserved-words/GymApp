@@ -1,0 +1,38 @@
+<div class="card mt-1">
+    <div class="card-header d-flex" (click)="toggleCollapsed()">
+        <span>
+            {{exercise.type}}
+        </span>   
+        <span class="ml-auto">
+            <i *ngIf='collapsed' class="fas fa-caret-down"></i>
+            <i *ngIf='!collapsed' class="fas fa-caret-up"></i>
+        </span>     
+    </div>
+    <div [class]="collapsed ? 'collapse' : 'collapse show'">
+        <div class="card-body p-0">
+            <div *ngFor='let set of exercise.warmup' class="p-2">
+                <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+            </div>
+            <div *ngFor='let set of exercise.sets' class="p-2" style="background-color: silver;">
+                <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+            </div>
+            <div class="table p-2">
+                <div class="table-row">
+                    <div class="table-cell">
+                        <button type="button" class="btn mr-2" (click)='addWarmUpSet()'>
+                            <i class="fas fa-temperature-low"></i>+
+                        </button>
+                        <button type="button" class="btn" (click)='removeWarmUpSet()'>
+                                <i class="fas fa-temperature-low"></i>-
+                        </button>
+                        </div>
+                    <div class="table-cell text-right">
+                        <button type="button" class="btn" (click)='remove()'>
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

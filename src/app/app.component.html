@@ -1,10 +1,27 @@
+<nav class="navbar navbar-expand navbar-light bg-light">
+  <ul class="nav nav-pills">
+    <li>
+      <a class="nav-link" [routerLink]="['/sessions']">
+        <i class="far fa-calendar-alt"></i>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link" [routerLink]="['/charts']">
+        <i class="fas fa-chart-line"></i>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link" [routerLink]="['/weight']">
+        <i class="fas fa-weight"></i>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link" [routerLink]="['/settings']">
+        <i class="fas fa-cog"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
 <div class="container-fluid">
-  <nav class="navbar navbar-expand navbar-light bg-light">
-    <ul class="nav nav-pills">
-        <li><a class="nav-link" [routerLink]="['/sessions']">Sessions</a></li>
-        <li><a class="nav-link" [routerLink]="['/charts']">Charts</a></li>
-        <li><a class="nav-link" [routerLink]="['/exercises']">Settings</a></li>
-      </ul>
-  </nav>
   <router-outlet></router-outlet>
 </div>

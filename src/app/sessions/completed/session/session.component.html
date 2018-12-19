@@ -1,0 +1,21 @@
+<div class="card" *ngIf='session'>
+    <div class="card-header icon-text">
+        <i class="far fa-calendar-alt"></i>
+        {{session.started | date:'EEE dd/LL/yyyy HH\:mm'}}
+    </div>
+    <div class="card-body p-2">
+        <div *ngIf='!hasExercises' class="p-3">
+            <p>No exercises added yet.</p>
+        </div>
+        <div *ngIf='hasExercises'>
+            <gym-completed-exercise *ngFor='let item of session.exercises' [exercise]='item'></gym-completed-exercise>
+        </div>
+        <div class="footer-buttons">
+            <button class="btn btn-sm btn-secondary"
+                (click)='onBack()'>
+                <i class="fas fa-caret-left"></i>
+                Back
+            </button>
+        </div>
+    </div>
+</div>

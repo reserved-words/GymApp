@@ -2,10 +2,6 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
-button {
-  height: 2rem;
-}
-
 button.square {
   width: 2rem;
 }
@@ -27,24 +23,14 @@ div.table-row {
 div.table-cell {
   display: table-cell;
   text-align: left;
-  padding: 0.5rem 0.5rem 0 0.5rem;
-  margin: 0;
   vertical-align: middle;
-}
-
-div.table div.table-row:last-child div.table-cell {
-  padding-bottom: 0.5rem;
 }
 
 div.table-row-center div.table-cell {
   text-align: center;
 }
 
-div.table-row div.table-cell:last-child {
-  text-align: right;
-}
-
-div.icon-text i {
+.icon-text i {
   margin-right: 0.75rem;
 }
 
@@ -59,4 +45,13 @@ div.footer-buttons button {
 
 div.footer-buttons button:last-child {
   margin: 0.5rem 0 0.5rem 0;
+}
+
+div.card {
+  margin-bottom: 1rem;
+}
+
+i.fa-times {
+  color:#333; 
+  font-size: 10px;
 }

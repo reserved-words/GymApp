@@ -1,0 +1,18 @@
+<div class="card">
+    <div class="card-header">
+        {{pageTitle}}
+    </div>
+    <div class="card-body p-0">
+        <div *ngIf='!list || !list.length' class="p-3">
+            <p>No exercises added yet.</p>
+        </div>
+        <table *ngIf='list && list.length' class="table table-striped m-0">
+            <tr *ngFor='let item of list'>
+                <td class="table-cell icon-text" (click)='goToExercise(item._id)'>
+                    <i class="fas fa-dumbbell"></i>
+                    <span>{{item.name}}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 export interface ISet {
     reps: number;
     weight: number;
-    done: boolean;
+    quantity: number;
 }

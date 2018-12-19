@@ -1,0 +1,21 @@
+<div class="card mt-1">
+    <div class="card-header d-flex" (click)="toggleCollapsed()">
+        <span>
+            {{exercise.type}}
+        </span>   
+        <span class="ml-auto">
+            <i *ngIf='collapsed' class="fas fa-caret-down"></i>
+            <i *ngIf='!collapsed' class="fas fa-caret-up"></i>
+        </span>     
+    </div>
+    <div [class]="collapsed ? 'collapse' : 'collapse show'">
+        <div class="card-body p-0">
+            <div *ngFor='let set of exercise.warmup'>
+                <gym-completed-set [set]='set'></gym-completed-set>
+            </div>
+            <div *ngFor='let set of exercise.sets'>
+                <gym-completed-set [set]='set'></gym-completed-set>
+            </div>
+        </div>
+    </div>
+</div>
