@@ -1,14 +1,13 @@
 import { Component } from "@angular/core";
-import { SessionsService } from "./sessions.service";
+import { SessionsService } from "./main.service";
 import { Router } from "@angular/router";
-import { IPlannedSession } from "../../shared/interfaces/planned-session";
 import { ICompletedSession } from "../../shared/interfaces/completed-session";
 
 @Component({
-    templateUrl: 'sessions.component.html',
-    styleUrls: ['sessions.component.css']
+    templateUrl: 'main.component.html',
+    styleUrls: ['main.component.css']
 })
-export class SessionsComponent {
+export class SessionsMainComponent {
     pageTitle: string = "Sessions";
     completed: ICompletedSession[] = [];
     planned: any[] = [];

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'pm-charts',
-  templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.css']
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.css']
 })
-export class ChartsComponent implements OnInit {
+export class ChartsMainComponent implements OnInit {
 
   constructor() { }
 

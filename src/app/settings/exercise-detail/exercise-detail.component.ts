@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { IExercise } from "../interfaces/exercise";
+import { IExercise } from "../../shared/interfaces/exercise";
 import { ExerciseDetailService } from "./exercise-detail.service";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -25,11 +25,11 @@ export class ExerciseDetailComponent implements OnInit {
     }
 
     onBack(): void {
-        this.router.navigate(['/exercises']);
+        this.router.navigate(['/settings']);
     }
     
     onSave(): void {
         // save
-        this.router.navigate(['/exercises']);
+        this.router.navigate(['/settings']);
     }
 }

@@ -1,20 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ChartsComponent } from './charts/charts.component';
-import { ChartComponent } from './chart/chart.component';
+import { ChartsMainComponent } from './main/main.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
-    ChartsComponent,
-    ChartComponent
+    ChartsMainComponent
   ],
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: 'charts', component: ChartsComponent },
-      { path: 'charts/:id', component: ChartComponent }
+      { path: 'charts', component: ChartsMainComponent }
     ])
   ]
 })

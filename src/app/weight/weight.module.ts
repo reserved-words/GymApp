@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RouterModule } from '@angular/router';
-import { WeightComponent } from './weight/weight.component';
+import { WeightMainComponent } from './main/main.component';
 
 @NgModule({
   declarations: [
-    WeightComponent
+    WeightMainComponent
   ],
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: 'weight', component: WeightComponent }
+      { path: 'weight', component: WeightMainComponent }
     ])
   ]
 })

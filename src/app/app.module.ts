@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser'; // Always needed
 import { NgModule } from '@angular/core'; // Always needed
-import { FormsModule } from '@angular/forms'; // Needed for ngModel directive
 import { HttpClientModule } from '@angular/common/http'; // Needed for HTTP requests
 import { RouterModule } from '@angular/router'; // Needed for routing
 
@@ -17,16 +16,15 @@ import { WeightModule } from './weight/weight.module';
   ],
   imports: [ // External modules
     BrowserModule, 
-    FormsModule,
     HttpClientModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'sessions', pathMatch: 'full' },
       { path: '**', redirectTo: 'sessions', pathMatch: 'full' }
     ]),
-    SettingsModule,
-    ChartsModule,
     SessionsModule,
-    WeightModule
+    ChartsModule,
+    WeightModule,
+    SettingsModule
   ],
   bootstrap: [AppComponent]
 })

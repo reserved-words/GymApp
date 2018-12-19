@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { IExercise } from "../interfaces/exercise";
+import { IExercise } from "../../shared/interfaces/exercise";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { tap, catchError } from "rxjs/operators";
