@@ -7,6 +7,16 @@ ul.nav {
 }
 
 ul.nav li {
-  width: 33%;
+  width: 25%;
   text-align: center;
+}
+
+ul.nav li a {
+  font-size: 1.5rem;
+  color: indigo;
+}
+
+nav {
+  border-bottom: solid silver 1px;
+  margin-bottom: 0.5rem;
 }

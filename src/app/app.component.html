@@ -1,19 +1,27 @@
 <div class="container-fluid">
   <nav class="navbar navbar-expand navbar-light bg-light">
     <ul class="nav nav-pills">
-        <li><a class="nav-link" [routerLink]="['/sessions']">
+      <li>
+        <a class="nav-link" [routerLink]="['/sessions']">
           <i class="far fa-calendar-alt"></i>
-          Sessions
-        </a></li>
-        <li><a class="nav-link" [routerLink]="['/charts']">
-          <i class="far fa-chart-bar"></i>
-          Charts
-        </a></li>
-        <li><a class="nav-link" [routerLink]="['/settings']">
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/charts']">
+          <i class="fas fa-chart-line"></i>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/weight']">
+          <i class="fas fa-weight"></i>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/settings']">
           <i class="fas fa-cog"></i>
-          Settings
-        </a></li>
-      </ul>
+        </a>
+      </li>
+    </ul>
   </nav>
   <router-outlet></router-outlet>
 </div>

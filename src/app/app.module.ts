@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { SettingsModule } from './settings/settings.module';
 import { ChartsModule } from './charts/charts.module';
 import { SessionsModule } from './sessions/sessions.module';
+import { WeightModule } from './weight/weight.module';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { SessionsModule } from './sessions/sessions.module';
     ]),
     SettingsModule,
     ChartsModule,
-    SessionsModule
+    SessionsModule,
+    WeightModule
   ],
   bootstrap: [AppComponent]
 })

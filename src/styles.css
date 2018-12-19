@@ -2,10 +2,6 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
-/* button {
-  height: 2rem;
-} */
-
 button.square {
   width: 2rem;
 }

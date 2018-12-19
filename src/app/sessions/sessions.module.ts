@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CurrentSetComponent } from './current/set.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { CompletedSessionComponent } from './completed/session.component';
@@ -27,7 +26,6 @@ import { SharedModule } from '../shared/shared.module';
     CurrentSetComponent
   ],
   imports: [
-    CommonModule,
     SharedModule,
     RouterModule.forChild([
       { path: 'sessions', component: SessionsComponent },

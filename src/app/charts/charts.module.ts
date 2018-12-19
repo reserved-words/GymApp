@@ -11,7 +11,6 @@ import { SharedModule } from '../shared/shared.module';
     ChartComponent
   ],
   imports: [
-    CommonModule,
     SharedModule,
     RouterModule.forChild([
       { path: 'charts', component: ChartsComponent },
