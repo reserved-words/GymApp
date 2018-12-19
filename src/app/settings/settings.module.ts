@@ -12,8 +12,8 @@ import { ExercisesComponent } from './exercises/exercises.component';
     CommonModule,
     FormsModule,
     RouterModule.forChild([
-      { path: 'exercises', component: ExercisesComponent },
-      { path: 'exercises/:id', component: ExerciseDetailComponent, canActivate: [ExerciseDetailGuard] }
+      { path: 'settings', component: ExercisesComponent },
+      { path: 'settings/exercises/:id', component: ExerciseDetailComponent, canActivate: [ExerciseDetailGuard] }
     ]),
   ],
   declarations: [

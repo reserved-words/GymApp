@@ -16,7 +16,7 @@ export class ExercisesComponent {
     }
 
     goToExercise(id: string) :void {
-        this.router.navigate(['exercises/' + id]);
+        this.router.navigate(['settings/exercises/' + id]);
     }
 
     ngOnInit(): void {
