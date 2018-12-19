@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { IExercise } from "../shared/interfaces/exercise";
+import { IExercise } from "../interfaces/exercise";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { tap, catchError } from "rxjs/operators";
@@ -7,7 +7,7 @@ import { tap, catchError } from "rxjs/operators";
 @Injectable({
     providedIn: 'root'
 })
-export class ExerciseService {
+export class ExerciseDetailService {
     private exerciseUrl = 'http://127.0.0.1:5984/gymapp/';
 
     constructor(private http: HttpClient){}

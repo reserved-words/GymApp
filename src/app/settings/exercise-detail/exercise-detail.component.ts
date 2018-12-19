@@ -1,19 +1,18 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { IExercise } from "../shared/interfaces/exercise";
-import { ExerciseService } from "./exercise.service";
+import { IExercise } from "../interfaces/exercise";
+import { ExerciseDetailService } from "./exercise-detail.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ExerciseGuard } from "./exercise.guard";
 
 @Component({
-    templateUrl: './exercise.component.html',
-    styleUrls: ['./exercise.component.css']
+    templateUrl: './exercise-detail.component.html',
+    styleUrls: ['./exercise-detail.component.css']
 })
-export class ExerciseComponent implements OnInit {
+export class ExerciseDetailComponent implements OnInit {
     pageTitle: string = 'Edit Exercise';
     exercise: IExercise;
     errorMessage: string;
 
-    constructor(private service: ExerciseService, private route: ActivatedRoute, private router: Router){
+    constructor(private service: ExerciseDetailService, private route: ActivatedRoute, private router: Router){
     }
 
     ngOnInit(): void {

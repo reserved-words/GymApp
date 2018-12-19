@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 @Injectable({
     providedIn: 'root'
 })
-export class ExerciseGuard implements CanActivate {
+export class ExerciseDetailGuard implements CanActivate {
     canActivate(): boolean {
         return true;
     }

@@ -3,8 +3,8 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 
-import { IExercise } from "../shared/interfaces/exercise";
-import { IQueryResults } from "../shared/interfaces/queryResults";
+import { IExercise } from "../interfaces/exercise";
+import { IQueryResults } from "../../shared/interfaces/queryResults";
 
 @Injectable({
     providedIn: 'root'

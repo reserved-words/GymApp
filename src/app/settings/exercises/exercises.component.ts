@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IExercise } from "../shared/interfaces/exercise";
+import { IExercise } from "../interfaces/exercise";
 import { ExercisesService } from "./exercises.service";
 import { Router } from "@angular/router";
 
