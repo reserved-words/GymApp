@@ -1,19 +1,19 @@
 
 <div class="table">
   <div class="table-row table-row-center">
-    <div class="table-cell">
+    <div class="table-cell" style="width: 26%;">
       <gym-num [value]='set.quantity' [stepSize]='1' (valueChanged)='onQuantityValueChanged($event)'></gym-num>
     </div>
-    <div class="table-cell" style="width: 1px;">
-      <i class="fas fa-times"></i>
-    </div>
     <div class="table-cell">
+      <i class="fas fa-times" style="min-width: 9%; text-align: center;"></i>
+    </div>
+    <div class="table-cell" style="width: 28%;">
         <gym-num [value]='set.reps' [stepSize]='1' (valueChanged)='onRepsValueChanged($event)'></gym-num>
     </div>
-    <div class="table-cell" style="width: 1px;">
+    <div class="table-cell" style="min-width: 9%; text-align: center;">
         <i class="fas fa-times"></i>
     </div>
-    <div class="table-cell">
+    <div class="table-cell" style="width: 32%;">
       <gym-num [value]='set.weight' [stepSize]='stepSize' (valueChanged)='onWeightValueChanged($event)'></gym-num>
     </div>
   </div>

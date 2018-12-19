@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, EventEmitter, Output } from "@angular/core";
 import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 
 
@@ -9,32 +9,32 @@ import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 })
 export class PlannedExerciseComponent {
     @Input() exercise: IPlannedExercise;
+    @Output() removeFromSession: EventEmitter<string> = new EventEmitter<string>();
     collapsed: boolean = true;
 
     ngOnInit(): void{
     }
 
     addWarmUpSet(): void {
-        // if (this.exercise.warmup.length){
-        //     var lastWarmUp = this.exercise.warmup[this.exercise.warmup.length-1];
-        //     this.exercise.warmup.push({ reps: lastWarmUp.reps, weight: lastWarmUp.weight });
-        // }
-        // else {
-        //     this.exercise.warmup.push({ reps: 1, weight: 0 });
-        // }
+        if (this.exercise.warmup.length){
+            var lastWarmUp = this.exercise.warmup[this.exercise.warmup.length-1];
+            this.exercise.warmup.push({ 
+                reps: lastWarmUp.reps, 
+                weight: lastWarmUp.weight + this.exercise.minIncrement, 
+                quantity: 1 
+            });
+        }
+        else {
+            this.exercise.warmup.push({ reps: 1, weight: 1, quantity: 1 });
+        }
     }
-    addSet(): void {
-        // if (this.exercise.sets.length){
-        //     var lastSet = this.exercise.sets[this.exercise.sets.length-1];
-        //     this.exercise.sets.push({ reps: lastSet.reps, weight: lastSet.weight });
-        // }
-        // else if (this.exercise.warmup.length){
-        //     var lastWarmUp = this.exercise.warmup[this.exercise.warmup.length-1];
-        //     this.exercise.sets.push({ reps: lastWarmUp.reps, weight: lastWarmUp.weight });
-        // }
-        // else {
-        //     this.exercise.sets.push({ reps: 1, weight: 0 });
-        // }
+    removeWarmUpSet(): void {
+        if (this.exercise.warmup.length){
+            this.exercise.warmup.pop();
+        }
+    }
+    remove() {
+        this.removeFromSession.emit(this.exercise.type);
     }
     toggleCollapsed(): void {
         this.collapsed = !this.collapsed;

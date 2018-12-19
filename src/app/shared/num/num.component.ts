@@ -7,7 +7,7 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
 })
 export class NumComponent{
     @Input() value: number;
-    @Input() stepSize; number;
+    @Input() stepSize: number;
     @Output() valueChanged: EventEmitter<number> = new EventEmitter<number>();
 
     increase(): void {

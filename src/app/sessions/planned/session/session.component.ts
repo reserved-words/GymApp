@@ -29,8 +29,22 @@ export class PlannedSessionComponent {
     }
 
     addExercise():void {
-        this.session.exercises.push({ "type" : "?", "warmup": [], "sets": [], "minIncrement": 2.5 });
+        // Show popup with exercise type dropdown
+        // If exercise type already added, prevent
+        var ex = { type: "?", warmup: [], sets: [], minIncrement: 2.5 };
+        ex.sets.push({ quantity: 5, reps: 5, weight: 10 });
+        this.session.exercises.push(ex);
         this.hasExercises = true;
+    }
+    removeExercise(exerciseType: string):void {
+        var updatedList = [];
+        for (var i in this.session.exercises){
+            var ex = this.session.exercises[i];
+            if (ex.type != exerciseType){
+                updatedList.push(ex);
+            }
+        }
+        this.session.exercises = updatedList;
     }
     onBack(): void {
         this.router.navigate(['/sessions']);
