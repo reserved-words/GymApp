@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NumComponent } from './num/num.component';
 import { FormsModule } from '@angular/forms';
+import { SessionsHelper } from './helpers/sessions.helper';
 
 @NgModule({
   imports: [

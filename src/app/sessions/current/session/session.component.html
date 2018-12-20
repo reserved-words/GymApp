@@ -4,10 +4,10 @@
         {{session.started | date:'EEE dd/LL/yyyy HH\:mm'}}
     </div>
     <div class="card-body p-2">
-        <div *ngIf='!hasExercises' class="p-3">
+        <div *ngIf='session && session.exercises && session.exercises.length === 0' class="p-3">
             <p>No exercises added yet.</p>
         </div>
-        <div *ngIf='hasExercises'>
+        <div *ngIf='session && session.exercises && session.exercises.length > 0'>
             <gym-current-exercise *ngFor='let item of session.exercises' [exercise]='item'></gym-current-exercise>
         </div>
         <div class="footer-buttons">
