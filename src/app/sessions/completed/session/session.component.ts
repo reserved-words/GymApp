@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
-import { CompletedSessionService } from "../../../services/sessions/completed-session.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
+import { SessionsService } from "src/app/services/sessions/sessions.service";
 
 @Component({
     templateUrl: "session.component.html",
@@ -13,13 +13,13 @@ export class CompletedSessionComponent {
     errorMessage: string;
     hasExercises: boolean;
 
-    constructor(private service: CompletedSessionService, private route: ActivatedRoute, private router: Router){
+    constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
         
     }
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
-        this.service.getSession(id).subscribe(
+        this.service.getSession<ICompletedSession>(id).subscribe(
             result => {
                 this.session = result;
                 this.hasExercises = this.session.exercises.length > 0;

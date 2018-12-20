@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
-import { PlannedSessionService } from "../../../services/sessions/planned-session.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
+import { SessionsService } from "src/app/services/sessions/sessions.service";
 
 @Component({
     templateUrl: "session.component.html",
@@ -13,13 +13,13 @@ export class PlannedSessionComponent {
     errorMessage: string;
     hasExercises: boolean;
 
-    constructor(private service: PlannedSessionService, private route: ActivatedRoute, private router: Router){
+    constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
         
     }
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
-        this.service.getSession(id).subscribe(
+        this.service.getSession<IPlannedSession>(id).subscribe(
             s => {
                 this.session = s;
                 this.hasExercises = this.session.exercises.length > 0;
@@ -50,7 +50,15 @@ export class PlannedSessionComponent {
         this.router.navigate(['/sessions']);
     }
     onSave(): void {
-        // save
-        this.router.navigate(['/sessions']);
+        this.service.saveSession(this.session._id, this.session).subscribe(
+            s => {
+                alert("success");
+                this.router.navigate(['/sessions']);
+            },
+            error => {
+                this.errorMessage = <any>error;
+                alert(this.errorMessage);
+            }
+        );
     }
 }

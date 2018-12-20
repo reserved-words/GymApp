@@ -12,6 +12,8 @@ export class SessionsMainComponent {
     completed: ICompletedSession[] = [];
     planned: any[] = [];
     errorMessage: string;
+    currentSessionID: string;
+    startSessionText: string;
     
     constructor(private service: SessionsService, private router: Router){
     }
@@ -30,8 +32,8 @@ export class SessionsMainComponent {
     }
     startNextSession(): void {
         if (this.planned.length){
-            let nextSessionID = this.planned[0].id;
-            this.router.navigate(['/sessions/start']);
+            var url = this.currentSessionID ? ('/sessions/start/' + this.currentSessionID) : '/sessions/start';
+            this.router.navigate([url]);
         }
     }
 
@@ -50,6 +52,13 @@ export class SessionsMainComponent {
                     var index = parseInt(i) + 1;
                     this.planned.push({ index: index, id: result.rows[i].value._id });
                 }
+            },
+            error => this.errorMessage = <any>error
+        );
+        this.service.getCurrentSession().subscribe(
+            result => {
+                this.currentSessionID = result.total_rows > 0 ? result.rows[0].value._id : null;
+                this.startSessionText = this.currentSessionID ? "Resume Current Session" : "Start Next Session";
             },
             error => this.errorMessage = <any>error
         );

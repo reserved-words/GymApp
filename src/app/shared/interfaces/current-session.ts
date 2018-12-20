@@ -1,7 +1,7 @@
 import { ICurrentExercise } from "./current-exercise";
+import { ISession } from "./session";
 
-export interface ICurrentSession {
-    _id: number;
+export interface ICurrentSession extends ISession {
     started: Date;
     completed: Date;
     exercises: ICurrentExercise[];

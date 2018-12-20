@@ -31,7 +31,8 @@ import { SharedModule } from '../shared/shared.module';
       { path: 'sessions', component: SessionsMainComponent },
       { path: 'sessions/completed/:id', component: CompletedSessionComponent },
       { path: 'sessions/planned/:id', component: PlannedSessionComponent },
-      { path: 'sessions/start', component: CurrentSessionComponent }
+      { path: 'sessions/start', component: CurrentSessionComponent },
+      { path: 'sessions/start/:id', component: CurrentSessionComponent }
     ]),
   ]
 })
