@@ -8,11 +8,19 @@ import { ICurrentSet } from "../interfaces/current-set";
 import { ISet } from "../interfaces/set";
 import { IPlannedExercise } from "../interfaces/planned-exercise";
 
-
 @Injectable({
     providedIn: 'root'
 })
 export class SessionsHelper {
+
+    getNextSession(current: ICurrentExercise): IPlannedExercise {
+        return {
+            type: current.type,
+            minIncrement: current.minIncrement,
+            warmup: this.convertCurrentToPlannedSets(current.warmup),
+            sets: this.convertCurrentToPlannedSets(current.sets)
+        }
+    }
 
     createCurrentSession(planned: IPlannedSession): ICurrentSession {
         return {
@@ -36,7 +44,7 @@ export class SessionsHelper {
         };
     }
 
-    private convertPlannedToCurrentExercises(plannedExercises: IPlannedExercise[]): ICurrentExercise[] {
+    convertPlannedToCurrentExercises(plannedExercises: IPlannedExercise[]): ICurrentExercise[] {
         var currentExercises = [];
         for (var i in plannedExercises){
             var plannedExercise = plannedExercises[i];
@@ -51,20 +59,24 @@ export class SessionsHelper {
         return currentExercises;
     }
 
-    private convertCurrentToCompletedExercises(currentExercises: ICurrentExercise[]): ICompletedExercise[] {
+    convertCurrentToCompletedExercises(currentExercises: ICurrentExercise[]): ICompletedExercise[] {
         var completedExercises = [];
         for (var i in currentExercises){
             var currentExercise = currentExercises[i];
-            completedExercises.push({
-                type: currentExercise.type, 
-                warmup: this.convertCurrentToCompletedSets(currentExercise.warmup), 
-                sets: this.convertCurrentToCompletedSets(currentExercise.sets)
-            });
+            completedExercises.push(this.convertCurrentToCompletedExercise(currentExercise));
         }
         return completedExercises;
     }
 
-    private convertPlannedToCurrentSets(plannedSets: ISet[]): ICurrentSet[]{
+    convertCurrentToCompletedExercise(currentExercise: ICurrentExercise): ICompletedExercise {
+        return {
+            type: currentExercise.type, 
+            warmup: this.convertCurrentToCompletedSets(currentExercise.warmup), 
+            sets: this.convertCurrentToCompletedSets(currentExercise.sets)
+        };
+    }
+
+    convertPlannedToCurrentSets(plannedSets: ISet[]): ICurrentSet[]{
         var currentSets = [];
         for (var i in plannedSets){
             var plannedSet = plannedSets[i];
@@ -75,7 +87,7 @@ export class SessionsHelper {
         return currentSets;
     }
 
-    private convertCurrentToCompletedSets(currentSets: ICurrentSet[]): ISet[] {
+    convertCurrentToCompletedSets(currentSets: ICurrentSet[]): ISet[] {
         var completedSets = [];
         for (var j in currentSets){
             var currentSet = currentSets[j];
@@ -93,5 +105,27 @@ export class SessionsHelper {
             }
         }
         return completedSets;
+    }
+
+    convertCurrentToPlannedSets(currentSets: ICurrentSet[]): ISet[] {
+        // For now just replicate, to be changed to increase as appropriate
+
+        var plannedSets = [];
+        for (var j in currentSets){
+            var currentSet = currentSets[j];
+            var found = false;
+            for (var k in plannedSets){
+                var completedSet = plannedSets[k];
+                if (completedSet.weight === currentSet.weight && completedSet.reps === currentSet.reps){
+                    found = true;
+                    completedSet.quantity++;
+                    break;
+                }
+            }
+            if (!found){
+                plannedSets.push({ weight: currentSet.weight, reps: currentSet.reps, quantity: 1 });
+            }
+        }
+        return plannedSets;
     }
 }

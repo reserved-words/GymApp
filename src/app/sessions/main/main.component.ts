@@ -32,10 +32,8 @@ export class SessionsMainComponent {
         this.router.navigate(['/sessions/planned/' + id]);
     }
     startNextSession(): void {
-        if (this.planned.length){
-            var url = this.currentSessionID ? ('/sessions/start/' + this.currentSessionID) : '/sessions/start';
-            this.router.navigate([url]);
-        }
+        var url = this.currentSessionID ? ('/sessions/start/' + this.currentSessionID) : '/sessions/start';
+        this.router.navigate([url]);
     }
 
     ngOnInit(): void {

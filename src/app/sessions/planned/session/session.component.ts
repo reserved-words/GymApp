@@ -50,7 +50,7 @@ export class PlannedSessionComponent {
         this.router.navigate(['/sessions']);
     }
     onSave(): void {
-        this.service.saveSession(this.session._id, this.session).subscribe(
+        this.service.updateSession(this.session._id, this.session).subscribe(
             s => {
                 alert("success");
                 this.router.navigate(['/sessions']);

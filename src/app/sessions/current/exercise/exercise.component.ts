@@ -1,5 +1,7 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, EventEmitter, Output } from "@angular/core";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
+import { SessionsHelper } from "src/app/shared/helpers/sessions.helper";
+import { ICompletedExercise } from "src/app/shared/interfaces/completed-exercise";
 
 
 @Component({
@@ -10,9 +12,18 @@ import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 export class CurrentExerciseComponent {
     @Input() exercise: ICurrentExercise;
     @Input() sessionStatus: string;
+    @Output() removeFromSession: EventEmitter<string> = new EventEmitter<string>();
     collapsed: boolean = true;
+    completedExercise: ICompletedExercise;
+
+    constructor(private sessionsHelper: SessionsHelper){
+
+    }
 
     ngOnInit(): void{
+        if (this.exercise.done){
+            this.completedExercise = this.sessionsHelper.convertCurrentToCompletedExercise(this.exercise);
+        }
     }
 
     addWarmUpSet(): void {
@@ -45,11 +56,22 @@ export class CurrentExerciseComponent {
         for (var i in this.exercise.sets){
             this.exercise.sets[i].done = true;
         }
+        this.exercise.nextSession = this.sessionsHelper.getNextSession(this.exercise);
+        this.completedExercise = this.sessionsHelper.convertCurrentToCompletedExercise(this.exercise);
     }
-    markNotFinished() {
+    markNotDone() {
         this.exercise.done = false;
+        this.exercise.nextSession = null;
+        this.exercise.nextSessionConfirmed = false;
+        this.completedExercise = null;
+    }
+    remove() {
+        this.removeFromSession.emit(this.exercise.type);
     }
     toggleCollapsed(): void {
         this.collapsed = !this.collapsed;
+    }
+    confirmPlannedSession() {
+        this.exercise.nextSessionConfirmed = true;
     }
 }

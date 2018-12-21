@@ -9,6 +9,7 @@ import { PlannedExerciseComponent } from './planned/exercise/exercise.component'
 import { CurrentSessionComponent } from './current/session/session.component';
 import { PlannedSetComponent } from './planned/set/set.component';
 import { CurrentExerciseComponent } from './current/exercise/exercise.component';
+import { NextSessionExerciseComponent } from './current/next-session-exercise/next-session-exercise.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 
@@ -23,7 +24,8 @@ import { SharedModule } from '../shared/shared.module';
     PlannedSetComponent,
     CurrentSessionComponent,
     CurrentExerciseComponent,
-    CurrentSetComponent
+    CurrentSetComponent,
+    NextSessionExerciseComponent
   ],
   imports: [
     SharedModule,

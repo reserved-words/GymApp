@@ -10,41 +10,72 @@
     </div>
     <div [class]="collapsed ? 'collapse' : 'collapse show'">
         <div class="card-body p-0">
-            <div *ngFor='let set of exercise.warmup'>
-                <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
-            </div>
-            <div *ngFor='let set of exercise.sets'>
-                <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
-            </div>
-            <div class="table">
-                <div class="table-row">
-                    <div class="table-cell" style="width: 1px;">
-                        <div class="btn-group">
-                            <button type="button" class="btn" (click)='addWarmUpSet()'>
-                                <i class="fas fa-temperature-low"></i>
-                            </button>
-                            <button type="button" class="btn" (click)='addSet()'>
-                                <i class="fas fa-dumbbell"></i>
-                            </button>
+
+            <div *ngIf='!exercise.done'>
+                <div *ngFor='let set of exercise.warmup'>
+                    <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
+                </div>
+                <div *ngFor='let set of exercise.sets'>
+                    <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
+                </div>
+                <div class="table">
+                    <div class="table-row">
+                        <div class="table-cell" style="width: 1px;">
+                            <div class="btn-group">
+                                <button type="button" class="btn" (click)='addWarmUpSet()'>
+                                    <i class="fas fa-temperature-low"></i>
+                                </button>
+                                <button type="button" class="btn" (click)='addSet()'>
+                                    <i class="fas fa-dumbbell"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="table-cell p-0">
-                        <button type="button" class="btn btn-block">
-                            <i class="fas fa-check"></i>
-                        </button>
-                    </div>                        
-                    <div class="table-cell" style="width: 1px;">
-                        <div class="btn-group">
-                            <button type="button" class="btn">
-                                <i class="far fa-edit"></i>
+                        <div class="table-cell p-0">
+                            <button type="button" class="btn btn-block" (click)='markDone()'>
+                                <i class="fas fa-check"></i>
                             </button>
-                            <button type="button" class="btn">
+                        </div>                        
+                        <div class="table-cell" style="width: 1px;">
+                            <button type="button" class="btn" (click)='remove()'>
                                 <i class="far fa-trash-alt"></i>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <div *ngIf='exercise.done'>
+                <div *ngFor='let set of completedExercise.warmup'>
+                    <gym-completed-set [set]='set'></gym-completed-set>
+                </div>
+                <div *ngFor='let set of completedExercise.sets'>
+                    <gym-completed-set [set]='set'></gym-completed-set>
+                </div>   
+                
+                <div *ngIf='!exercise.nextSessionConfirmed'>
+                    <gym-next-session-exercise *ngIf='exercise.nextSession' [exercise]='exercise.nextSession'></gym-next-session-exercise>
+            
+                    <div class="table">
+                        <div class="table-row">                                          
+                            <div class="table-cell">
+                                <div class="btn-group">
+                                    <button type="button" class="btn" (click)='confirmPlannedSession()'>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button type="button" class="btn">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn" (click)='markNotDone()'>
+                    <i class="far fa-edit"></i>
+                </button>
+            </div>
+
         </div>
     </div>
 </div>

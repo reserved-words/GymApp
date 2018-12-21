@@ -48,12 +48,22 @@ export class SessionsService {
                 catchError(this.handleError));
     }
 
-    saveSession<T extends ISession>(id: string, session: T): Observable<ISaveResponse> {
+    updateSession<T extends ISession>(id: string, session: T): Observable<ISaveResponse> {
         return this.http
             .put<ISaveResponse>(this.documentUrl + id + "?rev=" + session._rev, JSON.stringify(session))
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
-                catchError(this.handleError));    
+                catchError(this.handleError));
+    }
+
+    insertSession(session: IPlannedSession): Observable<ISaveResponse> {
+        return this.http
+            .post<ISaveResponse>(this.documentUrl, JSON.stringify({ type: session.type, index: session.index, exercises: session.exercises }), {
+                headers: {'Content-Type':'application/json; charset=utf-8'}
+             })
+            .pipe(
+                tap(data => console.log(JSON.stringify(data))),
+                catchError(this.handleError));
     }
 
     private getSessions<T>(url: string){

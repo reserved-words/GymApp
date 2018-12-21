@@ -1,4 +1,5 @@
 import { ICurrentSet } from "./current-set";
+import { IPlannedExercise } from "./planned-exercise";
 
 export interface ICurrentExercise {
     type: string;
@@ -6,4 +7,6 @@ export interface ICurrentExercise {
     sets: ICurrentSet[];
     minIncrement: number;
     done: boolean;
+    nextSession: IPlannedExercise;
+    nextSessionConfirmed: boolean;
 }
