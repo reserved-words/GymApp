@@ -21,17 +21,13 @@ export class CurrentSessionComponent {
         let id = this.route.snapshot.paramMap.get('id');
         if (id){
             this.service.getSession<ICurrentSession>(id).subscribe(
-                s => {
-                    this.session = s;
-                },
+                s => this.session = s,
                 error => this.errorMessage = <any>error
             );
         }
         else{
             this.service.getNextSession().subscribe(
-                s => {
-                    this.session = this.helper.createCurrentSession(s.rows[0].value);
-                },
+                s => this.session = this.helper.createCurrentSession(s.rows[0].value),
                 error => this.errorMessage = <any>error
             );
         }
@@ -42,8 +38,14 @@ export class CurrentSessionComponent {
     }
 
     markComplete(): void {
-        // alert("Add a check to confirm completion");
+        // Add a check to confirm completion
+        // Display to user what's been planned in for next sessions and allow to amend
+
         var completedSession = this.helper.completeCurrentSession(this.session);
+
+        
+
+
         this.service.saveSession<ICompletedSession>(this.session._id, completedSession).subscribe(
             s => {
                 alert("Saved");

@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { IExercise } from "../../shared/interfaces/exercise";
 import { ExercisesService } from "../../services/settings/exercises.service";
+import { QueryResultsHelper } from "../../shared/helpers/queryResults.helper";
 import { Router } from "@angular/router";
 
 @Component({
@@ -13,7 +14,7 @@ export class ExercisesComponent {
     list: IExercise[] = [];
     errorMessage: string;
 
-    constructor(private service: ExercisesService, private router: Router){
+    constructor(private service: ExercisesService, private queryResultsHelper: QueryResultsHelper, private router: Router){
     }
 
     goToExercise(id: string) :void {
@@ -22,11 +23,7 @@ export class ExercisesComponent {
 
     ngOnInit(): void {
         this.service.getExercises().subscribe(
-            results => {
-                for (var index in results.rows){
-                    this.list.push(results.rows[index].value);
-                }
-            },
+            results => this.list = this.queryResultsHelper.getValues(results),
             error => this.errorMessage = <any>error
         );
     }

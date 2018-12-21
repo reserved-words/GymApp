@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
+import { Observable, throwError, of } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 
 import { IExercise } from "../../shared/interfaces/exercise";
@@ -12,10 +12,16 @@ import { IQueryResults } from "../../shared/interfaces/queryResults";
 export class ExercisesService {
     private exercisesUrl = 'http://127.0.0.1:5984/gymapp/_design/exerciseDesignDoc/_view/exercises';
 
+    private exercises: IQueryResults<IExercise>;
+
     constructor(private http: HttpClient){}
 
     getExercises(): Observable<IQueryResults<IExercise>> {
+        if (this.exercises){
+            return of(this.exercises);
+        }
         return this.http.get<IQueryResults<IExercise>>(this.exercisesUrl).pipe(
+            tap(data => this.exercises = data),
             tap(data => console.log("All: " + JSON.stringify(data))),
             catchError(this.handleError)
         );
