@@ -92,6 +92,6 @@ export class SessionsHelper {
                 completedSets.push({ weight: currentSet.weight, reps: currentSet.reps, quantity: 1 });
             }
         }
-        return completedSet;
+        return completedSets;
     }
 }
