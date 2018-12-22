@@ -18,30 +18,6 @@
                 <div *ngFor='let set of exercise.sets'>
                     <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
                 </div>
-                <div class="table">
-                    <div class="table-row">
-                        <div class="table-cell" style="width: 1px;">
-                            <div class="btn-group">
-                                <button type="button" class="btn" (click)='addWarmUpSet()'>
-                                    <i class="fas fa-temperature-low"></i>
-                                </button>
-                                <button type="button" class="btn" (click)='addSet()'>
-                                    <i class="fas fa-dumbbell"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="table-cell p-0">
-                            <button type="button" class="btn btn-block" (click)='markDone()'>
-                                <i class="fas fa-check"></i>
-                            </button>
-                        </div>                        
-                        <div class="table-cell" style="width: 1px;">
-                            <button type="button" class="btn" (click)='remove()'>
-                                <i class="far fa-trash-alt"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
             
             <div *ngIf='exercise.done'>
@@ -54,26 +30,43 @@
                 
                 <div *ngIf='!exercise.nextSessionConfirmed'>
                     <gym-next-session-exercise *ngIf='exercise.nextSession' [exercise]='exercise.nextSession'></gym-next-session-exercise>
-            
-                    <div class="table">
-                        <div class="table-row">                                          
-                            <div class="table-cell">
-                                <div class="btn-group">
-                                    <button type="button" class="btn" (click)='confirmPlannedSession()'>
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button type="button" class="btn">
-                                        <i class="far fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+            </div>
 
-                <button type="button" class="btn" (click)='markNotDone()'>
-                    <i class="far fa-edit"></i>
+            <div class="dropdown" *ngIf='!exercise.done'>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Options
                 </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
+                  <a class="dropdown-item" (click)='addSet()'>Add set</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" (click)='remove()'>Remove from session</a>
+                </div>
+            </div>
+
+            <button *ngIf='!exercise.done' type="button" class="btn" (click)='markDone()'>
+                <i class="fas fa-check"></i>
+            </button>
+
+            <button *ngIf='exercise.done && !exercise.nextSessionConfirmed' type="button" class="btn" (click)='confirmPlannedSession()'>
+                <i class="fas fa-check"></i>
+            </button>
+
+            <div class="dropdown" *ngIf='exercise.done'>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Options
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)='addPlannedWarmUpSet()'>Add warmup set</a>
+                  <a class="dropdown-item" (click)='removePlannedWarmUpSet()'>Remove warmup set</a>
+                  <a class="dropdown-item" (click)='addPlannedSet()'>Add set</a>
+                  <a class="dropdown-item" (click)='removePlannedSet()'>Remove set</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" (click)='removeFromPlannedSession()'>Remove from session</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" (click)='markNotDone()'>Session not done</a>
+                </div>
             </div>
 
         </div>

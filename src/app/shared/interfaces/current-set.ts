@@ -1,5 +1,5 @@
 export interface ICurrentSet {
-    reps: number;
     weight: number;
+    reps: number;
     done: boolean;
 }

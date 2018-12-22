@@ -13,6 +13,40 @@ import { IPlannedExercise } from "../interfaces/planned-exercise";
 })
 export class SessionsHelper {
 
+    addSet(sets: ISet[], minIncrement: number): void {
+        if (sets.length){
+            var lastSet = sets[sets.length-1];
+            sets.push({ 
+                reps: lastSet.reps, 
+                weight: lastSet.weight + minIncrement, 
+                quantity: 1 
+            });
+        }
+        else {
+            sets.push({ reps: 1, weight: minIncrement, quantity: 1 });
+        }
+    }
+
+    addCurrentSet(sets: ICurrentSet[], minIncrement: number): void {
+        if (sets.length){
+            var lastSet = sets[sets.length-1];
+            sets.push({ 
+                reps: lastSet.reps, 
+                weight: lastSet.weight + minIncrement, 
+                done: false 
+            });
+        }
+        else {
+            sets.push({ reps: 1, weight: minIncrement, done: false });
+        }
+    }
+
+    removeSet<T>(sets: T[], minRequired: number){
+        if (sets.length > minRequired){
+            sets.pop();
+        }
+    }
+
     getNextSession(current: ICurrentExercise): IPlannedExercise {
         return {
             type: current.type,

@@ -6,15 +6,3 @@
 <div *ngFor='let set of exercise.sets' class="p-2" style="background-color: silver;">
     <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
 </div>
-<div class="table p-2">
-    <div class="table-row">
-        <div class="table-cell">
-            <button type="button" class="btn mr-2" (click)='addWarmUpSet()'>
-                <i class="fas fa-temperature-low"></i>+
-            </button>
-            <button type="button" class="btn" (click)='removeWarmUpSet()'>
-                    <i class="fas fa-temperature-low"></i>-
-            </button>
-        </div>
-    </div>
-</div>
