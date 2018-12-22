@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { IExercise } from "../../shared/interfaces/exercise";
-import { ExerciseDetailService } from "./exercise-detail.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { IDropdownOption } from "src/app/shared/interfaces/dropdown-option";
+import { DropdownHelper } from "src/app/shared/helpers/dropdown.helper";
+import { ExercisesService } from "src/app/services/settings/exercises.service";
 
 @Component({
     templateUrl: './exercise-detail.component.html',
@@ -11,8 +13,10 @@ export class ExerciseDetailComponent implements OnInit {
     pageTitle: string = 'Edit Exercise';
     exercise: IExercise;
     errorMessage: string;
+    frequencyOptions: IDropdownOption[]
 
-    constructor(private service: ExerciseDetailService, private route: ActivatedRoute, private router: Router){
+    constructor(private service: ExercisesService, private route: ActivatedRoute, private router: Router, private dropdowns: DropdownHelper){
+        this.frequencyOptions = dropdowns.getFrequencyOptions();
     }
 
     ngOnInit(): void {
@@ -29,7 +33,12 @@ export class ExerciseDetailComponent implements OnInit {
     }
     
     onSave(): void {
-        // save
-        this.router.navigate(['/settings']);
+        this.service.updateExercise(this.exercise).subscribe(
+            response => {
+                this.router.navigate(['/settings']);
+            },
+            error => this.errorMessage = <any>error
+        );
+        
     }
 }
