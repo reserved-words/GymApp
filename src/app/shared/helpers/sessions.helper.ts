@@ -51,7 +51,7 @@ export class SessionsHelper {
         return {
             type: current.type,
             minIncrement: current.minIncrement,
-            warmup: this.convertCurrentToPlannedSets(current.warmup),
+            warmup: this.convertCurrentToPlannedWarmup(current.warmup),
             sets: this.convertCurrentToPlannedSets(current.sets)
         }
     }
@@ -141,12 +141,9 @@ export class SessionsHelper {
         return completedSets;
     }
 
-    convertCurrentToPlannedSets(currentSets: ICurrentSet[]): ISet[] {
-        // For now just replicate, to be changed to increase as appropriate
-
+    convertCurrentToPlannedWarmup(currentSets: ICurrentSet[]): ISet[] {
         var plannedSets = [];
-        for (var j in currentSets){
-            var currentSet = currentSets[j];
+        for (let currentSet of currentSets){
             var found = false;
             for (var k in plannedSets){
                 var completedSet = plannedSets[k];
@@ -161,5 +158,24 @@ export class SessionsHelper {
             }
         }
         return plannedSets;
+    }
+
+    convertCurrentToPlannedSets(currentSets: ICurrentSet[]): ISet[] {
+        // Only one set should be returned, and should be dependent on exercise definition, but for now just use completed session data - use best set
+
+        var quantity = currentSets.length;
+        var weight = 0;
+        var reps = 0;
+
+        for (let currentSet of currentSets){
+            if (currentSet.weight > weight){
+                weight = currentSet.weight;
+                reps = currentSet.reps;
+            }
+            else if (currentSet.weight === weight && currentSet.reps > reps){
+                reps = currentSet.reps;
+            }
+        }
+        return [{ quantity: quantity, weight: weight, reps: reps }];
     }
 }

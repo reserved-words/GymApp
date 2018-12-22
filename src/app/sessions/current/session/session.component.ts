@@ -3,9 +3,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { SessionsService } from "src/app/services/sessions/sessions.service";
 import { ICurrentSession } from "src/app/shared/interfaces/current-session";
 import { SessionsHelper } from "src/app/shared/helpers/sessions.helper";
-import { QueryResultsHelper } from "src/app/shared/helpers/queryResults.helper";
 import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
+import { ExercisesService } from "src/app/services/settings/exercises.service";
+import { Frequency } from "src/app/shared/enums/frequency.enum";
+import { IExercise } from "src/app/shared/interfaces/exercise";
 
 @Component({
     templateUrl: "session.component.html",
@@ -16,25 +18,45 @@ export class CurrentSessionComponent {
     errorMessage: string;
     session: ICurrentSession;
 
-    constructor(private service: SessionsService, private helper: SessionsHelper, private queryResultsHelper: QueryResultsHelper, private route: ActivatedRoute, private router: Router){        
+    private exerciseDefinitions: IExercise[];
+
+    constructor(private service: SessionsService, private helper: SessionsHelper, 
+        private route: ActivatedRoute, private router: Router, private exercisesService: ExercisesService){        
     }
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.service.getSession<ICurrentSession>(id).subscribe(
-                s => this.session = s,
+                s => {
+                    this.session = s,
+                    this.updateExerciseDefinitions();
+                },
                 error => this.handleError(error)
             );
         }
         else {
             this.service.getNextSession().subscribe(
-                s => this.session = this.helper.createCurrentSession(s.rows[0].value),
+                s => {
+                    this.session = this.helper.createCurrentSession(s.rows[0].value);
+                    this.updateExerciseDefinitions();
+                },
                 error => this.handleError(error)
             );
         }
+    }
 
-        // For each exercises would be better to fetch the minIncrement / session planning details again in case have changed
+    updateExerciseDefinitions(){
+        this.exercisesService.getExercises().subscribe(
+            exercises => {
+                this.exerciseDefinitions = exercises.rows.map(r => r.value);
+                for (let ex of this.session.exercises){
+                    var def = this.exerciseDefinitions.filter(v => v.name === ex.type)[0];
+                    ex.minIncrement = def.minIncrement;
+                }
+            },
+            error => this.handleError(error)
+        );
     }
     
     addExercise():void {
@@ -77,23 +99,32 @@ export class CurrentSessionComponent {
     completeAndPlanNextSessions() {
         this.service.getPlannedSessions().subscribe(
             results => {
-                var plannedSessions = this.queryResultsHelper.getValues(results);
-                for (var i in this.session.exercises){
-                    // Find the next planned session where this exercise will be done
-                    // For now just do the next but one session
-                    var nextSessionIndex = 2;
-                    // If doesn't exist, create it 
+                var plannedSessions = results.rows.map(r => r.value);
+                for (let ex of this.session.exercises){
+                            
+                    var def = this.exerciseDefinitions.filter(r => r.name === ex.type)[0];
+
+                    var nextSessionIndex =
+                        (def.frequency == Frequency.EverySession ? 1 :
+                        (def.frequency == Frequency.EveryOtherSession ? 2 :
+                        (def.frequency == Frequency.EveryThirdSession ? 3 : 1)));
+
+                    if (def.frequency == Frequency.TwoInEveryThreeSessions){
+                        var doneInPreviousSession = true; // TO DO check if done in previous session as well
+                        nextSessionIndex = doneInPreviousSession ? 2 : 1;
+                    }
+
                     var index = plannedSessions.length > 0 ? plannedSessions[plannedSessions.length-1].index : 0;
                     while (plannedSessions.length < nextSessionIndex){
                         index++;
                         plannedSessions.push({ _id: null, _rev: null, type: "planned-session", index: index, exercises: [] });
                     }
+
                     var nextSession = plannedSessions[nextSessionIndex-1];
-                    // Ideally should check first that it hasn't already been added - if so, replace it
-                    nextSession.exercises.push(this.session.exercises[i].nextSession);
+                    nextSession.exercises.push(ex.nextSession);
                 }
-                // Save changes to planned sessions
-                // Need to know when ALL finished so can return to home page
+
+                // Need to know when ALL save processes finished so can return to home page
                 for (var i in plannedSessions){
                     this.savePlannedSession(plannedSessions[i]);
                 }
@@ -125,7 +156,10 @@ export class CurrentSessionComponent {
         console.log("saving completed session");
         var completedSession = this.helper.completeCurrentSession(this.session);
         this.service.updateSession<ICompletedSession>(this.session._id, completedSession).subscribe(
-            s => { console.log("saved completed session"); }, // this.router.navigate(['/sessions']) - only when all saved
+            s => { 
+                console.log("saved completed session");
+                // this.router.navigate(['/sessions']) - only when all saved
+            }, 
             error => this.handleError(error)
         );
     }

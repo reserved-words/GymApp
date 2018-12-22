@@ -37,6 +37,7 @@ export class ExercisesService {
     }
 
     updateExercise(exercise: IExercise): Observable<ISaveResponse> {
+        this.exercises = null;
         return this.http
             .put<ISaveResponse>(this.documentUrl + exercise._id + "?rev=" + exercise._rev, JSON.stringify(exercise))
             .pipe(

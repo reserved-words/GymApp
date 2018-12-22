@@ -38,8 +38,8 @@
             </div>
             <div class="row form-group">
                 <div class="col-12">
-                    <label for="Frequency" class="control-label">Frequency</label>
-                    <select [(ngModel)]='exercise.Frequency' name="Frequency" class="form-control">
+                    <label for="frequency" class="control-label">Frequency</label>
+                    <select [(ngModel)]='exercise.frequency' name="frequency" class="form-control">
                         <option *ngFor='let opt of frequencyOptions' value={{opt.value}}>{{opt.text}}</option>
                     </select>
                 </div>

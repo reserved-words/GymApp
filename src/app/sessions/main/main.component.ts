@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { SessionsService } from "../../services/sessions/sessions.service";
 import { Router } from "@angular/router";
 import { ICompletedSession } from "../../shared/interfaces/completed-session";
-import { QueryResultsHelper } from "src/app/shared/helpers/queryResults.helper";
 
 @Component({
     templateUrl: 'main.component.html',
@@ -16,7 +15,7 @@ export class SessionsMainComponent {
     currentSessionID: string;
     startSessionText: string;
     
-    constructor(private service: SessionsService, private queryResultsHelper: QueryResultsHelper, private router: Router){
+    constructor(private service: SessionsService, private router: Router){
     }
 
     add(): void {
@@ -38,7 +37,7 @@ export class SessionsMainComponent {
 
     ngOnInit(): void {
         this.service.getCompletedSessions().subscribe(
-            result => this.completed = this.queryResultsHelper.getValues(result),
+            result => this.completed = result.rows.map(r => r.value),
             error => this.errorMessage = <any>error
         );
         this.service.getPlannedSessions().subscribe(
