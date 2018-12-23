@@ -13,7 +13,7 @@ export class DBService {
 
     exercisesUrl: string = this.baseUrl + '_design/exerciseDesignDoc/_view/exercises';
     nextSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=1';
-    completedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedSessions?descending=true&limit=3';
+    completedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedSessions';
     completedExercisesUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedExercises';
     plannedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=3';
     currentSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/currentSession';
@@ -24,7 +24,10 @@ export class DBService {
         return this.baseUrl + id + (rev ? ("?rev=" + rev) : "");
     }
 
-    getList<T>(url: string){
+    getList<T>(url: string, limit: number = null, desc: boolean = null){
+        if (limit){
+            url = url + "?" + (desc ? "descending=true&" : "") + "limit=" + limit;
+        }
         return this.http.get<IQueryResults<T>>(url).pipe(
             tap(data => console.log("Add: " + JSON.stringify(data))),
             catchError(this.handleError)

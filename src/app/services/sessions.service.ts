@@ -20,8 +20,8 @@ export class SessionsService {
         return this.db.getList<IPlannedSession>(this.db.nextSessionUrl);
     }
 
-    getCompletedSessions(): Observable<IQueryResults<ICompletedSession>>{
-        return this.db.getList<ICompletedSession>(this.db.completedSessionsUrl);
+    getCompletedSessions(limit: number): Observable<IQueryResults<ICompletedSession>>{
+        return this.db.getList<ICompletedSession>(this.db.completedSessionsUrl, limit, true);
     };
 
     getLastSession(exerciseType: string): Observable<IQueryResults<ICompletedExercise>>{

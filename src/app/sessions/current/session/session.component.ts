@@ -7,7 +7,6 @@ import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
-import { IExercise } from "src/app/shared/interfaces/exercise";
 import { Observable } from "rxjs";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 
@@ -19,8 +18,6 @@ export class CurrentSessionComponent {
     pageTitle: string = "Session";
     errorMessage: string;
     session: ICurrentSession;
-
-    private exerciseDefinitions: IExercise[];
 
     constructor(private service: SessionsService, private helper: SessionsHelper, 
         private route: ActivatedRoute, private router: Router, private exercisesService: ExercisesService){        
@@ -79,38 +76,51 @@ export class CurrentSessionComponent {
         this.subscribe(this.service.getPlannedSessions(),
             results => {
                 var plannedSessions = results.rows.map(r => r.value);
-                for (let ex of this.session.exercises){
+
+                var index = plannedSessions.length > 0 ? plannedSessions[plannedSessions.length-1].index : 0;
+                while (plannedSessions.length < 3){
+                    index++;
+                    plannedSessions.push({ _id: null, _rev: null, type: "planned-session", index: index, exercises: [] });
+                }
+
+                this.subscribe(this.service.getCompletedSessions(1), lastSessions => {
+                    var lastSession = lastSessions.rows.map(r => r.value)[0];
+                    this.subscribe(this.exercisesService.getExercises(), exercises => {
+                        for (let ex of this.session.exercises){
                             
-                    var def = this.exerciseDefinitions.filter(r => r.name === ex.type)[0];
-
-                    var nextSessionIndex =
-                        (def.frequency == Frequency.EverySession ? 1 :
-                        (def.frequency == Frequency.EveryOtherSession ? 2 :
-                        (def.frequency == Frequency.EveryThirdSession ? 3 : 1)));
-
-                    if (def.frequency == Frequency.TwoInEveryThreeSessions){
-                        var doneInPreviousSession = true; // TO DO check if done in previous session as well
-                        nextSessionIndex = doneInPreviousSession ? 2 : 1;
-                    }
-
-                    var index = plannedSessions.length > 0 ? plannedSessions[plannedSessions.length-1].index : 0;
-                    while (plannedSessions.length < nextSessionIndex){
-                        index++;
-                        plannedSessions.push({ _id: null, _rev: null, type: "planned-session", index: index, exercises: [] });
-                    }
-
-                    var nextSession = plannedSessions[nextSessionIndex-1];
-                    nextSession.exercises.push(ex.nextSession);
-                }
-
-                // Need to know when ALL save processes finished so can return to home page
-                for (var i in plannedSessions){
-                    this.savePlannedSession(plannedSessions[i]);
-                }
-                this.saveCompletedSession();
+                            var def = exercises.rows.map(r => r.value).filter(r => r.name === ex.type)[0];
+        
+                            var nextSessionIndex =
+                                (def.frequency == Frequency.EverySession ? 1 :
+                                (def.frequency == Frequency.EveryOtherSession ? 2 :
+                                (def.frequency == Frequency.EveryThirdSession ? 3 : 1)));
+        
+                            if (def.frequency == Frequency.TwoInEveryThreeSessions){
+                                var exerciseInLastSession = lastSession.exercises.filter(ex => ex.type === def.name);
+                                var doneInPreviousSession = exerciseInLastSession.length > 0;                        
+                                nextSessionIndex = doneInPreviousSession ? 2 : 1;
+                            }
+        
+                            var nextSession = plannedSessions[nextSessionIndex-1];
+                            nextSession.exercises.push(ex.nextSession);
+                        }
+        
+                        // Need to know when ALL save processes finished so can return to home page
+                        this.saveSessions(plannedSessions);
+                    })    
+                })
             }
         );
     }
+
+    saveSessions(plannedSessions: IPlannedSession[]){
+        // Need to know when ALL save processes finished so can return to home page
+        for (let session of plannedSessions){
+            this.savePlannedSession(session);
+        }
+        this.saveCompletedSession();
+    }
+
     savePlannedSession(session: IPlannedSession): void {
         if (session._id){
             this.subscribe(this.service.updateSession(session._id, session));
