@@ -8,38 +8,51 @@ import { ICurrentSet } from "../interfaces/current-set";
 import { ISet } from "../interfaces/set";
 import { IPlannedExercise } from "../interfaces/planned-exercise";
 import { IExercise } from "../interfaces/exercise";
+import { ExercisesService } from "src/app/services/exercises.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class SessionsHelper {
 
-    addSet(sets: ISet[], minIncrement: number): void {
-        if (sets.length){
-            var lastSet = sets[sets.length-1];
-            sets.push({ 
-                reps: lastSet.reps, 
-                weight: lastSet.weight + minIncrement, 
-                quantity: 1 
-            });
-        }
-        else {
-            sets.push({ reps: 1, weight: minIncrement, quantity: 1 });
-        }
+    constructor(private service: ExercisesService){}
+
+    addSet(sets: ISet[], exercise: string): void {
+        this.service.getExercises().subscribe(
+            response => {
+                var def = response.rows.map(r => r.value).filter(r => r.name === exercise)[0];
+                if (sets.length){
+                    var lastSet = sets[sets.length-1];
+                    sets.push({ 
+                        reps: lastSet.reps, 
+                        weight: lastSet.weight + def.minIncrement, 
+                        quantity: 1 
+                    });
+                }
+                else {
+                    sets.push({ reps: 1, weight: def.minIncrement, quantity: 1 });
+                }
+            }
+        );
     }
 
-    addCurrentSet(sets: ICurrentSet[], minIncrement: number): void {
-        if (sets.length){
-            var lastSet = sets[sets.length-1];
-            sets.push({ 
-                reps: lastSet.reps, 
-                weight: lastSet.weight + minIncrement, 
-                done: false 
-            });
-        }
-        else {
-            sets.push({ reps: 1, weight: minIncrement, done: false });
-        }
+    addCurrentSet(sets: ICurrentSet[], exercise: string): void {
+        this.service.getExercises().subscribe(
+            response => {
+                var def = response.rows.map(r => r.value).filter(r => r.name === exercise)[0];
+                if (sets.length){
+                    var lastSet = sets[sets.length-1];
+                    sets.push({ 
+                        reps: lastSet.reps, 
+                        weight: lastSet.weight + def.minIncrement, 
+                        done: false 
+                    });
+                }
+                else {
+                    sets.push({ reps: 1, weight: def.minWeight, done: false });
+                }        
+            }
+        );
     }
 
     removeSet<T>(sets: T[], minRequired: number){
@@ -51,7 +64,6 @@ export class SessionsHelper {
     getNextSession(current: ICurrentExercise): IPlannedExercise {
         return {
             type: current.type,
-            minIncrement: current.minIncrement,
             warmup: this.convertCurrentToPlannedWarmup(current.warmup),
             sets: this.convertCurrentToPlannedSets(current.sets)
         }
@@ -85,7 +97,6 @@ export class SessionsHelper {
             var plannedExercise = plannedExercises[i];
             currentExercises.push({ 
                 type: plannedExercise.type, 
-                minIncrement: plannedExercise.minIncrement, 
                 warmup: this.convertPlannedToCurrentSets(plannedExercise.warmup), 
                 sets: this.convertPlannedToCurrentSets(plannedExercise.sets), 
                 done: false 

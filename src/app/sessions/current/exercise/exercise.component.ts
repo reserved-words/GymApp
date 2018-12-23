@@ -26,10 +26,10 @@ export class CurrentExerciseComponent {
     }
 
     addWarmUpSet(): void {
-        this.sessionsHelper.addCurrentSet(this.exercise.warmup, this.exercise.minIncrement);
+        this.sessionsHelper.addCurrentSet(this.exercise.warmup, this.exercise.type);
     }
     addSet(): void {
-        this.sessionsHelper.addCurrentSet(this.exercise.sets, this.exercise.minIncrement);
+        this.sessionsHelper.addCurrentSet(this.exercise.sets, this.exercise.type);
     }
     markDone() {
         this.exercise.done = true;
@@ -62,8 +62,7 @@ export class CurrentExerciseComponent {
     }
     addPlannedWarmUpSet(): void {
         var warmups = this.exercise.nextSession.warmup;
-        var minIncrement = this.exercise.nextSession.minIncrement;
-        this.sessionsHelper.addSet(warmups, minIncrement);
+        this.sessionsHelper.addSet(warmups, this.exercise.type);
     }
     removePlannedWarmUpSet(): void {
         var warmups = this.exercise.nextSession.warmup;
@@ -71,8 +70,7 @@ export class CurrentExerciseComponent {
     }
     addPlannedSet(): void {
         var sets = this.exercise.nextSession.sets;
-        var minIncrement = this.exercise.nextSession.minIncrement;
-        this.sessionsHelper.addSet(sets, minIncrement);
+        this.sessionsHelper.addSet(sets, this.exercise.type);
     }
     removePlannedSet(): void {
         var sets = this.exercise.nextSession.sets;

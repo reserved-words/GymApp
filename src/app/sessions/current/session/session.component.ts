@@ -30,26 +30,14 @@ export class CurrentSessionComponent {
         let id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.subscribe(this.service.getSession<ICurrentSession>(id), s => {
-                this.session = s,
-                this.updateExerciseDefinitions();
+                this.session = s
             });
         }
         else {
             this.subscribe(this.service.getNextSession(), s => {
                 this.session = this.helper.createCurrentSession(s.rows[0].value);
-                this.updateExerciseDefinitions();
             });
         }
-    }
-
-    updateExerciseDefinitions(){
-        this.subscribe(this.exercisesService.getExercises(), exercises => {
-            this.exerciseDefinitions = exercises.rows.map(r => r.value);
-            for (let ex of this.session.exercises){
-                var def = this.exerciseDefinitions.filter(v => v.name === ex.type)[0];
-                ex.minIncrement = def.minIncrement;
-            }
-        });
     }
 
     addExercise(exerciseToAdd: ICurrentExercise):void {
