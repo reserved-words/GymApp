@@ -13,7 +13,7 @@ export class CurrentExerciseComponent {
     @Output() removeFromSession: EventEmitter<string> = new EventEmitter<string>();
     collapsed: boolean = true;
     completedExercise: ICompletedExercise;
-
+    
     constructor(private sessionsHelper: SessionsHelper){
 
     }

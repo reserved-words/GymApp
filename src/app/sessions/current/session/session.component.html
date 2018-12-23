@@ -21,14 +21,15 @@
             </div>
             <div class="row">
                 <div class="col-4">
-                    <button class="btn btn-sm btn-secondary full-width"
-                        (click)='onBack()'>
+                    <button class="btn btn-sm btn-secondary btn-block"
+                        data-toggle="modal" 
+                        data-target="#backConfirmationModal">
                         <i class="fas fa-caret-left"></i>
                         Back
                     </button>
                 </div>
                 <div class="col-4">
-                    <button class="btn btn-primary btn-sm full-width"
+                    <button class="btn btn-primary btn-sm btn-block"
                             data-toggle="modal" 
                             data-target="#addExercise">
                         <i class="fas fa-dumbbell"></i>
@@ -36,7 +37,7 @@
                     </button>
                 </div>
                 <div class="col-4">
-                    <button class="btn btn-sm btn-primary full-width"
+                    <button class="btn btn-sm btn-primary btn-block"
                         (click)='onSave()'>
                         <i class="fas fa-save"></i>
                         Save
@@ -56,3 +57,5 @@
 </div>
 
 <gym-add-exercise (onAddExercise)='addExercise($event)'></gym-add-exercise>
+
+<gym-back-confirmation navigateTo="/sessions"></gym-back-confirmation>

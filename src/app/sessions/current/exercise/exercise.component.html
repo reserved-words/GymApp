@@ -2,6 +2,8 @@
     <div class="card-header d-flex" (click)="toggleCollapsed()">
         <span>
             {{exercise.type}}
+            <i *ngIf='exercise.done && exercise.nextSessionConfirmed' class="fas fa-check"></i>
+            <i *ngIf='exercise.done && !exercise.nextSessionConfirmed' class="fas fa-exclamation-triangle"></i>
         </span>   
         <span class="ml-auto">
             <i *ngIf='collapsed' class="fas fa-caret-down"></i>
@@ -10,7 +12,6 @@
     </div>
     <div [class]="collapsed ? 'collapse' : 'collapse show'">
         <div class="card-body">
-
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
@@ -48,22 +49,17 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <div class="dropdown" *ngIf='!exercise.done'>
+                        <div class="dropdown">
                             <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Edit Exercise
+                                Edit
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div *ngIf='!exercise.done' class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
                                 <a class="dropdown-item" (click)='addSet()'>Add set</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" (click)='remove()'>Remove from session</a>
                             </div>
-                        </div>
-                        <div class="dropdown" *ngIf='exercise.done && !exercise.nextSessionConfirmed'>
-                            <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Edit Plan
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div *ngIf='exercise.done' class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" (click)='addPlannedWarmUpSet()'>Add warmup set</a>
                                 <a class="dropdown-item" (click)='removePlannedWarmUpSet()'>Remove warmup set</a>
                                 <a class="dropdown-item" (click)='addPlannedSet()'>Add set</a>
@@ -71,7 +67,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" (click)='removeFromPlannedSession()'>Remove from session</a>
                             </div>
-                        </div>  
+                        </div>
                     </div>
                 </div>
                 <div class="row">
