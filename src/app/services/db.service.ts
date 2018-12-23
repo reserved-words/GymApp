@@ -1,6 +1,9 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { throwError } from "rxjs";
+import { HttpErrorResponse, HttpClient } from "@angular/common/http";
+import { throwError, Observable } from "rxjs";
 import { Injectable } from "@angular/core";
+import { ISaveResponse } from "../shared/interfaces/saveResponse";
+import { tap, catchError } from "rxjs/operators";
+import { IQueryResults } from "../shared/interfaces/queryResults";
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +17,43 @@ export class DBService {
     plannedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=3';
     currentSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/currentSession';
     
+    constructor(private http: HttpClient){}
+
     getDocumentUrl(id: string, rev: string = null){
         return this.baseUrl + id + (rev ? ("?rev=" + rev) : "");
+    }
+
+    getList<T>(url: string){
+        return this.http.get<IQueryResults<T>>(url).pipe(
+            tap(data => console.log("Add: " + JSON.stringify(data))),
+            catchError(this.handleError)
+        );
+    }
+
+    getSingle<T>(id: string): Observable<T> {    
+        return this.http
+            .get<T>(this.getDocumentUrl(id))
+            .pipe(
+                tap(data => console.log(JSON.stringify(data))),
+                catchError(this.handleError));
+    }
+
+    insert(data: any): Observable<ISaveResponse> {
+        return this.http
+            .post<ISaveResponse>(this.baseUrl, JSON.stringify(data), {
+                headers: {'Content-Type':'application/json; charset=utf-8'}
+             })
+            .pipe(
+                tap(data => console.log(JSON.stringify(data))),
+                catchError(this.handleError));
+    }
+
+    update(id: string, rev: string, data: any): Observable<ISaveResponse> {
+        return this.http
+            .put<ISaveResponse>(this.getDocumentUrl(id, rev), JSON.stringify(data))
+            .pipe(
+                tap(data => console.log(JSON.stringify(data))),
+                catchError(this.handleError));
     }
 
     handleError(err: HttpErrorResponse){
