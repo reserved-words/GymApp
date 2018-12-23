@@ -8,13 +8,23 @@
             <p>No exercises added yet.</p>
         </div>
         <div *ngIf='hasExercises'>
-            <gym-completed-exercise *ngFor='let item of session.exercises' [exercise]='item'></gym-completed-exercise>
+            <gym-completed-exercise *ngFor='let item of session.exercises' [exercise]='item' [showWarmups]='showWarmups'></gym-completed-exercise>
         </div>
         <div class="footer-buttons">
             <button class="btn btn-sm btn-secondary"
                 (click)='onBack()'>
                 <i class="fas fa-caret-left"></i>
                 Back
+            </button>
+            <button *ngIf='!showWarmups' class="btn btn-sm btn-primary"
+                (click)='toggleWarmups()'>
+                <i class="fas fa-temperature-low"></i>
+                Show Warmups
+            </button>
+            <button *ngIf='showWarmups' class="btn btn-sm btn-primary"
+                (click)='toggleWarmups()'>
+                <i class="fas fa-temperature-low"></i>
+                Hide Warmups
             </button>
         </div>
     </div>

@@ -13,6 +13,7 @@ export class CompletedSessionComponent {
     session: ICompletedSession;
     errorMessage: string;
     hasExercises: boolean;
+    showWarmups: boolean;
 
     constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
         
@@ -35,5 +36,9 @@ export class CompletedSessionComponent {
             response => { if (onSuccess){ onSuccess(response); }},
             error => this.errorMessage = <any>error
         );
+    }
+
+    toggleWarmups(): void {
+        this.showWarmups = !this.showWarmups;
     }
 }

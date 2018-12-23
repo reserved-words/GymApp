@@ -9,7 +9,8 @@ import { ICompletedExercise } from "src/app/shared/interfaces/completed-exercise
 })
 export class CompletedExerciseComponent {
     @Input() exercise: ICompletedExercise;
-    collapsed: boolean = true;
+    @Input() showWarmups: boolean;
+    collapsed: boolean = false;
 
     ngOnInit(): void {
     }
