@@ -14,6 +14,7 @@ export class DBService {
     exercisesUrl: string = this.baseUrl + '_design/exerciseDesignDoc/_view/exercises';
     nextSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=1';
     completedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedSessions?descending=true&limit=3';
+    completedExercisesUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedExercises';
     plannedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=3';
     currentSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/currentSession';
     
@@ -33,6 +34,22 @@ export class DBService {
     getSingle<T>(id: string): Observable<T> {    
         return this.http
             .get<T>(this.getDocumentUrl(id))
+            .pipe(
+                tap(data => console.log(JSON.stringify(data))),
+                catchError(this.handleError));
+    }
+
+    find<T>(url: string, selector: any, sort: any, limit: number): Observable<IQueryResults<T>>{
+        var criteria = {
+            selector: selector,
+            sort: sort,
+            limit: limit
+        };
+
+        return this.http
+            .post<IQueryResults<T>>(this.baseUrl, JSON.stringify(criteria), {
+                headers: {'Content-Type':'application/json; charset=utf-8'}
+             })
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
                 catchError(this.handleError));

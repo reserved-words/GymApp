@@ -7,6 +7,7 @@ import { ICompletedExercise } from "../interfaces/completed-exercise";
 import { ICurrentSet } from "../interfaces/current-set";
 import { ISet } from "../interfaces/set";
 import { IPlannedExercise } from "../interfaces/planned-exercise";
+import { IExercise } from "../interfaces/exercise";
 
 @Injectable({
     providedIn: 'root'
@@ -177,5 +178,37 @@ export class SessionsHelper {
             }
         }
         return [{ quantity: quantity, weight: weight, reps: reps }];
+    }
+
+    convertCompletedToPlannedExercise(completed: ICompletedExercise, type: IExercise){
+        var ex = { 
+            type: type.name,
+            warmup: [],
+            sets: [],
+            minIncrement: type.minIncrement
+        };
+
+        if (completed){
+            var weight = 0;
+            var reps = 0;
+    
+            for (let completedSet of completed.sets){
+                if (completedSet.weight > weight){
+                    weight = completedSet.weight;
+                    reps = completedSet.reps;
+                }
+                else if (completedSet.weight === weight && completedSet.reps > reps){
+                    reps = completedSet.reps;
+                }
+            }
+            
+            ex.warmup = completed.warmup;
+            ex.sets = [{ quantity: type.sets, weight: weight, reps: reps }];
+        }
+        else {
+            ex.sets.push({ quantity: type.sets, weight: type.minWeight, reps: type.minReps })
+        }
+                
+        return ex;
     }
 }

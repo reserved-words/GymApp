@@ -32,6 +32,12 @@
             </div>
             <div class="row form-group">
                 <div class="col-12">
+                    <label for="minWeight" class="control-label">Minimum Weight</label>
+                    <input [(ngModel)]='exercise.minWeight' type="number" name="minWeight" class="form-control" />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
                     <label for="MinIncrement" class="control-label">Minimum Weight Increment</label>
                     <input [(ngModel)]='exercise.minIncrement' type="number" name="MinIncrement" class="form-control" />
                 </div>

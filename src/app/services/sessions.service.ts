@@ -7,6 +7,7 @@ import { ISession } from "src/app/shared/interfaces/session";
 import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
 import { DBService } from "./db.service";
 import { Injectable } from "@angular/core";
+import { ICompletedExercise } from "../shared/interfaces/completed-exercise";
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +23,14 @@ export class SessionsService {
     getCompletedSessions(): Observable<IQueryResults<ICompletedSession>>{
         return this.db.getList<ICompletedSession>(this.db.completedSessionsUrl);
     };
+
+    getLastSession(exerciseType: string): Observable<IQueryResults<ICompletedExercise>>{
+        return this.db.find(
+            this.db.completedExercisesUrl, 
+            { "type": exerciseType },
+            [ { started : "desc"} ],
+            1);
+    }
 
     getCurrentSession(): Observable<IQueryResults<ICurrentSession>>{
         return this.db.getList<ICurrentSession>(this.db.currentSessionUrl);

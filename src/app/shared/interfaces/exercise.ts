@@ -7,6 +7,7 @@ export interface IExercise {
     minReps: number;
     maxReps: number;
     sets: number;
+    minWeight: number;
     minIncrement: number;
     frequency: Frequency;
 }

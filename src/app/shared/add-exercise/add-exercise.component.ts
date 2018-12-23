@@ -2,6 +2,9 @@ import { Component, Output, EventEmitter } from "@angular/core";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { IExercise } from "../interfaces/exercise";
 import { Observable } from "rxjs";
+import { SessionsService } from "src/app/services/sessions.service";
+import { SessionsHelper } from "../helpers/sessions.helper";
+import { IPlannedExercise } from "../interfaces/planned-exercise";
 
 @Component({
     selector: 'gym-add-exercise',
@@ -13,7 +16,7 @@ export class AddExerciseComponent{
     exercises: IExercise[];
     @Output() onAddExercise: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor(private exercisesService: ExercisesService){}
+    constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
 
     ngOnInit(){
         this.subscribe(this.exercisesService.getExercises(), r => {
@@ -23,11 +26,15 @@ export class AddExerciseComponent{
 
     addExercise():void {
         var exerciseType = this.exercises.filter(ex => ex.name === this.addExerciseType)[0];
-        // Get last instance of this exercise to determine warmups etc
-        var ex = { type: exerciseType.name, warmup: [], sets: [], minIncrement: exerciseType.minIncrement };
-        ex.sets.push({ quantity: 5, reps: 5, weight: exerciseType.minIncrement });
-        this.addExerciseType = null;
-        this.onAddExercise.emit(ex);
+        this.subscribe(this.sessionsService.getLastSession(this.addExerciseType), r => 
+        {
+            var lastSession = r.total_rows > 0
+                ? r.rows.map(r => r.value)[0]
+                : null;
+            var plannedExercise = this.helper.convertCompletedToPlannedExercise(lastSession, exerciseType);
+            this.addExerciseType = null;
+            this.onAddExercise.emit(plannedExercise);
+        });
     }
 
     subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {
