@@ -2,28 +2,75 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
-button.square {
-  width: 2rem;
+div.card-body {
+  padding: 0;
+}
+
+div.container-fluid {
+  margin: 0;
+  padding: 0.5rem;
+}
+
+div.container-fluid div.row {
+  margin: 0;
+  padding: 0 0 0.5rem 0;
+}
+
+div.container-fluid div.row:last-child {
+  padding-bottom: 0;
+}
+
+div.container-fluid div.row > div {
+  padding: 0 0.5rem 0 0;
+}
+
+div.container-fluid div.row > div:last-child {
+  padding-right: 0;
+}
+
+div.card-body {
+  padding: 0;
 }
 
 div.table {
   display: table;
   width: 100%;
   margin: 0;
-  padding: 0;
+  /* padding: 0.5rem; */
 }
 
 div.table-row {
   display: table-row;
   padding: 0;
+  padding-bottom: 0.5rem;
   margin: 0;
   vertical-align: middle;
+  width: 100%;
+}
+
+div.table div.table-row:last-child {
+  padding-bottom: 0;
 }
 
 div.table-cell {
   display: table-cell;
   text-align: left;
   vertical-align: middle;
+  padding: 0;
+  padding-right: 0.5rem;
+}
+
+div.table-cell-min-width {
+  width: 1px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+div.table-row div.table-cell:last-child {
+  text-align: center;
+  padding-right: 0;
 }
 
 div.table-row-center div.table-cell {
@@ -45,10 +92,6 @@ div.footer-buttons button {
 
 div.footer-buttons button:last-child {
   margin: 0.5rem 0 0.5rem 0;
-}
-
-div.card {
-  margin-bottom: 1rem;
 }
 
 i.fa-times {

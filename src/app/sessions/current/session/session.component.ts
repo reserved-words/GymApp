@@ -11,8 +11,7 @@ import { Observable } from "rxjs";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 
 @Component({
-    templateUrl: "session.component.html",
-    styleUrls: ["session.component.css"]
+    templateUrl: "session.component.html"
 })
 export class CurrentSessionComponent {
     pageTitle: string = "Session";

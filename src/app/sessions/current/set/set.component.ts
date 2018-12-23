@@ -4,8 +4,7 @@ import { ICurrentSet } from "src/app/shared/interfaces/current-set";
 
 @Component({
     selector: 'gym-current-set',
-    templateUrl: 'set.component.html',
-    styleUrls: ['set.component.css']
+    templateUrl: 'set.component.html'
 })
 export class CurrentSetComponent {
     @Input() set: ICurrentSet;

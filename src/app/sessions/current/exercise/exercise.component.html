@@ -1,4 +1,4 @@
-<div class="card mt-1">
+<div class="card">
     <div class="card-header d-flex" (click)="toggleCollapsed()">
         <span>
             {{exercise.type}}
@@ -9,66 +9,85 @@
         </span>     
     </div>
     <div [class]="collapsed ? 'collapse' : 'collapse show'">
-        <div class="card-body p-0">
+        <div class="card-body">
 
-            <div *ngIf='!exercise.done'>
-                <div *ngFor='let set of exercise.warmup'>
-                    <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div *ngIf='!exercise.done'>
+                            <div *ngFor='let set of exercise.warmup' class="row">
+                                <div class="col-12">
+                                    <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
+                                </div>
+                            </div>
+                            <div *ngFor='let set of exercise.sets' class="row">
+                                <div class="col-12">
+                                        <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
                 </div>
-                <div *ngFor='let set of exercise.sets'>
-                    <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
+                <div class="row" *ngIf='exercise.done'>
+                    <div class="col-12">
+                        <div *ngFor='let set of completedExercise.warmup' class="row">
+                            <div class="col-12">
+                                <gym-completed-set [set]='set'></gym-completed-set>
+                            </div>
+                        </div>
+                        <div *ngFor='let set of completedExercise.sets' class="row">
+                            <div class="col-12">
+                                <gym-completed-set [set]='set'></gym-completed-set>
+                            </div>
+                        </div>   
+                        
+                        <div *ngIf='!exercise.nextSessionConfirmed'>
+                            <gym-next-session-exercise *ngIf='exercise.nextSession' [exercise]='exercise.nextSession'></gym-next-session-exercise>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="dropdown" *ngIf='!exercise.done'>
+                            <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Edit Exercise
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
+                                <a class="dropdown-item" (click)='addSet()'>Add set</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" (click)='remove()'>Remove from session</a>
+                            </div>
+                        </div>
+                        <div class="dropdown" *ngIf='exercise.done && !exercise.nextSessionConfirmed'>
+                            <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Edit Plan
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" (click)='addPlannedWarmUpSet()'>Add warmup set</a>
+                                <a class="dropdown-item" (click)='removePlannedWarmUpSet()'>Remove warmup set</a>
+                                <a class="dropdown-item" (click)='addPlannedSet()'>Add set</a>
+                                <a class="dropdown-item" (click)='removePlannedSet()'>Remove set</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" (click)='removeFromPlannedSession()'>Remove from session</a>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button *ngIf='!exercise.done' type="button" class="btn btn-sm btn-success btn-block" (click)='markDone()'>
+                            Complete Exercise
+                        </button>
+                        <button *ngIf='exercise.done && !exercise.nextSessionConfirmed' type="button" class="btn btn-sm btn-block btn-success" (click)='confirmPlannedSession()'>
+                            Confirm
+                        </button>
+                        <button *ngIf='exercise.done && exercise.nextSessionConfirmed' type="button" class="btn btn-sm btn-block btn-secondary" (click)='markNotDone()'>
+                            Edit
+                        </button>
+                    </div>
                 </div>
             </div>
-            
-            <div *ngIf='exercise.done'>
-                <div *ngFor='let set of completedExercise.warmup'>
-                    <gym-completed-set [set]='set'></gym-completed-set>
-                </div>
-                <div *ngFor='let set of completedExercise.sets'>
-                    <gym-completed-set [set]='set'></gym-completed-set>
-                </div>   
-                
-                <div *ngIf='!exercise.nextSessionConfirmed'>
-                    <gym-next-session-exercise *ngIf='exercise.nextSession' [exercise]='exercise.nextSession'></gym-next-session-exercise>
-                </div>
-            </div>
-
-            <div class="dropdown" *ngIf='!exercise.done'>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Options
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
-                  <a class="dropdown-item" (click)='addSet()'>Add set</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" (click)='remove()'>Remove from session</a>
-                </div>
-            </div>
-
-            <button *ngIf='!exercise.done' type="button" class="btn" (click)='markDone()'>
-                <i class="fas fa-check"></i>
-            </button>
-
-            <button *ngIf='exercise.done && !exercise.nextSessionConfirmed' type="button" class="btn" (click)='confirmPlannedSession()'>
-                <i class="fas fa-check"></i>
-            </button>
-
-            <div class="dropdown" *ngIf='exercise.done'>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Options
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" (click)='addPlannedWarmUpSet()'>Add warmup set</a>
-                  <a class="dropdown-item" (click)='removePlannedWarmUpSet()'>Remove warmup set</a>
-                  <a class="dropdown-item" (click)='addPlannedSet()'>Add set</a>
-                  <a class="dropdown-item" (click)='removePlannedSet()'>Remove set</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" (click)='removeFromPlannedSession()'>Remove from session</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" (click)='markNotDone()'>Session not done</a>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>

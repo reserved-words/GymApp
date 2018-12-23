@@ -3,30 +3,46 @@
         <i class="far fa-file"></i>
         Planned Session
     </div>
-    <div class="card-body p-2">
-        <div *ngIf='!hasExercises' class="p-3">
-            <p>No exercises added yet.</p>
-        </div>
-        <div *ngIf='hasExercises'>
-            <gym-planned-exercise *ngFor='let item of session.exercises' [exercise]='item' (removeFromSession)='removeExercise($event)'></gym-planned-exercise>
-        </div>
-        <div class="footer-buttons">
-            <button class="btn btn-sm btn-secondary"
-                (click)='onBack()'>
-                <i class="fas fa-caret-left"></i>
-                Back
-            </button>
-            <button class="btn btn-primary btn-sm"
-                    data-toggle="modal" 
-                    data-target="#addExercise">
-                    <i class="fas fa-dumbbell"></i>
-                Add
-            </button>
-            <button class="btn btn-sm btn-primary"
-                    (click)='onSave()'>
-                    <i class="fas fa-save"></i>
-                    Save
-            </button>
+    <div class="card-body">
+        <div class="container-fluid">
+            <div class="row" *ngIf='!hasExercises'>
+                <div class="col-12">
+                    <p>No exercises added yet.</p>
+                </div>
+            </div>
+            <div class="row" *ngIf='hasExercises'>
+                <div class="col-12">
+                    <div class="row" *ngFor='let item of session.exercises'>
+                        <div class="col-12">
+                            <gym-planned-exercise [exercise]='item' (removeFromSession)='removeExercise($event)'></gym-planned-exercise>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <button class="btn btn-sm btn-secondary full-width"
+                        (click)='onBack()'>
+                        <i class="fas fa-caret-left"></i>
+                        Back
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-primary btn-sm full-width"
+                            data-toggle="modal" 
+                            data-target="#addExercise">
+                        <i class="fas fa-dumbbell"></i>
+                        Add
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-sm btn-primary full-width"
+                        (click)='onSave()'>
+                        <i class="fas fa-save"></i>
+                        Save
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

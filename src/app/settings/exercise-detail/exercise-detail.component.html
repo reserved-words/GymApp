@@ -50,17 +50,21 @@
                     </select>
                 </div>
             </div>
-            <div class="footer-buttons">
-                <button class="btn btn-secondary btn-sm"
-                    (click)='onBack()'>
-                    <i class="fas fa-caret-left"></i>
-                    Back
-                </button>
-                <button class="btn btn-primary btn-sm"
-                    (click)='onSave()'>
-                    <i class="fas fa-save"></i>
-                    Save
-                </button>
+            <div class="row">
+                <div class="col-6">
+                    <button class="btn btn-secondary btn-sm btn-block"
+                        (click)='onBack()'>
+                        <i class="fas fa-caret-left"></i>
+                        Back
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-primary btn-sm btn-block"
+                        (click)='onSave()'>
+                        <i class="fas fa-save"></i>
+                        Save
+                    </button>   
+                </div>
             </div>
         </form>
     </div>

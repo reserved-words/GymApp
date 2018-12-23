@@ -30,7 +30,7 @@ export class SessionsHelper {
                     });
                 }
                 else {
-                    sets.push({ reps: 1, weight: def.minIncrement, quantity: 1 });
+                    sets.push({ reps: def.minReps, weight: def.minIncrement, quantity: 1 });
                 }
             }
         );
@@ -49,7 +49,7 @@ export class SessionsHelper {
                     });
                 }
                 else {
-                    sets.push({ reps: 1, weight: def.minWeight, done: false });
+                    sets.push({ reps: def.minReps, weight: def.minWeight, done: false });
                 }        
             }
         );
@@ -173,8 +173,6 @@ export class SessionsHelper {
     }
 
     convertCurrentToPlannedSets(currentSets: ICurrentSet[]): ISet[] {
-        // Only one set should be returned, and should be dependent on exercise definition, but for now just use completed session data - use best set
-
         var quantity = currentSets.length;
         var weight = 0;
         var reps = 0;

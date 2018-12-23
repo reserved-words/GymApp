@@ -29,7 +29,7 @@ export class PlannedExerciseComponent {
                     });
                 }
                 else {
-                    this.exercise.warmup.push({ reps: 1, weight: def.minWeight, quantity: 1 });
+                    this.exercise.warmup.push({ reps: def.minReps, weight: def.minWeight, quantity: 1 });
                 }        
             },
             error => alert(<any>error)

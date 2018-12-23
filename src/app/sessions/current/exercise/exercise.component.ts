@@ -5,8 +5,7 @@ import { ICompletedExercise } from "src/app/shared/interfaces/completed-exercise
 
 @Component({
     selector: 'gym-current-exercise',
-    templateUrl: 'exercise.component.html',
-    styleUrls: ['exercise.component.css']
+    templateUrl: 'exercise.component.html'
 })
 export class CurrentExerciseComponent {
     @Input() exercise: ICurrentExercise;
@@ -56,6 +55,7 @@ export class CurrentExerciseComponent {
     }
     confirmPlannedSession() {
         this.exercise.nextSessionConfirmed = true;
+        this.collapsed = true;
     }
     removeFromPlannedSession(){
         alert("Not implemented yet");
