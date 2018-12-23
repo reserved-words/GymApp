@@ -1,7 +1,10 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { IExercise } from "../../shared/interfaces/exercise";
-import { ExerciseDetailService } from "./exercise-detail.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { IDropdownOption } from "src/app/shared/interfaces/dropdown-option";
+import { DropdownHelper } from "src/app/shared/helpers/dropdown.helper";
+import { ExercisesService } from "src/app/services/exercises.service";
+import { Observable } from "rxjs";
 
 @Component({
     templateUrl: './exercise-detail.component.html',
@@ -11,17 +14,16 @@ export class ExerciseDetailComponent implements OnInit {
     pageTitle: string = 'Edit Exercise';
     exercise: IExercise;
     errorMessage: string;
+    frequencyOptions: IDropdownOption[]
 
-    constructor(private service: ExerciseDetailService, private route: ActivatedRoute, private router: Router){
+    constructor(private service: ExercisesService, private route: ActivatedRoute, private router: Router, private dropdowns: DropdownHelper){
+        this.frequencyOptions = dropdowns.getFrequencyOptions();
     }
 
     ngOnInit(): void {
         let id = this.route.snapshot.paramMap.get('id');
 
-        this.service.getExercise(id).subscribe(
-            ex => this.exercise = ex,
-            error => this.errorMessage = <any>error
-        );
+        this.subscribe(this.service.getExercise(id), ex => this.exercise = ex);
     }
 
     onBack(): void {
@@ -29,7 +31,13 @@ export class ExerciseDetailComponent implements OnInit {
     }
     
     onSave(): void {
-        // save
-        this.router.navigate(['/settings']);
+        this.subscribe(this.service.updateExercise(this.exercise), r => this.router.navigate(['/settings']));
+    }
+
+    subscribe<T>(obs: Observable<T>, onSuccess: Function): void {
+        obs.subscribe(
+            response => onSuccess(response),
+            error => this.errorMessage = <any>error
+        );
     }
 }

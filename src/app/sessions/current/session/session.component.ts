@@ -1,69 +1,157 @@
-import { Component, Input } from "@angular/core";
-import { CurrentSessionService } from "../../../services/sessions/current-session.service";
+import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
+import { SessionsService } from "src/app/services/sessions.service";
+import { ICurrentSession } from "src/app/shared/interfaces/current-session";
+import { SessionsHelper } from "src/app/shared/helpers/sessions.helper";
+import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
+import { ExercisesService } from "src/app/services/exercises.service";
+import { Frequency } from "src/app/shared/enums/frequency.enum";
+import { Observable } from "rxjs";
+import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 
 @Component({
-    templateUrl: "session.component.html",
-    styleUrls: ["session.component.css"]
+    templateUrl: "session.component.html"
 })
 export class CurrentSessionComponent {
     pageTitle: string = "Session";
-    exercises: ICurrentExercise[] = [];
     errorMessage: string;
-    hasExercises: boolean;
-    timeStarted: Date;
-    timeCompleted: Date;
+    session: ICurrentSession;
 
-    constructor(private service: CurrentSessionService, private route: ActivatedRoute, private router: Router){        
+    constructor(private service: SessionsService, private helper: SessionsHelper, 
+        private route: ActivatedRoute, private router: Router, private exercisesService: ExercisesService){        
     }
 
     ngOnInit(){
-        this.service.getNextSession().subscribe(
-            s => {
-                this.createExercises(s.rows[0].value);
-                this.timeStarted = new Date();    
-            },
-            error => this.errorMessage = <any>error
-        );
+        let id = this.route.snapshot.paramMap.get('id');
+        if (id) {
+            this.subscribe(this.service.getSession<ICurrentSession>(id), s => {
+                this.session = s
+            });
+        }
+        else {
+            this.subscribe(this.service.getNextSession(), s => {
+                this.session = this.helper.createCurrentSession(s.rows[0].value);
+            });
+        }
     }
 
-    createExercises(planned: IPlannedSession): void {
-        for (var i in planned.exercises){
-            var ex = planned.exercises[i];
-            var newEx = { type: ex.type, minIncrement: ex.minIncrement, warmup: [], sets: [], done: false };
-            for (var j in ex.warmup){
-                var w = ex.warmup[j];
-                for (var k = 0; k < w.quantity; k++){
-                    newEx.warmup.push({ reps: w.reps, weight: w.weight, done: false });
-                }
-            }
-            for (var m in ex.sets){
-                var w = ex.sets[m];
-                for (var n = 0; n < w.quantity; n++){
-                    newEx.sets.push({ reps: w.reps, weight: w.weight, done: false });
-                }
-            }
-            this.exercises.push(newEx);
-        }
-        this.hasExercises = this.exercises.length > 0;
+    addExercise(exerciseToAdd: ICurrentExercise):void {
+        this.session.exercises.push(exerciseToAdd);
     }
-    addExercise():void {
-        this.exercises.push({ "type" : "?", "warmup": [], "sets": [], "minIncrement": 2.5, "done": false });
-        this.hasExercises = true;
-    }
+    
     markComplete(): void {
-        this.timeCompleted = new Date();
-        alert("Add a check to confirm completion");
-        // Save as completed session
-        this.router.navigate(['/sessions']);
+        // Add a check to confirm completion
+
+        for (var i in this.session.exercises){
+            if (!this.session.exercises[i].done || !this.session.exercises[i].nextSessionConfirmed){
+                alert("Mark all exercises as done and confirm next session plans first");
+                return;
+            }
+        }
+
+        this.subscribe(this.service.updateSession<ICurrentSession>(this.session._id, this.session),
+            s => {
+                this.session._rev = s.rev;
+                this.completeAndPlanNextSessions();
+            });
     }
     onBack(): void {
+        alert("Add a check to confirm losing changes");
         this.router.navigate(['/sessions']);
     }
     onSave(): void {
-        // Save
-        this.router.navigate(['/sessions']);
+        this.service.updateSession<ICurrentSession>(this.session._id, this.session).subscribe(
+            s => this.session._rev = s.rev,
+            error => this.handleError(error)
+        );
+    }
+    handleError(error: any){
+        this.errorMessage = <any>error;
+        alert(this.errorMessage);
+    }
+
+    completeAndPlanNextSessions() {
+        this.subscribe(this.service.getPlannedSessions(),
+            results => {
+                var plannedSessions = results.rows.map(r => r.value);
+
+                var index = plannedSessions.length > 0 ? plannedSessions[plannedSessions.length-1].index : 0;
+                while (plannedSessions.length < 3){
+                    index++;
+                    plannedSessions.push({ _id: null, _rev: null, type: "planned-session", index: index, exercises: [] });
+                }
+
+                this.subscribe(this.service.getCompletedSessions(1), lastSessions => {
+                    var lastSession = lastSessions.rows.map(r => r.value)[0];
+                    this.subscribe(this.exercisesService.getExercises(), exercises => {
+                        for (let ex of this.session.exercises){
+                            
+                            var def = exercises.rows.map(r => r.value).filter(r => r.name === ex.type)[0];
+        
+                            var nextSessionIndex =
+                                (def.frequency == Frequency.EverySession ? 1 :
+                                (def.frequency == Frequency.EveryOtherSession ? 2 :
+                                (def.frequency == Frequency.EveryThirdSession ? 3 : 1)));
+        
+                            if (def.frequency == Frequency.TwoInEveryThreeSessions){
+                                var exerciseInLastSession = lastSession.exercises.filter(ex => ex.type === def.name);
+                                var doneInPreviousSession = exerciseInLastSession.length > 0;                        
+                                nextSessionIndex = doneInPreviousSession ? 2 : 1;
+                            }
+        
+                            var nextSession = plannedSessions[nextSessionIndex-1];
+                            nextSession.exercises.push(ex.nextSession);
+                        }
+        
+                        // Need to know when ALL save processes finished so can return to home page
+                        this.saveSessions(plannedSessions);
+                    })    
+                })
+            }
+        );
+    }
+
+    saveSessions(plannedSessions: IPlannedSession[]){
+        // Need to know when ALL save processes finished so can return to home page
+        for (let session of plannedSessions){
+            this.savePlannedSession(session);
+        }
+        this.saveCompletedSession();
+    }
+
+    savePlannedSession(session: IPlannedSession): void {
+        if (session._id){
+            this.subscribe(this.service.updateSession(session._id, session));
+        }
+        else {
+            this.subscribe(this.service.insertSession(session));
+        }
+    }
+    saveCompletedSession():void {
+        var completedSession = this.helper.completeCurrentSession(this.session);
+        this.service.updateSession<ICompletedSession>(this.session._id, completedSession).subscribe(
+            s => { 
+                // this.router.navigate(['/sessions']) - only when all saved
+            }, 
+            error => this.handleError(error)
+        );
+    }
+    removeExercise(exerciseType: string):void {
+        var updatedList = [];
+        for (var i in this.session.exercises){
+            var ex = this.session.exercises[i];
+            if (ex.type != exerciseType){
+                updatedList.push(ex);
+            }
+        }
+        this.session.exercises = updatedList;
+    }
+    
+    subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {
+        obs.subscribe(
+            response => { if (onSuccess){ onSuccess(response); }},
+            error => this.errorMessage = <any>error
+        );
     }
 }

@@ -1,36 +1,58 @@
 <div class="card">
-    <div class="card-header icon-text">
+    <div class="card-header icon-text" *ngIf='session'>
         <i class="far fa-calendar-alt"></i>
-        {{timeStarted | date:'EEE dd/LL/yyyy HH\:mm'}}
+        {{session.started | date:'EEE dd/LL/yyyy HH\:mm'}}
     </div>
-    <div class="card-body p-2">
-        <div *ngIf='!hasExercises' class="p-3">
-            <p>No exercises added yet.</p>
-        </div>
-        <div *ngIf='hasExercises'>
-            <gym-current-exercise *ngFor='let item of exercises' [exercise]='item'></gym-current-exercise>
-        </div>
-        <div class="footer-buttons">
-            <button class="btn btn-sm btn-secondary"
-                (click)='onBack()'>
-                <i class="fas fa-caret-left"></i>
-                Back
-            </button>
-            <button class="btn btn-primary btn-sm"
-                    (click)='addExercise()'>
-                <i class="fas fa-dumbbell"></i>
-                Add
-            </button>
-            <button class="btn btn-sm btn-primary"
-                    (click)='onSave()'>
-                    <i class="fas fa-save"></i>
-                    Save
-            </button>
-            <button class="btn btn-sm btn-success"
-                    (click)='markComplete()'>
-                    <i class="fas fa-check"></i>
-                Complete
-            </button>
+    <div class="card-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div *ngIf='session && session.exercises && session.exercises.length === 0' class="p-3">
+                        <p>No exercises added yet.</p>
+                    </div>
+                    <div *ngIf='session && session.exercises && session.exercises.length > 0'>
+                        <div class="row" *ngFor='let item of session.exercises'>
+                            <div class="col-12">
+                                <gym-current-exercise [exercise]='item' (removeFromSession)='removeExercise($event)'></gym-current-exercise>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <button class="btn btn-sm btn-secondary full-width"
+                        (click)='onBack()'>
+                        <i class="fas fa-caret-left"></i>
+                        Back
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-primary btn-sm full-width"
+                            data-toggle="modal" 
+                            data-target="#addExercise">
+                        <i class="fas fa-dumbbell"></i>
+                        Add
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button class="btn btn-sm btn-primary full-width"
+                        (click)='onSave()'>
+                        <i class="fas fa-save"></i>
+                        Save
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-sm btn-block btn-success"
+                        (click)='markComplete()'>
+                        Complete Session
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<gym-add-exercise (onAddExercise)='addExercise($event)'></gym-add-exercise>

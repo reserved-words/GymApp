@@ -1,0 +1,9 @@
+<hr />
+<h5>Next Session</h5>
+
+<div *ngFor='let set of exercise.warmup' class="p-2">
+    <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+</div>
+<div *ngFor='let set of exercise.sets' class="p-2" style="background-color: silver;">
+    <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+</div>

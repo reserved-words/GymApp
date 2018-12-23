@@ -3,19 +3,43 @@
         <i class="far fa-calendar-alt"></i>
         {{session.started | date:'EEE dd/LL/yyyy HH\:mm'}}
     </div>
-    <div class="card-body p-2">
-        <div *ngIf='!hasExercises' class="p-3">
-            <p>No exercises added yet.</p>
-        </div>
-        <div *ngIf='hasExercises'>
-            <gym-completed-exercise *ngFor='let item of session.exercises' [exercise]='item'></gym-completed-exercise>
-        </div>
-        <div class="footer-buttons">
-            <button class="btn btn-sm btn-secondary"
-                (click)='onBack()'>
-                <i class="fas fa-caret-left"></i>
-                Back
-            </button>
+    <div class="card-body">
+        <div class="container-fluid">
+            <div *ngIf='!hasExercises' class="row">
+                <div class="col-12">
+                    <p>No exercises added yet.</p>
+                </div>
+            </div>
+            <div class="row" *ngIf='hasExercises'>
+                <div class="col-12">
+                    <div *ngFor='let item of session.exercises' class="row">
+                        <div class="col-12">
+                            <gym-completed-exercise [exercise]='item' [showWarmups]='showWarmups'></gym-completed-exercise>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <button class="btn btn-sm btn-secondary btn-block"
+                        (click)='onBack()'>
+                        <i class="fas fa-caret-left"></i>
+                        Back
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button *ngIf='!showWarmups' class="btn btn-sm btn-primary btn-block"
+                        (click)='toggleWarmups()'>
+                        <i class="fas fa-temperature-low"></i>
+                        Show Warmups
+                    </button>
+                    <button *ngIf='showWarmups' class="btn btn-sm btn-primary btn-block"
+                        (click)='toggleWarmups()'>
+                        <i class="fas fa-temperature-low"></i>
+                        Hide Warmups
+                    </button>
+                </div>                
+            </div>
         </div>
     </div>
 </div>

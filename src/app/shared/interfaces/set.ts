@@ -1,5 +1,7 @@
+import { ISet } from "./set";
+
 export interface ISet {
-    reps: number;
     weight: number;
+    reps: number;
     quantity: number;
 }

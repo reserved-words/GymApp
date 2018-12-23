@@ -1,7 +1,9 @@
-import { Component, Input } from "@angular/core";
-import { PlannedSessionService } from "../../../services/sessions/planned-session.service";
+import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
+import { SessionsService } from "src/app/services/sessions.service";
+import { Observable } from "rxjs";
+import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 
 @Component({
     templateUrl: "session.component.html",
@@ -13,29 +15,22 @@ export class PlannedSessionComponent {
     errorMessage: string;
     hasExercises: boolean;
 
-    constructor(private service: PlannedSessionService, private route: ActivatedRoute, private router: Router){
-        
+    constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
     }
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
-        this.service.getSession(id).subscribe(
-            s => {
-                this.session = s;
-                this.hasExercises = this.session.exercises.length > 0;
-            },
-            error => this.errorMessage = <any>error
-        );
+        this.subscribe(this.service.getSession<IPlannedSession>(id), s => {
+            this.session = s;
+            this.hasExercises = this.session.exercises.length > 0;
+        });
     }
 
-    addExercise():void {
-        // Show popup with exercise type dropdown
-        // If exercise type already added, prevent
-        var ex = { type: "?", warmup: [], sets: [], minIncrement: 2.5 };
-        ex.sets.push({ quantity: 5, reps: 5, weight: 10 });
-        this.session.exercises.push(ex);
+    addExercise(exerciseToAdd: IPlannedExercise):void {
+        this.session.exercises.push(exerciseToAdd);
         this.hasExercises = true;
     }
+
     removeExercise(exerciseType: string):void {
         var updatedList = [];
         for (var i in this.session.exercises){
@@ -50,7 +45,15 @@ export class PlannedSessionComponent {
         this.router.navigate(['/sessions']);
     }
     onSave(): void {
-        // save
-        this.router.navigate(['/sessions']);
+        this.subscribe(this.service.updateSession(this.session._id, this.session), s => {
+            this.router.navigate(['/sessions']);
+        });
+    }
+
+    subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {
+        obs.subscribe(
+            response => { if (onSuccess){ onSuccess(response); }},
+            error => this.errorMessage = <any>error
+        );
     }
 }
