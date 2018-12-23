@@ -12,54 +12,44 @@
     </div>
     <div [class]="collapsed ? 'collapse' : 'collapse show'">
         <div class="card-body">
+            <table class="table" *ngIf='!exercise.done'>
+                <tr *ngFor='let item of exercise.warmup; let i = index' [class]="'text-center bg-warmup' + i">
+                    <gym-current-set [set]='item' [stepSize]='exercise.minIncrement'></gym-current-set>
+                </tr>
+                <tr *ngFor='let set of exercise.sets' class="text-center bg-set">
+                    <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
+                </tr> 
+            </table>
+            <table class="table" *ngIf='exercise.done'>
+                <tr *ngFor='let set of completedExercise.warmup; let i = index' [class]="'text-center bg-warmup' + i">
+                    <gym-completed-set [set]='set'></gym-completed-set>
+                </tr>
+                <tr *ngFor='let set of completedExercise.sets' class="text-center bg-set">
+                    <gym-completed-set [set]='set'></gym-completed-set>
+                </tr>  
+            </table>
+
+            <gym-next-session-exercise *ngIf='exercise.nextSession && !exercise.nextSessionConfirmed' [exercise]='exercise.nextSession'></gym-next-session-exercise>
+
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div *ngIf='!exercise.done'>
-                            <div *ngFor='let set of exercise.warmup' class="row">
-                                <div class="col-12">
-                                    <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
-                                </div>
-                            </div>
-                            <div *ngFor='let set of exercise.sets' class="row">
-                                <div class="col-12">
-                                        <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
-                                </div>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-                <div class="row" *ngIf='exercise.done'>
-                    <div class="col-12">
-                        <div *ngFor='let set of completedExercise.warmup' class="row">
-                            <div class="col-12">
-                                <gym-completed-set [set]='set'></gym-completed-set>
-                            </div>
-                        </div>
-                        <div *ngFor='let set of completedExercise.sets' class="row">
-                            <div class="col-12">
-                                <gym-completed-set [set]='set'></gym-completed-set>
-                            </div>
-                        </div>   
-                        
-                        <div *ngIf='!exercise.nextSessionConfirmed'>
-                            <gym-next-session-exercise *ngIf='exercise.nextSession' [exercise]='exercise.nextSession'></gym-next-session-exercise>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="dropdown">
+                        <div class="dropdown" *ngIf='!exercise.done'>
                             <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Edit
                             </button>
-                            <div *ngIf='!exercise.done' class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
                                 <a class="dropdown-item" (click)='addSet()'>Add set</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" (click)='remove()'>Remove from session</a>
                             </div>
-                            <div *ngIf='exercise.done' class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        </div>
+                        <div class="dropdown" *ngIf='exercise.done'>
+                            <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Edit
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" (click)='addPlannedWarmUpSet()'>Add warmup set</a>
                                 <a class="dropdown-item" (click)='removePlannedWarmUpSet()'>Remove warmup set</a>
                                 <a class="dropdown-item" (click)='addPlannedSet()'>Add set</a>

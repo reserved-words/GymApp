@@ -1,30 +1,19 @@
 
-<div class="row">
-  <div class="col-12">
-      <div class="table">
-        <div class="table-row">
-            <div class="table-cell" style="width: 29%;">
-              <gym-num [value]='set.quantity' [stepSize]='1' (valueChanged)='onQuantityValueChanged($event)'></gym-num>
-            </div>
-            <div class="table-cell">
-              <i class="fas fa-times" style="min-width: 5%; text-align: center;"></i>
-            </div>
-            <div class="table-cell" style="width: 29%;">
-                <gym-num [value]='set.reps' [stepSize]='1' (valueChanged)='onRepsValueChanged($event)'></gym-num>
-            </div>
-            <div class="table-cell" style="min-width: 5%; text-align: center;">
-                <i class="fas fa-times"></i>
-            </div>
-            <div class="table-cell" style="width: 34%;">
-              <gym-num [value]='set.weight' [stepSize]='stepSize' (valueChanged)='onWeightValueChanged($event)'></gym-num>
-            </div>
-        </div>
-      </div>
-  </div>
-</div>
-
-
-
+<td style="width: 29%;">
+  <gym-num [value]='set.quantity' [stepSize]='1' (valueChanged)='onQuantityValueChanged($event)'></gym-num>
+</td>
+<td class="min-width">
+  <i class="fas fa-times" style="min-width: 5%; text-align: center;"></i>
+</td>
+<td style="width: 29%;">
+    <gym-num [value]='set.reps' [stepSize]='1' (valueChanged)='onRepsValueChanged($event)'></gym-num>
+</td>
+<td class="min-width">
+    <i class="fas fa-times"></i>
+</td>
+<td style="width: 34%;">
+  <gym-num [value]='set.weight' [stepSize]='stepSize' (valueChanged)='onWeightValueChanged($event)'></gym-num>
+</td>
 
 
 

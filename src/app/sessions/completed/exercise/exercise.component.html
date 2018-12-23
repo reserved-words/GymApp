@@ -10,22 +10,14 @@
     </div>
     <div [class]="collapsed ? 'collapse' : 'collapse show'">
         <div class="card-body">
-            <div class="container-fluid">
-                <div class="row" *ngIf='showWarmups'>
-                    <div class="col-12">
-                        <div class="row" *ngFor='let set of exercise.warmup'>
-                            <div class="col-12">
-                                <gym-completed-set [set]='set'></gym-completed-set>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" *ngFor='let set of exercise.sets'>
-                    <div class="col-12">
-                        <gym-completed-set [set]='set'></gym-completed-set>
-                    </div>
-                </div>
-            </div>
+            <table class="table m-0">
+                <tr *ngFor='let set of warmups; let i = index' [class]="'text-center bg-warmup' + i">
+                    <gym-completed-set [set]='set'></gym-completed-set>
+                </tr>
+                <tr *ngFor='let set of exercise.sets' class="bg-set text-center">
+                    <gym-completed-set [set]='set'></gym-completed-set>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
