@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { SessionsService } from "../../services/sessions.service";
 import { Router } from "@angular/router";
 import { ICompletedSession } from "../../shared/interfaces/completed-session";
+import { Observable } from "rxjs";
 
 @Component({
     templateUrl: 'main.component.html',
@@ -36,24 +37,22 @@ export class SessionsMainComponent {
     }
 
     ngOnInit(): void {
-        this.service.getCompletedSessions().subscribe(
-            result => this.completed = result.rows.map(r => r.value),
-            error => this.errorMessage = <any>error
-        );
-        this.service.getPlannedSessions().subscribe(
-            result => {
-                for (var i in result.rows){
-                    var index = parseInt(i) + 1;
-                    this.planned.push({ index: index, id: result.rows[i].value._id });
-                }
-            },
-            error => this.errorMessage = <any>error
-        );
-        this.service.getCurrentSession().subscribe(
-            result => {
-                this.currentSessionID = result.total_rows > 0 ? result.rows[0].value._id : null;
-                this.startSessionText = this.currentSessionID ? "Resume Current Session" : "Start Next Session";
-            },
+        this.subscribe(this.service.getCompletedSessions(), result => this.completed = result.rows.map(r => r.value));
+        this.subscribe(this.service.getPlannedSessions(), result => {
+            for (var i in result.rows){
+                var index = parseInt(i) + 1;
+                this.planned.push({ index: index, id: result.rows[i].value._id });
+            }
+        });
+        this.subscribe(this.service.getCurrentSession(), result => {
+            this.currentSessionID = result.total_rows > 0 ? result.rows[0].value._id : null;
+            this.startSessionText = this.currentSessionID ? "Resume Current Session" : "Start Next Session";
+        });
+    }
+
+    subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {
+        obs.subscribe(
+            response => { if (onSuccess){ onSuccess(response); }},
             error => this.errorMessage = <any>error
         );
     }
