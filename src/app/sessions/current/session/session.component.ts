@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { SessionsService } from "src/app/services/sessions/sessions.service";
+import { SessionsService } from "src/app/services/sessions.service";
 import { ICurrentSession } from "src/app/shared/interfaces/current-session";
 import { SessionsHelper } from "src/app/shared/helpers/sessions.helper";
 import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
-import { ExercisesService } from "src/app/services/settings/exercises.service";
+import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
 import { IExercise } from "src/app/shared/interfaces/exercise";
 

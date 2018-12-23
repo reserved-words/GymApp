@@ -3,7 +3,7 @@ import { IExercise } from "../../shared/interfaces/exercise";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IDropdownOption } from "src/app/shared/interfaces/dropdown-option";
 import { DropdownHelper } from "src/app/shared/helpers/dropdown.helper";
-import { ExercisesService } from "src/app/services/settings/exercises.service";
+import { ExercisesService } from "src/app/services/exercises.service";
 
 @Component({
     templateUrl: './exercise-detail.component.html',

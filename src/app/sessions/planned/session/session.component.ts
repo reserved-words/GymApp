@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
-import { SessionsService } from "src/app/services/sessions/sessions.service";
+import { SessionsService } from "src/app/services/sessions.service";
 
 @Component({
     templateUrl: "session.component.html",

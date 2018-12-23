@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { IExercise } from "../../shared/interfaces/exercise";
-import { ExercisesService } from "../../services/settings/exercises.service";
+import { ExercisesService } from "../../services/exercises.service";
 import { Router } from "@angular/router";
 
 @Component({
