@@ -9,6 +9,7 @@ import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
 import { IExercise } from "src/app/shared/interfaces/exercise";
 import { Observable } from "rxjs";
+import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 
 @Component({
     templateUrl: "session.component.html",
@@ -50,11 +51,11 @@ export class CurrentSessionComponent {
             }
         });
     }
-    
-    addExercise():void {
-        this.session.exercises.push({ type : "?", warmup: [], sets: [], minIncrement: 2.5, done: false, nextSession: null, nextSessionConfirmed: false });
-    }
 
+    addExercise(exerciseToAdd: ICurrentExercise):void {
+        this.session.exercises.push(exerciseToAdd);
+    }
+    
     markComplete(): void {
         // Add a check to confirm completion
 

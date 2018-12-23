@@ -17,7 +17,8 @@
                 Back
             </button>
             <button class="btn btn-primary btn-sm"
-                    (click)='addExercise()'>
+                    data-toggle="modal" 
+                    data-target="#addExercise">
                     <i class="fas fa-dumbbell"></i>
                 Add
             </button>
@@ -29,3 +30,5 @@
         </div>
     </div>
 </div>
+
+<gym-add-exercise (onAddExercise)='addExercise($event)'></gym-add-exercise>

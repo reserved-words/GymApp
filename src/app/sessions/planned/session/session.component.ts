@@ -1,8 +1,9 @@
-import { Component, Input } from "@angular/core";
+import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 import { SessionsService } from "src/app/services/sessions.service";
 import { Observable } from "rxjs";
+import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 
 @Component({
     templateUrl: "session.component.html",
@@ -15,7 +16,6 @@ export class PlannedSessionComponent {
     hasExercises: boolean;
 
     constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
-        
     }
 
     ngOnInit(){
@@ -26,14 +26,11 @@ export class PlannedSessionComponent {
         });
     }
 
-    addExercise():void {
-        // Show popup with exercise type dropdown
-        // If exercise type already added, prevent
-        var ex = { type: "?", warmup: [], sets: [], minIncrement: 2.5 };
-        ex.sets.push({ quantity: 5, reps: 5, weight: 10 });
-        this.session.exercises.push(ex);
+    addExercise(exerciseToAdd: IPlannedExercise):void {
+        this.session.exercises.push(exerciseToAdd);
         this.hasExercises = true;
     }
+
     removeExercise(exerciseType: string):void {
         var updatedList = [];
         for (var i in this.session.exercises){
