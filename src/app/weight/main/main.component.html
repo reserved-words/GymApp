@@ -1,3 +1,49 @@
-<p>
-  weight works!
-</p>
+
+<table>
+  <tr>
+    <td class="min-width pr-2">
+      Today:
+    </td>
+    <td>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <button class="btn btn-sm"
+              (click)='decreaseNewWeight()'>-</button>
+        </div>
+        <input disabled value='{{newEntryAsString}}' type="text" class="form-control">
+        <div class="input-group-append">
+          <button class="btn btn-sm"
+                  (click)='increaseNewWeight()'>+</button>
+        </div>
+      </div>
+    </td>
+    <td class="min-width pl-2">
+      <button class="btn btn-success btn-sm"
+          (click)="saveNewEntry()">
+        <i class="fas fa-check"></i>
+      </button>
+    </td>
+  </tr>
+</table>
+
+<div class="card mt-2">
+  <div class="card-header">
+      Weight History
+  </div>
+  <div class="card-body p-0">
+      <div *ngIf='!list || !list.length' class="p-3">
+          <p>No measurements added yet.</p>
+      </div>
+      <table *ngIf='list && list.length' class="table table-striped m-0">
+          <tr *ngFor='let item of list'>
+              <td class="icon-text">
+                <i class="far fa-calendar-alt"></i>
+                <span>{{item.date | date:'dd/LL/yyyy'}}</span>
+              </td>
+              <td>
+                <span>{{item.stones}}st. {{item.pounds}}</span>
+              </td>
+          </tr>
+      </table>
+  </div>
+</div>
