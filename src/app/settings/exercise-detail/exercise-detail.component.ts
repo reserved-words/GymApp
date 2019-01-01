@@ -22,12 +22,7 @@ export class ExerciseDetailComponent implements OnInit {
 
     ngOnInit(): void {
         let id = this.route.snapshot.paramMap.get('id');
-
         this.subscribe(this.service.getExercise(id), ex => this.exercise = ex);
-    }
-
-    onBack(): void {
-        this.router.navigate(['/settings']);
     }
     
     onSave(): void {

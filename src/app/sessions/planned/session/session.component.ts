@@ -41,9 +41,6 @@ export class PlannedSessionComponent {
         }
         this.session.exercises = updatedList;
     }
-    onBack(): void {
-        this.router.navigate(['/sessions']);
-    }
     onSave(): void {
         this.subscribe(this.service.updateSession(this.session._id, this.session), s => {
             this.router.navigate(['/sessions']);

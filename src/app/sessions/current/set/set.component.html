@@ -1,27 +1,23 @@
 
-<div class="table">
-  <div class="table-row table-row-center">
-    <div class="table-cell">
-      <gym-num *ngIf='!set.done' [value]='set.reps' [stepSize]='1' (valueChanged)='onRepsValueChanged($event)'></gym-num>
-      <span *ngIf='set.done'>{{set.reps}} reps</span>
-    </div>
-    <div class="table-cell table-cell-min-width">
-        <i class="fas fa-times"></i>
-    </div>
-    <div class="table-cell">
-      <gym-num *ngIf='!set.done' [value]='set.weight' [stepSize]='stepSize' (valueChanged)='onWeightValueChanged($event)'></gym-num>
-      <span *ngIf='set.done'>{{set.weight}}kg</span>
-    </div>
-    <div class="table-cell table-cell-min-width">
-      <button *ngIf='!set.done' class="btn btn-sm btn-success" (click)='markDone()'>
-        <i class="fas fa-check"></i>
-      </button>
-      <button *ngIf='set.done' class="btn btn-sm btn-secondary" (click)='markNotDone()'>
-        <i class="fas fa-edit"></i>
-      </button>
-    </div>
-  </div>
-</div>
+<td style="width: 40%;">
+  <gym-num *ngIf='!set.done' [value]='set.reps' [stepSize]='1' (valueChanged)='onRepsValueChanged($event)'></gym-num>
+  <span *ngIf='set.done'>{{set.reps}} reps</span>
+</td>
+<td style="width: 5%;" class="min-width">
+    <i class="fas fa-times"></i>
+</td>
+<td style="width: 40%;">
+  <gym-num *ngIf='!set.done' [value]='set.weight' [stepSize]='stepSize' (valueChanged)='onWeightValueChanged($event)'></gym-num>
+  <span *ngIf='set.done'>{{set.weight}}kg</span>
+</td>
+<td style="width: 15%;">
+  <button *ngIf='!set.done' class="btn btn-sm btn-success" (click)='markDone()'>
+    <i class="fas fa-check"></i>
+  </button>
+  <button *ngIf='set.done' class="btn btn-sm btn-secondary" (click)='markNotDone()'>
+    <i class="fas fa-edit"></i>
+  </button>
+</td>
 
 
 

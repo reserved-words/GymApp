@@ -1,10 +1,9 @@
 import { Component, Output, EventEmitter } from "@angular/core";
 import { ExercisesService } from "src/app/services/exercises.service";
-import { IExercise } from "../interfaces/exercise";
+import { IExercise } from "../../interfaces/exercise";
 import { Observable } from "rxjs";
 import { SessionsService } from "src/app/services/sessions.service";
-import { SessionsHelper } from "../helpers/sessions.helper";
-import { IPlannedExercise } from "../interfaces/planned-exercise";
+import { SessionsHelper } from "../../helpers/sessions.helper";
 
 @Component({
     selector: 'gym-add-exercise',

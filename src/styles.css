@@ -2,8 +2,13 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
+div.card {
+  background-color: transparent;
+}
+
 div.card-body {
   padding: 0;
+  background-color: transparent;
 }
 
 div.container-fluid {
@@ -36,7 +41,6 @@ div.table {
   display: table;
   width: 100%;
   margin: 0;
-  /* padding: 0.5rem; */
 }
 
 div.table-row {
@@ -97,4 +101,36 @@ div.footer-buttons button:last-child {
 i.fa-times {
   color:#333; 
   font-size: 10px;
+}
+
+.bg-warmup0 {
+  background-color: #EEE;
+}
+
+.bg-warmup1 {
+  background-color: #BBB;
+}
+
+.bg-warmup2 {
+  background-color: #999;
+}
+
+.bg-set {
+  background-color: #777;
+  color: white;
+}
+
+.table {
+  margin: 0;
+}
+
+.table td {
+  padding: 0.5rem;
+  vertical-align: middle;
+}
+
+.table td.min-width {
+  padding: 0.5rem 0;
+  width: 1px;
+  vertical-align: middle;
 }

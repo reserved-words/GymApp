@@ -53,7 +53,8 @@
             <div class="row">
                 <div class="col-6">
                     <button class="btn btn-secondary btn-sm btn-block"
-                        (click)='onBack()'>
+                            data-toggle="modal" 
+                            data-target="#backConfirmationModal">
                         <i class="fas fa-caret-left"></i>
                         Back
                     </button>
@@ -69,3 +70,5 @@
         </form>
     </div>
 </div>
+
+<gym-back-confirmation navigateTo="/settings"></gym-back-confirmation>

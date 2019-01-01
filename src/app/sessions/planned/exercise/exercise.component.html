@@ -10,31 +10,24 @@
     </div>
     <div [class]="collapsed ? 'collapse' : 'collapse show'">
         <div class="card-body">
-            <div class="container-fluid">
-                <div class="row" *ngFor='let set of exercise.warmup'>
-                    <div class="col-12">
-                        <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
-                    </div>
-                </div>
-                <div class="row" *ngFor='let set of exercise.sets'>
-                    <div class="col-12">
-                        <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="dropdown" *ngIf='!exercise.done'>
-                            <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Edit Exercise
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
-                                <a class="dropdown-item" (click)='removeWarmUpSet()'>Remove warmup set</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" (click)='remove()'>Remove from session</a>
-                            </div>
-                        </div>
-                    </div>
+            <table class="table">
+                <tr *ngFor='let set of exercise.warmup; let i = index' [class]="'bg-warmup' + i">
+                    <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+                </tr>
+                <tr class="bg-set" *ngFor='let set of exercise.sets'>
+                    <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+                </tr>
+            </table>
+
+            <div class="dropdown">
+                <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Edit
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
+                    <a class="dropdown-item" (click)='removeWarmUpSet()'>Remove warmup set</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" (click)='remove()'>Remove from session</a>
                 </div>
             </div>
         </div>

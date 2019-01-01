@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { SessionsService } from "src/app/services/sessions.service";
 import { ICurrentSession } from "src/app/shared/interfaces/current-session";
 import { SessionsHelper } from "src/app/shared/helpers/sessions.helper";
@@ -18,8 +18,7 @@ export class CurrentSessionComponent {
     errorMessage: string;
     session: ICurrentSession;
 
-    constructor(private service: SessionsService, private helper: SessionsHelper, 
-        private route: ActivatedRoute, private router: Router, private exercisesService: ExercisesService){        
+    constructor(private service: SessionsService, private helper: SessionsHelper, private route: ActivatedRoute, private exercisesService: ExercisesService){        
     }
 
     ngOnInit(){
@@ -41,8 +40,6 @@ export class CurrentSessionComponent {
     }
     
     markComplete(): void {
-        // Add a check to confirm completion
-
         for (var i in this.session.exercises){
             if (!this.session.exercises[i].done || !this.session.exercises[i].nextSessionConfirmed){
                 alert("Mark all exercises as done and confirm next session plans first");
@@ -55,10 +52,6 @@ export class CurrentSessionComponent {
                 this.session._rev = s.rev;
                 this.completeAndPlanNextSessions();
             });
-    }
-    onBack(): void {
-        alert("Add a check to confirm losing changes");
-        this.router.navigate(['/sessions']);
     }
     onSave(): void {
         this.service.updateSession<ICurrentSession>(this.session._id, this.session).subscribe(
@@ -113,7 +106,6 @@ export class CurrentSessionComponent {
     }
 
     saveSessions(plannedSessions: IPlannedSession[]){
-        // Need to know when ALL save processes finished so can return to home page
         for (let session of plannedSessions){
             this.savePlannedSession(session);
         }

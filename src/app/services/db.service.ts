@@ -17,7 +17,8 @@ export class DBService {
     completedExercisesUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedExercises';
     plannedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=3';
     currentSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/currentSession';
-    
+    weightUrl: string = this.baseUrl + '_design/weight/_view/weight';
+
     constructor(private http: HttpClient){}
 
     getDocumentUrl(id: string, rev: string = null){
@@ -27,6 +28,9 @@ export class DBService {
     getList<T>(url: string, limit: number = null, desc: boolean = null){
         if (limit){
             url = url + "?" + (desc ? "descending=true&" : "") + "limit=" + limit;
+        }
+        else {
+            url = url + (desc ? "?descending=true" : "");
         }
         return this.http.get<IQueryResults<T>>(url).pipe(
             tap(data => console.log("Add: " + JSON.stringify(data))),

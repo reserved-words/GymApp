@@ -22,7 +22,8 @@
             <div class="row">
                 <div class="col-4">
                     <button class="btn btn-sm btn-secondary full-width"
-                        (click)='onBack()'>
+                        data-toggle="modal" 
+                        data-target="#backConfirmationModal">
                         <i class="fas fa-caret-left"></i>
                         Back
                     </button>
@@ -48,3 +49,5 @@
 </div>
 
 <gym-add-exercise (onAddExercise)='addExercise($event)'></gym-add-exercise>
+
+<gym-back-confirmation navigateTo="/sessions"></gym-back-confirmation>
