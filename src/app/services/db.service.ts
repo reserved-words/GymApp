@@ -4,13 +4,16 @@ import { Injectable } from "@angular/core";
 import { ISaveResponse } from "../shared/interfaces/saveResponse";
 import { tap, catchError } from "rxjs/operators";
 import { IQueryResults } from "../shared/interfaces/queryResults";
+import { ConfigService } from "./config.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class DBService {
-    baseUrl: string = 'http://127.0.0.1:5984/gymapp/';
+    baseUrl: string = ConfigService.settings.api.baseUrl;
+    authHeader: string = ConfigService.settings.api.auth;
 
+    authenticateUrl: string = this.baseUrl + '_session/';
     exercisesUrl: string = this.baseUrl + '_design/exerciseDesignDoc/_view/exercises';
     nextSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=1';
     completedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedSessions';
@@ -32,7 +35,9 @@ export class DBService {
         else {
             url = url + (desc ? "?descending=true" : "");
         }
-        return this.http.get<IQueryResults<T>>(url).pipe(
+        return this.http.get<IQueryResults<T>>(url, {
+            headers: {'Authorization': this.authHeader}
+        }).pipe(
             tap(data => console.log("Add: " + JSON.stringify(data))),
             catchError(this.handleError)
         );
@@ -40,7 +45,9 @@ export class DBService {
 
     getSingle<T>(id: string): Observable<T> {    
         return this.http
-            .get<T>(this.getDocumentUrl(id))
+            .get<T>(this.getDocumentUrl(id), {
+                headers: {'Authorization': this.authHeader}
+            })
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
                 catchError(this.handleError));
@@ -55,7 +62,7 @@ export class DBService {
 
         return this.http
             .post<IQueryResults<T>>(this.baseUrl, JSON.stringify(criteria), {
-                headers: {'Content-Type':'application/json; charset=utf-8'}
+                headers: {'Content-Type':'application/json; charset=utf-8', 'Authorization': this.authHeader}
              })
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
@@ -65,7 +72,7 @@ export class DBService {
     insert(data: any): Observable<ISaveResponse> {
         return this.http
             .post<ISaveResponse>(this.baseUrl, JSON.stringify(data), {
-                headers: {'Content-Type':'application/json; charset=utf-8'}
+                headers: {'Content-Type':'application/json; charset=utf-8;', 'Authorization': this.authHeader}
              })
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
@@ -74,7 +81,9 @@ export class DBService {
 
     update(id: string, rev: string, data: any): Observable<ISaveResponse> {
         return this.http
-            .put<ISaveResponse>(this.getDocumentUrl(id, rev), JSON.stringify(data))
+            .put<ISaveResponse>(this.getDocumentUrl(id, rev), JSON.stringify(data), {
+                headers: {'Authorization': this.authHeader}
+            })
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
                 catchError(this.handleError));
