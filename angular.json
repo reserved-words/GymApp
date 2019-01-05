@@ -38,7 +38,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/environment.deploy.ts"
                 }
               ],
               "optimization": true,
@@ -66,8 +66,8 @@
             "browserTarget": "gymapp:build"
           },
           "configurations": {
-            "production": {
-              "browserTarget": "gymapp:build:production"
+            "deploy": {
+              "browserTarget": "gymapp:build:deploy"
             }
           }
         },

@@ -1,5 +1,5 @@
-import { BrowserModule } from '@angular/platform-browser'; // Always needed
-import { NgModule } from '@angular/core'; // Always needed
+import { BrowserModule } from '@angular/platform-browser'; // BrowserModule always needed
+import { NgModule, APP_INITIALIZER } from '@angular/core'; // NgModule lways needed
 import { HttpClientModule } from '@angular/common/http'; // Needed for HTTP requests
 import { RouterModule } from '@angular/router'; // Needed for routing
 
@@ -9,12 +9,13 @@ import { ChartsModule } from './charts/charts.module';
 import { SessionsModule } from './sessions/sessions.module';
 import { WeightModule } from './weight/weight.module';
 import { ServicesModule } from './services/services.module';
+import { ConfigService } from './services/config.service';
 
+export function initializeApp(configService: ConfigService){
+  return () => configService.load();
+}
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
   imports: [ // External modules
     BrowserModule, 
     HttpClientModule,
@@ -27,6 +28,17 @@ import { ServicesModule } from './services/services.module';
     WeightModule,
     SettingsModule,
     ServicesModule
+  ],
+  declarations: [
+    AppComponent
+  ],
+  providers: [
+    ConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [ConfigService], multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
