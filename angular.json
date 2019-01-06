@@ -34,7 +34,7 @@
             ]
           },
           "configurations": {
-            "production": {
+            "deploy": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -120,8 +120,8 @@
             "devServerTarget": "gymapp:serve"
           },
           "configurations": {
-            "production": {
-              "devServerTarget": "gymapp:serve:production"
+            "deploy": {
+              "devServerTarget": "gymapp:serve:deploy"
             }
           }
         },
