@@ -10,6 +10,7 @@ import { SessionsModule } from './sessions/sessions.module';
 import { WeightModule } from './weight/weight.module';
 import { ServicesModule } from './services/services.module';
 import { ConfigService } from './services/config.service';
+import { HttpModule } from '@angular/http';
 
 export function initializeApp(configService: ConfigService){
   return () => configService.load();
@@ -19,6 +20,7 @@ export function initializeApp(configService: ConfigService){
   imports: [ // External modules
     BrowserModule, 
     HttpClientModule,
+    HttpModule,
     RouterModule.forRoot([
       { path: '', redirectTo: 'sessions', pathMatch: 'full' },
       { path: '**', redirectTo: 'sessions', pathMatch: 'full' }

@@ -12,13 +12,13 @@ export class ConfigService {
     constructor(private http: HttpClient){}
 
     load(){
-        const jsonFile = `assets/config/config.${environment.name}.json`;
+        const jsonFile = `assets/config/config.${((environment.production) ? 'deploy' : 'dev')}.json`;
         return new Promise<void>((resolve, reject) => {
-            this.http.get(jsonFile).toPromise().then((response: IAppConfig) => {
-                ConfigService.settings = <IAppConfig>response;
-                resolve();
+            this.http.get(jsonFile).toPromise().then((response : IAppConfig) => {
+               ConfigService.settings = <IAppConfig>response;
+               resolve();
             }).catch((response: any) => {
-                reject(`Could not load file '${jsonFile}': ${JSON.stringify(response)}`);
+               reject(`Could not load file '${jsonFile}': ${JSON.stringify(response)}`);
             });
         });
     }
