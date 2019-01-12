@@ -1,39 +1,42 @@
-import { Component, Input, EventEmitter, Output } from "@angular/core";
+import { Component, Input, EventEmitter, Output, OnInit } from "@angular/core";
 import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 import { ExercisesService } from "src/app/services/exercises.service";
-
+import { IExercise } from "src/app/shared/interfaces/exercise";
 
 @Component({
     selector: 'gym-planned-exercise',
     templateUrl: 'exercise.component.html',
     styleUrls: ['exercise.component.css']
 })
-export class PlannedExerciseComponent {
+export class PlannedExerciseComponent implements OnInit {
     @Input() exercise: IPlannedExercise;
     @Output() removeFromSession: EventEmitter<string> = new EventEmitter<string>();
     collapsed: boolean = true;
+    def: IExercise;
 
     constructor(private service: ExercisesService){}
 
-    addWarmUpSet(): void {
-
+    ngOnInit(): void {
         this.service.getExercises().subscribe(
             response => {
-                var def = response.rows.map(r => r.value).filter(r => r.name === this.exercise.type)[0];
-                if (this.exercise.warmup.length){
-                    var lastWarmUp = this.exercise.warmup[this.exercise.warmup.length-1];
-                    this.exercise.warmup.push({ 
-                        reps: lastWarmUp.reps, 
-                        weight: lastWarmUp.weight + def.minIncrement, 
-                        quantity: 1 
-                    });
-                }
-                else {
-                    this.exercise.warmup.push({ reps: def.minReps, weight: def.minWeight, quantity: 1 });
-                }        
+                this.def = response.rows.map(r => r.value).filter(r => r.name === this.exercise.type)[0];
             },
             error => alert(<any>error)
         );
+    }
+
+    addWarmUpSet(): void {
+        if (this.exercise.warmup.length){
+            var lastWarmUp = this.exercise.warmup[this.exercise.warmup.length-1];
+            this.exercise.warmup.push({ 
+                reps: lastWarmUp.reps, 
+                weight: lastWarmUp.weight + this.def.minIncrement, 
+                quantity: 1 
+            });
+        }
+        else {
+            this.exercise.warmup.push({ reps: this.def.minReps, weight: this.def.minWeight, quantity: 1 });
+        }
     }
     removeWarmUpSet(): void {
         if (this.exercise.warmup.length){

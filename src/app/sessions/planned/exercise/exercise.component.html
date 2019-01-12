@@ -12,10 +12,10 @@
         <div class="card-body">
             <table class="table">
                 <tr *ngFor='let set of exercise.warmup; let i = index' [class]="'bg-warmup' + i">
-                    <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+                    <gym-planned-set [set]='set' [stepSize]='def.minIncrement'></gym-planned-set>
                 </tr>
                 <tr class="bg-set" *ngFor='let set of exercise.sets'>
-                    <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+                    <gym-planned-set [set]='set' [stepSize]='def.minIncrement'></gym-planned-set>
                 </tr>
             </table>
 
