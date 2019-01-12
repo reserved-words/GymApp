@@ -28,7 +28,7 @@ export class CompletedSessionComponent {
     }
 
     onBack(): void {
-        this.router.navigate(['/sessions']);
+        this.router.navigate(['']);
     }
 
     subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {

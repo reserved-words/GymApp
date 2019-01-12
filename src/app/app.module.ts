@@ -22,8 +22,7 @@ export function initializeApp(configService: ConfigService){
     HttpClientModule,
     HttpModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: 'sessions', pathMatch: 'full' },
-      { path: '**', redirectTo: 'sessions', pathMatch: 'full' }
+      { path: '**', redirectTo: '', pathMatch: 'full' }
     ]),
     SessionsModule,
     ChartsModule,

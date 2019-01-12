@@ -30,11 +30,11 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: 'sessions', component: SessionsMainComponent },
-      { path: 'sessions/completed/:id', component: CompletedSessionComponent },
-      { path: 'sessions/planned/:id', component: PlannedSessionComponent },
-      { path: 'sessions/start', component: CurrentSessionComponent },
-      { path: 'sessions/start/:id', component: CurrentSessionComponent }
+      { path: '', component: SessionsMainComponent },
+      { path: 'completed/:id', component: CompletedSessionComponent },
+      { path: 'planned/:id', component: PlannedSessionComponent },
+      { path: 'start', component: CurrentSessionComponent },
+      { path: 'start/:id', component: CurrentSessionComponent }
     ]),
   ]
 })

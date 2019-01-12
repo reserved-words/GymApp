@@ -43,7 +43,7 @@ export class PlannedSessionComponent {
     }
     onSave(): void {
         this.subscribe(this.service.updateSession(this.session._id, this.session), s => {
-            this.router.navigate(['/sessions']);
+            this.router.navigate(['']);
         });
     }
 
