@@ -124,7 +124,7 @@ export class CurrentSessionComponent {
         var completedSession = this.helper.completeCurrentSession(this.session);
         this.service.updateSession<ICompletedSession>(this.session._id, completedSession).subscribe(
             s => { 
-                // this.router.navigate(['/sessions']) - only when all saved
+                // this.router.navigate(['']) - only when all saved
             }, 
             error => this.handleError(error)
         );

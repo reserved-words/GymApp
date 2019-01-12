@@ -19,20 +19,14 @@ export class SessionsMainComponent {
     constructor(private service: SessionsService, private router: Router){
     }
 
-    add(): void {
-        alert("Add session!");
-    }
-    edit(): void {
-        alert("Edit session!");
-    }
     goToCompletedSession(id: string){
-        this.router.navigate(['/sessions/completed/' + id]);
+        this.router.navigate(['/completed/' + id]);
     }
     goToPlannedSession(id: string){
-        this.router.navigate(['/sessions/planned/' + id]);
+        this.router.navigate(['/planned/' + id]);
     }
     startNextSession(): void {
-        var url = this.currentSessionID ? ('/sessions/start/' + this.currentSessionID) : '/sessions/start';
+        var url = this.currentSessionID ? ('/start/' + this.currentSessionID) : '/start';
         this.router.navigate([url]);
     }
 
