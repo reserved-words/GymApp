@@ -9,7 +9,7 @@
         </span>     
     </div>
     <div [class]="collapsed ? 'collapse' : 'collapse show'">
-        <div class="card-body">
+        <div class="card-body" *ngIf='def'>
             <table class="table">
                 <tr *ngFor='let set of exercise.warmup; let i = index' [class]="'bg-warmup' + i">
                     <gym-planned-set [set]='set' [stepSize]='def.minIncrement'></gym-planned-set>
@@ -19,8 +19,8 @@
                 </tr>
             </table>
 
-            <div class="dropdown">
-                <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown mt-1">
+                <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Edit
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

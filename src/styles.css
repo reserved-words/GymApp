@@ -2,13 +2,17 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
+body {
+  background-color: #e7e7e7;
+}
+
 div.card {
-  background-color: transparent;
+  background-color: white;
 }
 
 div.card-body {
   padding: 0;
-  background-color: transparent;
+  background-color: white;
 }
 
 div.container-fluid {
@@ -133,4 +137,14 @@ i.fa-times {
   padding: 0.5rem 0;
   width: 1px;
   vertical-align: middle;
+}
+
+.btn-primary {
+  background-color: indigo;
+  border-color: white;
+}
+
+.btn-success {
+  background-color: maroon;
+  border-color: white;
 }
