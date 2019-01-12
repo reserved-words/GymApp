@@ -16,7 +16,8 @@ export class ConfigService {
         // TODO: Fetch from config file. Not currently working.
         ConfigService.settings = {
             api: {
-                baseUrl: environment.production ? "http://127.0.0.1:5984/gymapp/" :  "http://40.84.141.106:5984/gymapp/",
+                baseUrl: "http://40.84.141.106:5984/gymapp/",
+                // baseUrl: environment.production ? "http://127.0.0.1:5984/gymapp/" :  "http://40.84.141.106:5984/gymapp/",
                 auth: "Basic ZGJ1c2VyOlBhc3N3b3JkMQ=="
             }
         };
