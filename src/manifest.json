@@ -1,14 +1,16 @@
 {
-    "short_name": "Stronger",
-    "name": "Stronger",
-    "icons": [
-      {
-        "src": "favicon.ico",
-        "sizes": "32x32",
-        "type": "image/ico"
-      }
-    ],
-    "start_url": "/",
-    "display": "standalone",
-    "orientation": "portrait"
-  }
+  "short_name": "Stronger",
+  "name": "Stronger",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "32x32",
+      "type": "image/ico"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#555555",
+  "theme_color": "indigo",
+  "display": "standalone",
+  "orientation": "portrait"
+}
