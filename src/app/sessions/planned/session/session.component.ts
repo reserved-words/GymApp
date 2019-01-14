@@ -20,7 +20,7 @@ export class PlannedSessionComponent {
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
-        this.subscribe(this.service.getSession<IPlannedSession>(id), s => {
+        this.service.subscribe(this.service.getSession<IPlannedSession>(id), s => {
             this.session = s;
             this.hasExercises = this.session.exercises.length > 0;
         });
@@ -42,15 +42,8 @@ export class PlannedSessionComponent {
         this.session.exercises = updatedList;
     }
     onSave(): void {
-        this.subscribe(this.service.updateSession(this.session._id, this.session), s => {
+        this.service.subscribe(this.service.updateSession(this.session._id, this.session), s => {
             this.router.navigate(['']);
         });
-    }
-
-    subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {
-        obs.subscribe(
-            response => { if (onSuccess){ onSuccess(response); }},
-            error => this.errorMessage = <any>error
-        );
     }
 }

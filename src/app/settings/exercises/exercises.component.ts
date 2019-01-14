@@ -23,13 +23,6 @@ export class ExercisesComponent {
     }
 
     ngOnInit(): void {
-        this.subscribe(this.service.getExercises(), results => this.list = results);
-    }
-
-    subscribe<T>(obs: Observable<IQueryResults<T>>, onSuccess: Function): void {
-        obs.subscribe(
-            response => onSuccess(response.rows.map(r => r.value)),
-            error => this.errorMessage = <any>error
-        );
+        this.service.subscribe(this.service.getExercises(), results => this.list = results.rows.map(r => r.value));
     }
 }

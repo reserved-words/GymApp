@@ -8,13 +8,17 @@ import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
 import { DBService } from "./db.service";
 import { Injectable } from "@angular/core";
 import { ICompletedExercise } from "../shared/interfaces/completed-exercise";
+import { AuthService } from "./auth.service";
+import { BaseService } from "./base.service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class SessionsService {
+export class SessionsService extends BaseService {
 
-    constructor(private db: DBService){}
+    constructor(private db: DBService, private authService: AuthService){
+        super(authService);
+    }
 
     getNextSession(): Observable<IQueryResults<IPlannedSession>> {
         return this.db.getList<IPlannedSession>(this.db.nextSessionUrl);

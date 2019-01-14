@@ -26,8 +26,7 @@ export class DBService {
     constructor(private http: HttpClient, private authService: AuthService, private router: Router){}
 
     private getAuthHeader(): string {
-        console.log(this.authService.id());
-        return this.authService.id();
+        return 'Basic ' + this.authService.id();
     }
 
     getDocumentUrl(id: string, rev: string = null){

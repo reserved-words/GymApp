@@ -7,7 +7,6 @@ import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
-import { Observable } from "rxjs";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 
 @Component({
@@ -24,12 +23,12 @@ export class CurrentSessionComponent {
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
         if (id) {
-            this.subscribe(this.service.getSession<ICurrentSession>(id), s => {
+            this.service.subscribe(this.service.getSession<ICurrentSession>(id), s => {
                 this.session = s
             });
         }
         else {
-            this.subscribe(this.service.getNextSession(), s => {
+            this.service.subscribe(this.service.getNextSession(), s => {
                 this.session = this.helper.createCurrentSession(s.rows[0].value);
             });
         }
@@ -47,7 +46,7 @@ export class CurrentSessionComponent {
             }
         }
 
-        this.subscribe(this.service.updateSession<ICurrentSession>(this.session._id, this.session),
+        this.service.subscribe(this.service.updateSession<ICurrentSession>(this.session._id, this.session),
             s => {
                 this.session._rev = s.rev;
                 this.completeAndPlanNextSessions();
@@ -65,7 +64,7 @@ export class CurrentSessionComponent {
     }
 
     completeAndPlanNextSessions() {
-        this.subscribe(this.service.getPlannedSessions(),
+        this.service.subscribe(this.service.getPlannedSessions(),
             results => {
                 var plannedSessions = results.rows.map(r => r.value);
 
@@ -75,9 +74,9 @@ export class CurrentSessionComponent {
                     plannedSessions.push({ _id: null, _rev: null, type: "planned-session", index: index, exercises: [] });
                 }
 
-                this.subscribe(this.service.getCompletedSessions(1), lastSessions => {
+                this.service.subscribe(this.service.getCompletedSessions(1), lastSessions => {
                     var lastSession = lastSessions.rows.map(r => r.value)[0];
-                    this.subscribe(this.exercisesService.getExercises(), exercises => {
+                    this.service.subscribe(this.exercisesService.getExercises(), exercises => {
                         for (let ex of this.session.exercises){
                             
                             var def = exercises.rows.map(r => r.value).filter(r => r.name === ex.type)[0];
@@ -114,10 +113,10 @@ export class CurrentSessionComponent {
 
     savePlannedSession(session: IPlannedSession): void {
         if (session._id){
-            this.subscribe(this.service.updateSession(session._id, session));
+            this.service.subscribe(this.service.updateSession(session._id, session));
         }
         else {
-            this.subscribe(this.service.insertSession(session));
+            this.service.subscribe(this.service.insertSession(session));
         }
     }
     saveCompletedSession():void {
@@ -138,12 +137,5 @@ export class CurrentSessionComponent {
             }
         }
         this.session.exercises = updatedList;
-    }
-    
-    subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {
-        obs.subscribe(
-            response => { if (onSuccess){ onSuccess(response); }},
-            error => this.errorMessage = <any>error
-        );
     }
 }

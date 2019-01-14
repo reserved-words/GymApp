@@ -17,12 +17,9 @@ export class PlannedExerciseComponent implements OnInit {
     constructor(private service: ExercisesService){}
 
     ngOnInit(): void {
-        this.service.getExercises().subscribe(
-            response => {
-                this.def = response.rows.map(r => r.value).filter(r => r.name === this.exercise.type)[0];
-            },
-            error => alert(<any>error)
-        );
+        this.service.subscribe(this.service.getExercises(), response => {
+            this.def = response.rows.map(r => r.value).filter(r => r.name === this.exercise.type)[0];
+        });
     }
 
     addWarmUpSet(): void {

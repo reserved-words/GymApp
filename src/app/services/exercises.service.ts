@@ -4,14 +4,18 @@ import { IQueryResults } from "../shared/interfaces/queryResults";
 import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
 import { DBService } from "./db.service";
 import { Injectable } from "@angular/core";
+import { AuthService } from "./auth.service";
+import { BaseService } from "./base.service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class ExercisesService {
+export class ExercisesService extends BaseService {
     private exercises: IQueryResults<IExercise>;
 
-    constructor(private db: DBService){}
+    constructor(private db: DBService, private authService: AuthService){
+        super(authService);
+    }
 
     getExercises(): Observable<IQueryResults<IExercise>> {
         if (this.exercises){
