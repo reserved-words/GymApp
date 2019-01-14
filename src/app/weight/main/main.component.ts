@@ -3,6 +3,7 @@ import { WeightService } from 'src/app/services/weight.service';
 import { IWeight } from 'src/app/shared/interfaces/weight';
 import { IQueryResults } from 'src/app/shared/interfaces/queryResults';
 import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   templateUrl: './main.component.html',
@@ -18,7 +19,7 @@ export class WeightMainComponent implements OnInit {
   private poundsInAStone: number = 14;
   private minPoundsIncrement: number = 0.25;
 
-  constructor(private service: WeightService) { 
+  constructor(private service: WeightService, private auth: AuthService) { 
     this.resetNewEntry();
   }
 
@@ -80,7 +81,14 @@ export class WeightMainComponent implements OnInit {
   subscribe<T>(obs: Observable<IQueryResults<T>>, onSuccess: Function): void {
     obs.subscribe(
         response => onSuccess(response.rows.map(r => r.value)),
-        error => this.errorMessage = <any>error
+        error => {
+          if (error == 'unauthorized'){
+            this.auth.logout();
+          }
+          else {
+            this.errorMessage = <any>error;
+          }
+        }
     );
   }
 }

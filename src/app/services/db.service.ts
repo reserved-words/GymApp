@@ -5,13 +5,14 @@ import { ISaveResponse } from "../shared/interfaces/saveResponse";
 import { tap, catchError } from "rxjs/operators";
 import { IQueryResults } from "../shared/interfaces/queryResults";
 import { ConfigService } from "./config.service";
+import { AuthService } from "./auth.service";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
 })
 export class DBService {
     baseUrl: string = ConfigService.settings.api.baseUrl;
-    authHeader: string = ConfigService.settings.api.auth;
 
     authenticateUrl: string = this.baseUrl + '_session/';
     exercisesUrl: string = this.baseUrl + '_design/exerciseDesignDoc/_view/exercises';
@@ -22,7 +23,12 @@ export class DBService {
     currentSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/currentSession';
     weightUrl: string = this.baseUrl + '_design/weight/_view/weight';
 
-    constructor(private http: HttpClient){}
+    constructor(private http: HttpClient, private authService: AuthService, private router: Router){}
+
+    private getAuthHeader(): string {
+        console.log(this.authService.id());
+        return this.authService.id();
+    }
 
     getDocumentUrl(id: string, rev: string = null){
         return this.baseUrl + id + (rev ? ("?rev=" + rev) : "");
@@ -36,7 +42,7 @@ export class DBService {
             url = url + (desc ? "?descending=true" : "");
         }
         return this.http.get<IQueryResults<T>>(url, {
-            headers: {'Authorization': this.authHeader}
+            headers: {'Authorization': this.getAuthHeader()}
         }).pipe(
             tap(data => console.log("Add: " + JSON.stringify(data))),
             catchError(this.handleError)
@@ -46,7 +52,7 @@ export class DBService {
     getSingle<T>(id: string): Observable<T> {    
         return this.http
             .get<T>(this.getDocumentUrl(id), {
-                headers: {'Authorization': this.authHeader}
+                headers: {'Authorization': this.getAuthHeader()}
             })
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
@@ -62,7 +68,7 @@ export class DBService {
 
         return this.http
             .post<IQueryResults<T>>(this.baseUrl, JSON.stringify(criteria), {
-                headers: {'Content-Type':'application/json; charset=utf-8', 'Authorization': this.authHeader}
+                headers: {'Content-Type':'application/json; charset=utf-8', 'Authorization': this.getAuthHeader()}
              })
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
@@ -72,7 +78,7 @@ export class DBService {
     insert(data: any): Observable<ISaveResponse> {
         return this.http
             .post<ISaveResponse>(this.baseUrl, JSON.stringify(data), {
-                headers: {'Content-Type':'application/json; charset=utf-8;', 'Authorization': this.authHeader}
+                headers: {'Content-Type':'application/json; charset=utf-8;', 'Authorization': this.getAuthHeader()}
              })
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
@@ -82,7 +88,7 @@ export class DBService {
     update(id: string, rev: string, data: any): Observable<ISaveResponse> {
         return this.http
             .put<ISaveResponse>(this.getDocumentUrl(id, rev), JSON.stringify(data), {
-                headers: {'Authorization': this.authHeader}
+                headers: {'Authorization': this.getAuthHeader()}
             })
             .pipe(
                 tap(data => console.log(JSON.stringify(data))),
@@ -91,7 +97,10 @@ export class DBService {
 
     handleError(err: HttpErrorResponse){
         let errorMessage = '';
-        if (err.error instanceof ErrorEvent){
+        if (err.status === 401){
+            errorMessage = 'unauthorized';     
+        }
+        else if (err.error instanceof ErrorEvent){
             // A client-side or network error occurred
             errorMessage = `An error occurred: ${err.error.message}`;
         }
