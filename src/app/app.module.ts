@@ -11,6 +11,8 @@ import { WeightModule } from './weight/weight.module';
 import { ServicesModule } from './services/services.module';
 import { ConfigService } from './services/config.service';
 import { HttpModule } from '@angular/http';
+import { AuthGuard } from './auth/auth.guard';
+import { LoginModule } from './login/login/login.module';
 
 export function initializeApp(configService: ConfigService){
   return () => configService.load();
@@ -22,13 +24,19 @@ export function initializeApp(configService: ConfigService){
     HttpClientModule,
     HttpModule,
     RouterModule.forRoot([
-      { path: '**', redirectTo: '', pathMatch: 'full' }
+      { 
+        path: '**', 
+        redirectTo: '', 
+        pathMatch: 'full',
+        canActivate: [AuthGuard] 
+      }
     ]),
     SessionsModule,
     ChartsModule,
     WeightModule,
     SettingsModule,
-    ServicesModule
+    ServicesModule,
+    LoginModule
   ],
   declarations: [
     AppComponent

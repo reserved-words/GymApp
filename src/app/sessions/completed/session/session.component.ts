@@ -2,7 +2,6 @@ import { Component, Input } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 import { SessionsService } from "src/app/services/sessions.service";
-import { Observable } from "rxjs";
 
 @Component({
     templateUrl: "session.component.html",
@@ -21,7 +20,7 @@ export class CompletedSessionComponent {
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
-        this.subscribe(this.service.getSession<ICompletedSession>(id), result => {
+        this.service.subscribe(this.service.getSession<ICompletedSession>(id), result => {
             this.session = result;
             this.hasExercises = this.session.exercises.length > 0;
         });
@@ -29,13 +28,6 @@ export class CompletedSessionComponent {
 
     onBack(): void {
         this.router.navigate(['']);
-    }
-
-    subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {
-        obs.subscribe(
-            response => { if (onSuccess){ onSuccess(response); }},
-            error => this.errorMessage = <any>error
-        );
     }
 
     toggleWarmups(): void {

@@ -1,0 +1,16 @@
+<form>
+  <div class="row">
+    <div class="col-12">
+      <label class="control-label">Username:</label>
+      <input class="form-control" type="text" name='username' [(ngModel)]='username' />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <label class="control-label">Password:</label>
+      <input class="form-control" type="password" name='password' [(ngModel)]='password' />
+    </div>
+  </div>
+  <button type="button" (click)='submit()' class="btn btn-success">Submit</button>
+</form>
+<p style="color:red;">{{error}}</p>

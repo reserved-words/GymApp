@@ -12,6 +12,7 @@ import { CurrentExerciseComponent } from './current/exercise/exercise.component'
 import { NextSessionExerciseComponent } from './current/next-session-exercise/next-session-exercise.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { AuthGuard } from '../auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -30,11 +31,11 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     SharedModule,
     RouterModule.forChild([
-      { path: '', component: SessionsMainComponent },
-      { path: 'completed/:id', component: CompletedSessionComponent },
-      { path: 'planned/:id', component: PlannedSessionComponent },
-      { path: 'start', component: CurrentSessionComponent },
-      { path: 'start/:id', component: CurrentSessionComponent }
+      { path: '', component: SessionsMainComponent, canActivate: [AuthGuard] },
+      { path: 'completed/:id', component: CompletedSessionComponent, canActivate: [AuthGuard] },
+      { path: 'planned/:id', component: PlannedSessionComponent, canActivate: [AuthGuard] },
+      { path: 'start', component: CurrentSessionComponent, canActivate: [AuthGuard] },
+      { path: 'start/:id', component: CurrentSessionComponent, canActivate: [AuthGuard] }
     ]),
   ]
 })

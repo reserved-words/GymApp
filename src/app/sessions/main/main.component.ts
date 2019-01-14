@@ -31,23 +31,16 @@ export class SessionsMainComponent {
     }
 
     ngOnInit(): void {
-        this.subscribe(this.service.getCompletedSessions(3), result => this.completed = result.rows.map(r => r.value));
-        this.subscribe(this.service.getPlannedSessions(), result => {
+        this.service.subscribe(this.service.getCompletedSessions(3), result => this.completed = result.rows.map(r => r.value));
+        this.service.subscribe(this.service.getPlannedSessions(), result => {
             for (var i in result.rows){
                 var index = parseInt(i) + 1;
                 this.planned.push({ index: index, id: result.rows[i].value._id });
             }
         });
-        this.subscribe(this.service.getCurrentSession(), result => {
+        this.service.subscribe(this.service.getCurrentSession(), result => {
             this.currentSessionID = result.total_rows > 0 ? result.rows[0].value._id : null;
             this.startSessionText = this.currentSessionID ? "Resume Current Session" : "Start Next Session";
         });
-    }
-
-    subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {
-        obs.subscribe(
-            response => { if (onSuccess){ onSuccess(response); }},
-            error => this.errorMessage = <any>error
-        );
     }
 }
