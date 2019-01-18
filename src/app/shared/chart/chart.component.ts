@@ -8,6 +8,7 @@ import { Chart } from 'angular-highcharts';
 })
 export class ChartComponent implements OnInit, OnChanges {
 
+  @Input() title: string;
   @Input() dates: Date[];
   @Input() values: number[];
   
@@ -25,14 +26,14 @@ console.log(JSON.stringify(data));
         type: 'spline'
       },
       title: {
-        text: 'Weight (kg)'
+        text: this.title
       },
       xAxis: {
         type: 'datetime'
       },
       yAxis: {
         title: {
-          text: ''
+          text: 'kg'
         }
       },
       legend: {
@@ -45,6 +46,7 @@ console.log(JSON.stringify(data));
       },
       series: [
         {
+          name: 'Weight',
           type: 'line',
           data: data
       }]

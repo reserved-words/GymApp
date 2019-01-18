@@ -38,7 +38,7 @@
   </label>
 </div>
 
-<gym-chart *ngIf="displayType === 'chart'" [dates]='dates' [values]='values'></gym-chart>
+<gym-chart *ngIf="displayType === 'chart'" [title]='Weight' [dates]='dates' [values]='values'></gym-chart>
 
 <table *ngIf="displayType === 'table'" class="table table-striped m-0">
   <tr *ngFor='let item of list'>
