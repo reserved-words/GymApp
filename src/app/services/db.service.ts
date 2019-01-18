@@ -42,10 +42,7 @@ export class DBService {
         }
         return this.http.get<IQueryResults<T>>(url, {
             headers: {'Authorization': this.getAuthHeader()}
-        }).pipe(
-            tap(data => console.log("Add: " + JSON.stringify(data))),
-            catchError(this.handleError)
-        );
+        }).pipe(catchError(this.handleError));
     }
 
     getSingle<T>(id: string): Observable<T> {    
@@ -53,9 +50,7 @@ export class DBService {
             .get<T>(this.getDocumentUrl(id), {
                 headers: {'Authorization': this.getAuthHeader()}
             })
-            .pipe(
-                tap(data => console.log(JSON.stringify(data))),
-                catchError(this.handleError));
+            .pipe(catchError(this.handleError));
     }
 
     find<T>(url: string, selector: any, sort: any, limit: number): Observable<IQueryResults<T>>{

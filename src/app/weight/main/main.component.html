@@ -26,24 +26,28 @@
   </tr>
 </table>
 
-<div class="card mt-2">
-  <div class="card-header">
-      Weight History
-  </div>
-  <div class="card-body p-0">
-      <div *ngIf='!list || !list.length' class="p-3">
-          <p>No measurements added yet.</p>
-      </div>
-      <table *ngIf='list && list.length' class="table table-striped m-0">
-          <tr *ngFor='let item of list'>
-              <td class="icon-text">
-                <i class="far fa-calendar-alt"></i>
-                <span>{{item.date | date:'dd/LL/yyyy'}}</span>
-              </td>
-              <td>
-                <span>{{item.stones}}st. {{item.pounds}}</span>
-              </td>
-          </tr>
-      </table>
-  </div>
+<div class="btn-group btn-group-toggle full-width mt-2 mb-2" data-toggle="buttons">
+  <label class="btn btn-secondary active" style="width:50%;">
+          <input type="radio" [(ngModel)]="displayType" name="displayType" value="chart"/> 
+          Chart
+  </label>
+  <label class="btn btn-secondary" style="width:50%;">
+          <input type="radio" [(ngModel)]="displayType" name="displayType" value="table"/> 
+          Table
+
+  </label>
 </div>
+
+<gym-chart *ngIf="displayType === 'chart'" [dates]='dates' [values]='values'></gym-chart>
+
+<table *ngIf="displayType === 'table'" class="table table-striped m-0">
+  <tr *ngFor='let item of list'>
+      <td class="icon-text">
+        <i class="far fa-calendar-alt"></i>
+        <span>{{item.date | date:'dd/LL/yyyy'}}</span>
+      </td>
+      <td>
+        <span>{{item.stones}}st. {{item.pounds}}</span>
+      </td>
+  </tr>
+</table>
