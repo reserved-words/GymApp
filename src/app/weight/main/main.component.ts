@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { WeightService } from 'src/app/services/weight.service';
 import { IWeight } from 'src/app/shared/interfaces/weight';
 
@@ -9,9 +9,12 @@ import { IWeight } from 'src/app/shared/interfaces/weight';
 export class WeightMainComponent implements OnInit {
 
   list: IWeight[] = [];
+  dates: Date[] = [];
+  values: number[] = [];
   newEntry: IWeight = { date: new Date(), stones: 0, pounds: 0 }
   newEntryAsString: string;
   errorMessage: string;
+  displayType: string = 'chart';
 
   private poundsInAStone: number = 14;
   private minPoundsIncrement: number = 0.25;
@@ -23,6 +26,8 @@ export class WeightMainComponent implements OnInit {
   ngOnInit() {
     this.service.subscribe(this.service.getWeights(), results => {
       this.list = results.rows.map(r => r.value);
+      this.dates = this.list.map(r => r.date);
+      this.values = this.list.map(r => 14*r.stones + r.pounds);
       this.resetNewEntry();
     });
   }
@@ -68,6 +73,11 @@ export class WeightMainComponent implements OnInit {
         this.ngOnInit();
       }
     );
+  }
+
+  onChangeDisplayType(type: string){
+    this.displayType = type;
+    console.log(this.displayType);
   }
 
   updateNewEntryString(): void {

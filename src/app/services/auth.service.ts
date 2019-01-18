@@ -6,7 +6,6 @@ import { Router } from "@angular/router";
 })
 export class AuthService {
     redirectUrl: string = "/";
-    private authID: string;
     
     constructor(private router: Router){}
 
@@ -15,19 +14,16 @@ export class AuthService {
     };
       
     id() : string {
-        return this.authID;
-        // return localStorage.getItem('auth');
+       return localStorage.getItem('authID');
     }
     
     login(username: string, password: string): boolean {
         var base64 = btoa(username + ':' + password);
-        this.authID = base64;
-        // localStorage.setItem('auth', base64);
+        localStorage.setItem('authID', base64);
         return true;
     }
       
     logout(): void {
-        this.authID = null;
-        // localStorage.removeItem('auth');
+        localStorage.removeItem('authID');
     }
 }
