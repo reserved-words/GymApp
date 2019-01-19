@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Chart } from 'angular-highcharts';
+import { IDataValue } from '../interfaces/dataValue';
 
 @Component({
   selector: 'gym-chart',
@@ -9,24 +10,24 @@ import { Chart } from 'angular-highcharts';
 export class ChartComponent implements OnInit, OnChanges {
 
   @Input() title: string;
-  @Input() dates: Date[];
-  @Input() values: number[];
-  
+  @Input() values: IDataValue[];
+
+  displayType: string = 'Chart';
   chart: Chart;
+  displayTypes: string[] = ['Chart','Table'];
 
   ngOnInit() {
     var data = <any>[];
-
-    for (var i = this.dates.length-1; i >= 0; i--){
-      data.push({ x: new Date(this.dates[i]), y: 0.453592 * this.values[i] });
+    for (var d of this.values){
+      data.push({ x: new Date(d.date), y: d.value });
     }
-console.log(JSON.stringify(data));
+
     this.chart = new Chart({
       chart: {
         type: 'spline'
       },
       title: {
-        text: this.title
+        text: ''
       },
       xAxis: {
         type: 'datetime'
@@ -55,5 +56,9 @@ console.log(JSON.stringify(data));
 
   ngOnChanges(){
     this.ngOnInit();
+  }
+
+  onChangeDisplayType(selectedType: string){
+    this.displayType = selectedType;
   }
 }
