@@ -20,10 +20,6 @@ export class SessionsService extends BaseService {
         super(authService);
     }
 
-    getNextSession(): Observable<IQueryResults<IPlannedSession>> {
-        return this.db.getList<IPlannedSession>(this.db.nextSessionUrl);
-    }
-
     getCompletedSessions(limit: number): Observable<IQueryResults<ICompletedSession>>{
         return this.db.getList<ICompletedSession>(this.db.completedSessionsUrl, limit, true);
     };
@@ -40,8 +36,8 @@ export class SessionsService extends BaseService {
         return this.db.getList<ICurrentSession>(this.db.currentSessionUrl);
     }
 
-    getPlannedSessions(): Observable<IQueryResults<IPlannedSession>>{
-        return this.db.getList<IPlannedSession>(this.db.plannedSessionsUrl);
+    getPlannedSessions(limit: number): Observable<IQueryResults<IPlannedSession>>{
+        return this.db.getList<IPlannedSession>(this.db.plannedSessionsUrl, limit);
     };
 
     getSession<T>(id: string): Observable<T> {    
