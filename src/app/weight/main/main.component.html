@@ -18,7 +18,7 @@
       </div>
     </td>
     <td class="min-width pl-2">
-      <button class="btn btn-success btn-sm"
+      <button class="btn btn-success"
           (click)="saveNewEntry()">
         <i class="fas fa-check"></i>
       </button>
@@ -26,28 +26,4 @@
   </tr>
 </table>
 
-<div class="btn-group btn-group-toggle full-width mt-2 mb-2" data-toggle="buttons">
-  <label class="btn btn-secondary active" style="width:50%;">
-          <input type="radio" [(ngModel)]="displayType" name="displayType" value="chart"/> 
-          Chart
-  </label>
-  <label class="btn btn-secondary" style="width:50%;">
-          <input type="radio" [(ngModel)]="displayType" name="displayType" value="table"/> 
-          Table
-
-  </label>
-</div>
-
-<gym-chart *ngIf="displayType === 'chart'" [title]='Weight' [dates]='dates' [values]='values'></gym-chart>
-
-<table *ngIf="displayType === 'table'" class="table table-striped m-0">
-  <tr *ngFor='let item of list'>
-      <td class="icon-text">
-        <i class="far fa-calendar-alt"></i>
-        <span>{{item.date | date:'dd/LL/yyyy'}}</span>
-      </td>
-      <td>
-        <span>{{item.stones}}st. {{item.pounds}}</span>
-      </td>
-  </tr>
-</table>
+<gym-chart [title]='"Weight (kg)"' [values]='dataValues'></gym-chart>

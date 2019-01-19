@@ -2,9 +2,9 @@
 
 <table class="table">
     <tr *ngFor='let set of exercise.warmup; let i = index' [class]="'text-center bg-warmup' + i">
-        <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+        <gym-planned-set [set]='set' [stepSize]='minIncrement'></gym-planned-set>
     </tr>
     <tr *ngFor='let set of exercise.sets' class="text-center bg-set">
-        <gym-planned-set [set]='set' [stepSize]='exercise.minIncrement'></gym-planned-set>
+        <gym-planned-set [set]='set' [stepSize]='minIncrement'></gym-planned-set>
     </tr>  
 </table>

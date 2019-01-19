@@ -7,6 +7,7 @@ import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 })
 export class NextSessionExerciseComponent {
     @Input() exercise: IPlannedExercise;
+    @Input() minIncrement: number;
 
     ngOnInit(): void{
     }

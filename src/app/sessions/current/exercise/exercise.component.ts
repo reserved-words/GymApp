@@ -2,6 +2,7 @@ import { Component, Input, EventEmitter, Output } from "@angular/core";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 import { SessionsHelper } from "src/app/shared/helpers/sessions.helper";
 import { ICompletedExercise } from "src/app/shared/interfaces/completed-exercise";
+import { ExercisesService } from "src/app/services/exercises.service";
 
 @Component({
     selector: 'gym-current-exercise',
@@ -13,15 +14,17 @@ export class CurrentExerciseComponent {
     @Output() removeFromSession: EventEmitter<string> = new EventEmitter<string>();
     collapsed: boolean = true;
     completedExercise: ICompletedExercise;
+    minIncrement: number;
     
-    constructor(private sessionsHelper: SessionsHelper){
-
-    }
+    constructor(private sessionsHelper: SessionsHelper, private service: ExercisesService){}
 
     ngOnInit(): void{
         if (this.exercise.done){
             this.completedExercise = this.sessionsHelper.convertCurrentToCompletedExercise(this.exercise);
         }
+        this.service.subscribe(this.service.getExercises(), response => {
+            this.minIncrement = response.rows.map(r => r.value).filter(r => r.name === this.exercise.type)[0].minIncrement;
+        });
     }
 
     addWarmUpSet(): void {

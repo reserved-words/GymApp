@@ -1,3 +1,10 @@
-<p>
-  charts works!
-</p>
+<select [(ngModel)]='selectedExercise' class='form-control' (change)='onChangeExercise()'>
+  <option *ngFor='let opt of exercises' value={{opt.name}}>{{opt.name}}</option>
+</select>
+
+<select [(ngModel)]='selectedMeasurement' class='form-control' (change)='onChangeMeasurementType()'>
+  <option value='max'>Max Weight</option>
+  <option value='total'>Total Weight</option>
+</select>
+
+<gym-chart [title]='title' [values]='dataValues'></gym-chart>

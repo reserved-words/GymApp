@@ -18,14 +18,14 @@ export class AddExerciseComponent{
     constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
 
     ngOnInit(){
-        this.subscribe(this.exercisesService.getExercises(), r => {
+        this.exercisesService.subscribe(this.exercisesService.getExercises(), r => {
             this.exercises = r.rows.map(row => row.value);
         });
     }
 
     addExercise():void {
         var exerciseType = this.exercises.filter(ex => ex.name === this.addExerciseType)[0];
-        this.subscribe(this.sessionsService.getLastSession(this.addExerciseType), r => 
+        this.sessionsService.subscribe(this.sessionsService.getLastSession(this.addExerciseType), r => 
         {
             var lastSession = r.total_rows > 0
                 ? r.rows.map(r => r.value)[0]
@@ -34,12 +34,5 @@ export class AddExerciseComponent{
             this.addExerciseType = null;
             this.onAddExercise.emit(plannedExercise);
         });
-    }
-
-    subscribe<T>(obs: Observable<T>, onSuccess: Function = null): void {
-        obs.subscribe(
-            response => { if (onSuccess){ onSuccess(response); }},
-            error => alert(<any>error)
-        );
     }
 }
