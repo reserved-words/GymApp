@@ -14,10 +14,10 @@
         <div class="card-body">
             <table class="table" *ngIf='!exercise.done'>
                 <tr *ngFor='let item of exercise.warmup; let i = index' [class]="'text-center bg-warmup' + i">
-                    <gym-current-set [set]='item' [stepSize]='exercise.minIncrement'></gym-current-set>
+                    <gym-current-set [set]='item' [stepSize]='minIncrement'></gym-current-set>
                 </tr>
                 <tr *ngFor='let set of exercise.sets' class="text-center bg-set">
-                    <gym-current-set [set]='set' [stepSize]='exercise.minIncrement'></gym-current-set>
+                    <gym-current-set [set]='set' [stepSize]='minIncrement'></gym-current-set>
                 </tr> 
             </table>
             <table class="table" *ngIf='exercise.done'>
