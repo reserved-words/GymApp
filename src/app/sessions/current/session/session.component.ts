@@ -54,7 +54,10 @@ export class CurrentSessionComponent {
     }
     onSave(): void {
         this.service.updateSession<ICurrentSession>(this.session._id, this.session).subscribe(
-            s => this.session._rev = s.rev,
+            s => {
+                this.session._rev = s.rev;
+                alert("Changes saved");
+            },
             error => this.handleError(error)
         );
     }
