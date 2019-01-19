@@ -16,10 +16,9 @@ export class DBService {
 
     authenticateUrl: string = this.baseUrl + '_session/';
     exercisesUrl: string = this.baseUrl + '_design/exerciseDesignDoc/_view/exercises';
-    nextSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=1';
     completedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedSessions';
     completedExercisesUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedExercises';
-    plannedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=3';
+    plannedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions';
     currentSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/currentSession';
     weightUrl: string = this.baseUrl + '_design/weight/_view/weight';
     maxWeightUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/sessionMaxWeight';

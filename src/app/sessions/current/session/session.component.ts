@@ -28,7 +28,7 @@ export class CurrentSessionComponent {
             });
         }
         else {
-            this.service.subscribe(this.service.getNextSession(), s => {
+            this.service.subscribe(this.service.getPlannedSessions(1), s => {
                 this.session = this.helper.createCurrentSession(s.rows[0].value);
             });
         }
@@ -67,7 +67,7 @@ export class CurrentSessionComponent {
     }
 
     completeAndPlanNextSessions() {
-        this.service.subscribe(this.service.getPlannedSessions(),
+        this.service.subscribe(this.service.getPlannedSessions(3),
             results => {
                 var plannedSessions = results.rows.map(r => r.value);
 
