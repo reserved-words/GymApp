@@ -11,7 +11,8 @@ import { AuthGuard } from '../auth/auth.guard';
   imports: [
     RouterModule.forChild([
       { path: 'settings', component: SettingsMainComponent, canActivate: [AuthGuard] },
-      { path: 'settings/exercises/:id', component: ExerciseDetailComponent, canActivate: [AuthGuard] }
+      { path: 'settings/exercises/:id', component: ExerciseDetailComponent, canActivate: [AuthGuard] },
+      { path: 'settings/exercises/new', component: ExerciseDetailComponent, canActivate: [AuthGuard] }
     ]),
     SharedModule
   ],

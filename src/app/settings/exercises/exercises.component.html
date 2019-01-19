@@ -1,6 +1,7 @@
 <div class="card">
     <div class="card-header">
         {{pageTitle}}
+
     </div>
     <div class="card-body p-0">
         <div *ngIf='!list || !list.length' class="p-3">
@@ -11,6 +12,12 @@
                 <td class="table-cell icon-text" (click)='goToExercise(item._id)'>
                     <i class="fas fa-dumbbell"></i>
                     <span>{{item.name}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="table-cell icon-text" (click)='addNewExercise()'>
+                    <i class="fas fa-plus"></i>
+                    <span>Add New</span>
                 </td>
             </tr>
         </table>

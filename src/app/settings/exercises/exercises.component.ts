@@ -18,8 +18,12 @@ export class ExercisesComponent {
     constructor(private service: ExercisesService, private router: Router){
     }
 
-    goToExercise(id: string) :void {
+    goToExercise(id: string): void {
         this.router.navigate(['settings/exercises/' + id]);
+    }
+
+    addNewExercise(): void {
+        this.router.navigate(['settings/exercises/new']);
     }
 
     ngOnInit(): void {

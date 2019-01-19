@@ -10,4 +10,5 @@ export interface IExercise {
     minWeight: number;
     minIncrement: number;
     frequency: Frequency;
+    addBodyWeight: boolean;
 }
