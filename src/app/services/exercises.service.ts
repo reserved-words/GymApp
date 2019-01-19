@@ -6,6 +6,7 @@ import { DBService } from "./db.service";
 import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
 import { BaseService } from "./base.service";
+import { IDataValue } from "../shared/interfaces/dataValue";
 
 @Injectable({
     providedIn: 'root'
@@ -45,5 +46,13 @@ export class ExercisesService extends BaseService {
     updateExercise(exercise: IExercise): Observable<ISaveResponse> {
         this.exercises = null;
         return this.db.update(exercise._id, exercise._rev, exercise);
+    }
+
+    getMaxWeight(exercise: string): Observable<IQueryResults<IDataValue>>{
+        return this.db.getList<IDataValue>(this.db.maxWeightUrl, null, false, [exercise], [exercise, {}]);
+    }
+
+    getTotalWeight(exercise: string): Observable<IQueryResults<IDataValue>>{
+        return this.db.getList<IDataValue>(this.db.totalWeightUrl, null, false, [exercise], [exercise, {}]);
     }
 }

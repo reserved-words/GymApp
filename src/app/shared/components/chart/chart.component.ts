@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Chart } from 'angular-highcharts';
-import { IDataValue } from '../interfaces/dataValue';
+import { IDataValue } from '../../interfaces/dataValue';
 
 @Component({
   selector: 'gym-chart',
@@ -34,7 +34,7 @@ export class ChartComponent implements OnInit, OnChanges {
       },
       yAxis: {
         title: {
-          text: 'kg'
+          text: ''
         }
       },
       legend: {

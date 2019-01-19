@@ -22,6 +22,8 @@ export class DBService {
     plannedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions?limit=3';
     currentSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/currentSession';
     weightUrl: string = this.baseUrl + '_design/weight/_view/weight';
+    maxWeightUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/sessionMaxWeight';
+    totalWeightUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/sessionTotalWeight';
 
     constructor(private http: HttpClient, private authService: AuthService, private router: Router){}
 
@@ -33,12 +35,16 @@ export class DBService {
         return this.baseUrl + id + (rev ? ("?rev=" + rev) : "");
     }
 
-    getList<T>(url: string, limit: number = null, desc: boolean = null){
+    getList<T>(url: string, limit: number = null, desc: boolean = null, startKey: any = null, endKey: any = null){
+        url = url + "?descending=" + (desc ? "true" : "false");
         if (limit){
-            url = url + "?" + (desc ? "descending=true&" : "") + "limit=" + limit;
+            url = url + "&limit=" + limit;
         }
-        else {
-            url = url + (desc ? "?descending=true" : "");
+        if (startKey){
+            url = url + "&startkey=" + JSON.stringify(startKey);
+        }
+        if (endKey){
+            url = url + "&endkey=" + JSON.stringify(endKey);
         }
         return this.http.get<IQueryResults<T>>(url, {
             headers: {'Authorization': this.getAuthHeader()}
