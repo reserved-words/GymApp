@@ -29,7 +29,7 @@
                 </tr>  
             </table>
 
-            <gym-next-session-exercise *ngIf='exercise.nextSession && !exercise.nextSessionConfirmed' [exercise]='exercise.nextSession'></gym-next-session-exercise>
+            <gym-next-session-exercise *ngIf='exercise.nextSession && !exercise.nextSessionConfirmed' [exercise]='exercise.nextSession' [minIncrement]='minIncrement'></gym-next-session-exercise>
 
             <div class="container-fluid">
                 <div class="row">
@@ -45,7 +45,7 @@
                                 <a class="dropdown-item" (click)='remove()'>Remove from session</a>
                             </div>
                         </div>
-                        <div class="dropdown" *ngIf='exercise.done'>
+                        <div class="dropdown" *ngIf='exercise.done && !exercise.nextSessionConfirmed'>
                             <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Edit
                             </button>
@@ -62,13 +62,13 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <button *ngIf='!exercise.done' type="button" class="btn btn-sm btn-success btn-block" (click)='markDone()'>
+                        <button *ngIf='!exercise.done' type="button" class="btn btn-success btn-block" (click)='markDone()'>
                             Complete Exercise
                         </button>
-                        <button *ngIf='exercise.done && !exercise.nextSessionConfirmed' type="button" class="btn btn-sm btn-block btn-success" (click)='confirmPlannedSession()'>
+                        <button *ngIf='exercise.done && !exercise.nextSessionConfirmed' type="button" class="btn btn-block btn-success" (click)='confirmPlannedSession()'>
                             Confirm
                         </button>
-                        <button *ngIf='exercise.done && exercise.nextSessionConfirmed' type="button" class="btn btn-sm btn-block btn-secondary" (click)='markNotDone()'>
+                        <button *ngIf='exercise.done && exercise.nextSessionConfirmed' type="button" class="btn btn-block btn-secondary" (click)='markNotDone()'>
                             Edit
                         </button>
                     </div>

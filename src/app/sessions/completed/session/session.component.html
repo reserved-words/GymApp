@@ -21,19 +21,19 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <button class="btn btn-sm btn-secondary btn-block"
+                    <button class="btn btn-secondary btn-block"
                         (click)='onBack()'>
                         <i class="fas fa-caret-left"></i>
                         Back
                     </button>
                 </div>
                 <div class="col-6">
-                    <button *ngIf='!showWarmups' class="btn btn-sm btn-primary btn-block"
+                    <button *ngIf='!showWarmups' class="btn btn-primary btn-block"
                         (click)='toggleWarmups()'>
                         <i class="fas fa-temperature-low"></i>
                         Show Warmups
                     </button>
-                    <button *ngIf='showWarmups' class="btn btn-sm btn-primary btn-block"
+                    <button *ngIf='showWarmups' class="btn btn-primary btn-block"
                         (click)='toggleWarmups()'>
                         <i class="fas fa-temperature-low"></i>
                         Hide Warmups

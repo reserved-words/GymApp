@@ -124,6 +124,10 @@ i.fa-times {
   color: white;
 }
 
+.bg-set i {
+  color: white;
+}
+
 .table {
   margin: 0;
 }
@@ -141,6 +145,11 @@ i.fa-times {
 
 .btn-primary {
   background-color: indigo;
+  border-color: white;
+}
+
+.btn-secondary {
+  background-color: #777;
   border-color: white;
 }
 
