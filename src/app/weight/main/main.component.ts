@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { WeightService } from 'src/app/services/weight.service';
 import { IWeight } from 'src/app/shared/interfaces/weight';
-import { IDataValue } from 'src/app/shared/interfaces/dataValue';
+import { IDataValueGroup } from 'src/app/shared/interfaces/dataValueGroup';
 
 @Component({
   templateUrl: './main.component.html',
@@ -10,7 +10,7 @@ import { IDataValue } from 'src/app/shared/interfaces/dataValue';
 export class WeightMainComponent implements OnInit {
 
   list: IWeight[] = [];
-  dataValues: IDataValue[] = [];
+  dataValues: IDataValueGroup[] = [];
   newEntry: IWeight = { date: new Date(), stones: 0, pounds: 0 }
   newEntryAsString: string;
   errorMessage: string;
@@ -26,9 +26,11 @@ export class WeightMainComponent implements OnInit {
     this.service.subscribe(this.service.getWeights(), results => {
       this.list = results.rows.map(r => r.value);
       this.dataValues = [];
+      var values = [];
       for (var item of this.list){
-        this.dataValues.push({ date: item.date, value: 0.453592 * (14 * item.stones + item.pounds) });
+        values.push({ date: item.date, value: 0.453592 * (14 * item.stones + item.pounds) });
       }
+      this.dataValues.push({ name: 'Body Weight', dataValues: values });
       this.resetNewEntry();
     });
   }

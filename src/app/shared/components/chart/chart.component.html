@@ -9,17 +9,24 @@
             <div [chart]="chart"></div>
         </div>
     
-        <table *ngIf="displayType === 'Table'" class="table table-striped m-0">
-            <tr *ngFor='let item of values'>
-                <td class="icon-text">
-                    <i class="far fa-calendar-alt"></i>
-                    <span>{{item.date | date:'dd/LL/yyyy'}}</span>
-                </td>
-                <td>
-                    <span>{{item.value}}kg</span>
-                </td>
-            </tr>
-        </table>
+        <div *ngFor='let group of valueGroups'>
+            <table *ngIf="displayType === 'Table'" class="table table-striped m-0">
+                <tr *ngIf="valueGroups.length > 1">
+                    <th colspan="2">
+                        {{group.name}}
+                    </th>
+                </tr>
+                <tr *ngFor='let item of group.dataValues'>
+                    <td class="icon-text">
+                        <i class="far fa-calendar-alt"></i>
+                        <span>{{item.date | date:'dd/LL/yyyy'}}</span>
+                    </td>
+                    <td>
+                        <span>{{item.value}}kg</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
         <div class="card-footer p-2">
             <div class="btn-group" role="group" style="width: 100%;">

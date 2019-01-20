@@ -1,5 +1,5 @@
 export interface IQueryResult<T> {
     id: number;
-    key: object;
+    key: any;
     value: T;
 }
