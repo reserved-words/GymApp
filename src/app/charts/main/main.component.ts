@@ -24,6 +24,8 @@ export class ChartsMainComponent implements OnInit {
     ngOnInit(){
         this.exercisesService.subscribe(this.exercisesService.getExercises(), r => {
             this.exercises = r.rows.map(row => row.value);
+            this.selectedExercise = this.exercises[0].name;
+            this.updateData();
         });
     }
 
