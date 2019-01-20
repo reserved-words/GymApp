@@ -2,8 +2,6 @@ import { Component } from "@angular/core";
 import { IExercise } from "../../shared/interfaces/exercise";
 import { ExercisesService } from "../../services/exercises.service";
 import { Router } from "@angular/router";
-import { Observable } from "rxjs";
-import { IQueryResults } from "src/app/shared/interfaces/queryResults";
 
 @Component({
     selector: 'gym-exercises',

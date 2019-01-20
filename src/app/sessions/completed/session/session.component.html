@@ -1,4 +1,4 @@
-<div class="card" *ngIf='session'>
+<div class="card full-screen" *ngIf='session'>
     <div class="card-header icon-text">
         <i class="far fa-calendar-alt"></i>
         {{session.started | date:'EEE dd/LL/yyyy HH\:mm'}}
@@ -19,27 +19,29 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-6">
-                    <button class="btn btn-secondary btn-block"
-                        (click)='onBack()'>
-                        <i class="fas fa-caret-left"></i>
-                        Back
-                    </button>
-                </div>
-                <div class="col-6">
-                    <button *ngIf='!showWarmups' class="btn btn-primary btn-block"
-                        (click)='toggleWarmups()'>
-                        <i class="fas fa-temperature-low"></i>
-                        Show Warmups
-                    </button>
-                    <button *ngIf='showWarmups' class="btn btn-primary btn-block"
-                        (click)='toggleWarmups()'>
-                        <i class="fas fa-temperature-low"></i>
-                        Hide Warmups
-                    </button>
-                </div>                
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-secondary btn-block"
+                    (click)='onBack()'>
+                    <i class="fas fa-caret-left"></i>
+                    Back
+                </button>
             </div>
+            <div class="col-6">
+                <button *ngIf='!showWarmups' class="btn btn-primary btn-block"
+                    (click)='toggleWarmups()'>
+                    <i class="fas fa-temperature-low"></i>
+                    Show Warmups
+                </button>
+                <button *ngIf='showWarmups' class="btn btn-primary btn-block"
+                    (click)='toggleWarmups()'>
+                    <i class="fas fa-temperature-low"></i>
+                    Hide Warmups
+                </button>
+            </div>                
         </div>
     </div>
 </div>

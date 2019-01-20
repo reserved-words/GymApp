@@ -6,7 +6,39 @@ body {
   background-color: #e7e7e7;
 }
 
+nav {
+  border-bottom: solid silver 1px;
+  margin-bottom: 0.5rem;
+  height: 60px;
+}
+
+div.main.container-fluid {
+  padding: 0;
+  margin: 0;
+  height: calc(100vh - 60px);
+}
+
+div.card.full-screen {
+  border-radius: 0;
+  margin: 0;
+  height: 100%;
+}
+
+div.card.full-screen > .card-body {
+  height: 100%;
+  overflow-y: auto;
+}
+
+div.card.full-screen > .card-header{
+  padding: 1rem;
+}
+
+div.card.full-screen > .card-footer {
+  padding: 0.5rem;
+}
+
 div.card {
+  margin: 0.5rem;
   background-color: white;
 }
 
@@ -35,10 +67,6 @@ div.container-fluid div.row > div {
 
 div.container-fluid div.row > div:last-child {
   padding-right: 0;
-}
-
-div.card-body {
-  padding: 0;
 }
 
 div.table {
@@ -156,4 +184,22 @@ i.fa-times {
 .btn-success {
   background-color: maroon;
   border-color: white;
+}
+
+.nav-link {
+  font-size: large;
+}
+
+ul.nav {
+  width: 100%;
+}
+
+ul.nav li {
+  width: 25%;
+  text-align: center;
+}
+
+ul.nav li a {
+  font-size: 1.5rem;
+  color: indigo;
 }

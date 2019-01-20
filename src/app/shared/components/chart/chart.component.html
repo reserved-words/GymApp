@@ -1,43 +1,24 @@
-<div class="mt-2 mb-2">
+<div *ngIf="displayType === 'Chart'" class="pl-0 pr-3 pt-3 pb-3">
+    <div [chart]="chart"></div>
+</div>
 
-    <div class="card">
-        <div class="card-header">
-            {{title}}
-        </div>
-    
-        <div *ngIf="displayType === 'Chart'" class="card-body pt-3 pr-3 pb-3 pl-0">
-            <div [chart]="chart"></div>
-        </div>
-    
-        <div *ngFor='let group of valueGroups'>
-            <table *ngIf="displayType === 'Table'" class="table table-striped m-0">
-                <tr *ngIf="valueGroups.length > 1">
-                    <th colspan="2">
-                        {{group.name}}
-                    </th>
-                </tr>
-                <tr *ngFor='let item of group.dataValues'>
-                    <td class="icon-text">
-                        <i class="far fa-calendar-alt"></i>
-                        <span>{{item.date | date:'dd/LL/yyyy'}}</span>
-                    </td>
-                    <td>
-                        <span>{{item.value}}kg</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="card-footer p-2">
-            <div class="btn-group" role="group" style="width: 100%;">
-                <button *ngFor="let item of displayTypes"
-                        type="button"
-                        class="btn btn-secondary" 
-                        style="width: 50%;"
-                        (click)="onChangeDisplayType(item)"> 
-                    {{item}}
-                </button>
-            </div>
-        </div>
+<div *ngIf="displayType === 'Table'">
+    <div *ngFor='let group of valueGroups'>
+        <table class="table table-striped m-0">
+            <tr *ngIf="valueGroups.length > 1">
+                <th colspan="2">
+                    {{group.name}}
+                </th>
+            </tr>
+            <tr *ngFor='let item of group.dataValues'>
+                <td class="icon-text">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>{{item.date | date:'dd/LL/yyyy'}}</span>
+                </td>
+                <td>
+                    <span>{{item.value | number:'1.1-2'}}kg</span>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>

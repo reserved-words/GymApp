@@ -1,15 +1,31 @@
-<div class="row">
-  <div class="col-6">
-    <select [(ngModel)]='selectedExercise' class='form-control' (change)='onChangeExercise()'>
-      <option *ngFor='let opt of exercises' value={{opt}}>{{opt}}</option>
-    </select>
+<div class="card full-screen">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-6">
+        <select [(ngModel)]='selectedExercise' class='form-control' (change)='onChangeExercise()'>
+          <option *ngFor='let opt of exercises' value={{opt}}>{{opt}}</option>
+        </select>
+      </div>
+      <div class="col-6">
+        <select [(ngModel)]='selectedMeasurement' class='form-control' (change)='onChangeMeasurementType()'>
+          <option value='max'>Max Weight</option>
+          <option value='total'>Total Weight</option>
+        </select>
+      </div>
+    </div>
   </div>
-  <div class="col-6">
-    <select [(ngModel)]='selectedMeasurement' class='form-control' (change)='onChangeMeasurementType()'>
-      <option value='max'>Max Weight</option>
-      <option value='total'>Total Weight</option>
-    </select>
+  <div class="card-body">
+    <gym-chart [title]='title' [valueGroups]='dataValues' [displayType]='displayType'></gym-chart>
+  </div>
+  <div class="card-footer">
+    <div class="btn-group" role="group" style="width: 100%;">
+      <button *ngFor="let item of displayTypes"
+              type="button"
+              class="btn btn-secondary" 
+              style="width: 50%;"
+              (click)="onChangeDisplayType(item)"> 
+          {{item}}
+      </button>
+    </div>
   </div>
 </div>
-
-<gym-chart [title]='title' [valueGroups]='dataValues'></gym-chart>

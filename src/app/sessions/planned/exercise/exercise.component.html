@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card m-0">
     <div class="card-header d-flex" (click)="toggleCollapsed()">
         <span>
             {{exercise.type}}
@@ -10,7 +10,7 @@
     </div>
     <div [class]="collapsed ? 'collapse' : 'collapse show'">
         <div class="card-body" *ngIf='def'>
-            <table class="table">
+            <table class="table m-0">
                 <tr *ngFor='let set of exercise.warmup; let i = index' [class]="'bg-warmup' + i">
                     <gym-planned-set [set]='set' [stepSize]='def.minIncrement'></gym-planned-set>
                 </tr>
@@ -18,16 +18,17 @@
                     <gym-planned-set [set]='set' [stepSize]='def.minIncrement'></gym-planned-set>
                 </tr>
             </table>
-
-            <div class="dropdown mt-1">
-                <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Edit
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
-                    <a class="dropdown-item" (click)='removeWarmUpSet()'>Remove warmup set</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" (click)='remove()'>Remove from session</a>
+            <div class="p-1">
+                <div class="dropdown mt-1">
+                    <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Edit
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
+                        <a class="dropdown-item" (click)='removeWarmUpSet()'>Remove warmup set</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" (click)='remove()'>Remove from session</a>
+                    </div>
                 </div>
             </div>
         </div>

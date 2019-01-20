@@ -14,6 +14,8 @@ export class WeightMainComponent implements OnInit {
   newEntry: IWeight = { date: new Date(), stones: 0, pounds: 0 }
   newEntryAsString: string;
   errorMessage: string;
+  displayTypes: string[] = ['Chart','Table'];
+  displayType: string = 'Chart';
 
   private poundsInAStone: number = 14;
   private minPoundsIncrement: number = 0.25;
@@ -80,5 +82,9 @@ export class WeightMainComponent implements OnInit {
 
   updateNewEntryString(): void {
     this.newEntryAsString = this.newEntry.stones + 'st ' + this.newEntry.pounds;
+  }
+
+  onChangeDisplayType(selectedType: string){
+    this.displayType = selectedType;
   }
 }

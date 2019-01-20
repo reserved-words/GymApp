@@ -19,6 +19,8 @@ export class ChartsMainComponent implements OnInit {
     selectedMeasurement: string;
     dataValues: IDataValueGroup[];
     title: string;
+    displayTypes: string[] = ['Chart','Table'];
+    displayType: string = 'Chart';
 
     constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
 
@@ -78,5 +80,9 @@ export class ChartsMainComponent implements OnInit {
         currentValuesGroup.dataValues.push({ date: row.value.date, value: row.value.value });
       }
       this.dataValues = newValues;
+    }
+
+    onChangeDisplayType(selectedType: string){
+      this.displayType = selectedType;
     }
 }

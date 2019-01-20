@@ -1,29 +1,44 @@
-
-<table>
-  <tr>
-    <td class="min-width pr-2">
-      Today:
-    </td>
-    <td>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <button class="btn btn-sm"
-              (click)='decreaseNewWeight()'>-</button>
-        </div>
-        <input disabled value='{{newEntryAsString}}' type="text" class="form-control">
-        <div class="input-group-append">
-          <button class="btn btn-sm"
-                  (click)='increaseNewWeight()'>+</button>
-        </div>
-      </div>
-    </td>
-    <td class="min-width pl-2">
-      <button class="btn btn-success"
-          (click)="saveNewEntry()">
-        <i class="fas fa-check"></i>
-      </button>
-    </td>
-  </tr>
-</table>
-
-<gym-chart [title]='"Weight (kg)"' [valueGroups]='dataValues'></gym-chart>
+<div class="card full-screen">
+  <div class="card-header">
+    <table>
+      <tr>
+        <td class="min-width pr-1">
+          Today:
+        </td>
+        <td>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <button class="btn btn-sm"
+                  (click)='decreaseNewWeight()'>-</button>
+            </div>
+            <input disabled value='{{newEntryAsString}}' type="text" class="form-control">
+            <div class="input-group-append">
+              <button class="btn btn-sm"
+                      (click)='increaseNewWeight()'>+</button>
+            </div>
+          </div>
+        </td>
+        <td class="min-width pl-1">
+          <button class="btn btn-success"
+              (click)="saveNewEntry()">
+            <i class="fas fa-check"></i>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="card-body">
+    <gym-chart [title]='"Weight (kg)"' [valueGroups]='dataValues' [displayType]='displayType' ></gym-chart>
+  </div>
+  <div class="card-footer">
+    <div class="btn-group" role="group" style="width: 100%;">
+        <button *ngFor="let item of displayTypes"
+                type="button"
+                class="btn btn-secondary" 
+                style="width: 50%;"
+                (click)="onChangeDisplayType(item)"> 
+            {{item}}
+        </button>
+    </div>
+  </div>
+</div>

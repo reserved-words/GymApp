@@ -11,10 +11,9 @@ export class ChartComponent implements OnInit, OnChanges {
 
   @Input() title: string;
   @Input() valueGroups: IDataValueGroup[];
+  @Input() displayType: string;
 
-  displayType: string = 'Chart';
   chart: Chart;
-  displayTypes: string[] = ['Chart','Table'];
 
   ngOnInit() {
     this.drawChart();
@@ -42,14 +41,18 @@ export class ChartComponent implements OnInit, OnChanges {
         type: 'spline'
       },
       title: {
-        text: ''
+        text: '',
+
       },
       xAxis: {
-        type: 'datetime'
+        type: 'datetime',
+        title: {
+          text: ''
+        }
       },
       yAxis: {
         title: {
-          text: ''
+          text: 'kg'
         }
       },
       legend: {
@@ -63,9 +66,5 @@ export class ChartComponent implements OnInit, OnChanges {
       },
       series: series
     });
-  }
-
-  onChangeDisplayType(selectedType: string){
-    this.displayType = selectedType;
   }
 }
