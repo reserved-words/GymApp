@@ -1,4 +1,4 @@
-<div class="card" *ngIf='exercise'>
+<div class="card full-screen" *ngIf='exercise'>
     <div class="card-header icon-text">
             <i class="fas fa-dumbbell"></i>
         {{pageTitle}}: {{exercise.name}}
@@ -56,24 +56,26 @@
                     <label for="addBodyWeight" class="control-label ml-2">Add Body Weight</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-6">
-                    <button class="btn btn-secondary btn-block"
-                            data-toggle="modal" 
-                            data-target="#backConfirmationModal">
-                        <i class="fas fa-caret-left"></i>
-                        Back
-                    </button>
-                </div>
-                <div class="col-6">
-                    <button class="btn btn-success btn-block"
-                        (click)='onSave()'>
-                        <i class="fas fa-save"></i>
-                        Save
-                    </button>   
-                </div>
-            </div>
         </form>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-secondary btn-block"
+                        data-toggle="modal" 
+                        data-target="#backConfirmationModal">
+                    <i class="fas fa-caret-left"></i>
+                    Back
+                </button>
+            </div>
+            <div class="col-6">
+                <button class="btn btn-success btn-block"
+                    (click)='onSave()'>
+                    <i class="fas fa-save"></i>
+                    Save
+                </button>   
+            </div>
+        </div>
     </div>
 </div>
 

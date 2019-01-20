@@ -7,6 +7,7 @@ import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
 import { BaseService } from "./base.service";
 import { IDataValue } from "../shared/interfaces/dataValue";
+import { IDataValueGroup } from "../shared/interfaces/dataValueGroup";
 
 @Injectable({
     providedIn: 'root'
@@ -49,10 +50,21 @@ export class ExercisesService extends BaseService {
     }
 
     getMaxWeight(exercise: string): Observable<IQueryResults<IDataValue>>{
-        return this.db.getList<IDataValue>(this.db.maxWeightUrl, null, false, [exercise], [exercise, {}]);
+        if (!exercise){
+            return this.db.getList<IDataValue>(this.db.maxWeightUrl);
+        }
+        else {
+            return this.db.getList<IDataValue>(this.db.maxWeightUrl, null, true, [exercise, {}], [exercise]);
+        
+        }
     }
 
     getTotalWeight(exercise: string): Observable<IQueryResults<IDataValue>>{
-        return this.db.getList<IDataValue>(this.db.totalWeightUrl, null, false, [exercise], [exercise, {}]);
+        if (!exercise){
+            return this.db.getList<IDataValue>(this.db.totalWeightUrl);
+        }
+        else {
+            return this.db.getList<IDataValue>(this.db.totalWeightUrl, null, true, [exercise, {}], [exercise]);
+        }
     }
 }

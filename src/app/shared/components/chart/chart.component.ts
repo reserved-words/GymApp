@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Chart } from 'angular-highcharts';
-import { IDataValue } from '../../interfaces/dataValue';
+import { IDataValueGroup } from '../../interfaces/dataValueGroup';
 
 @Component({
   selector: 'gym-chart',
@@ -10,16 +10,30 @@ import { IDataValue } from '../../interfaces/dataValue';
 export class ChartComponent implements OnInit, OnChanges {
 
   @Input() title: string;
-  @Input() values: IDataValue[];
+  @Input() valueGroups: IDataValueGroup[];
+  @Input() displayType: string;
 
-  displayType: string = 'Chart';
   chart: Chart;
-  displayTypes: string[] = ['Chart','Table'];
 
   ngOnInit() {
-    var data = <any>[];
-    for (var d of this.values){
-      data.push({ x: new Date(d.date), y: d.value });
+    this.drawChart();
+  }
+
+  ngOnChanges(){
+    this.drawChart();
+  }
+
+  drawChart() {
+    
+    var series = [];
+    if (this.valueGroups){
+      for (var group of this.valueGroups){
+        var data = [];
+        for (var item of group.dataValues){
+          data.push({ x: new Date(item.date), y: item.value });
+        }
+        series.push({ name: group.name, data: data, type: 'line', marker: {symbol: 'circle'} });
+      }
     }
 
     this.chart = new Chart({
@@ -27,38 +41,30 @@ export class ChartComponent implements OnInit, OnChanges {
         type: 'spline'
       },
       title: {
-        text: ''
+        text: '',
+
       },
       xAxis: {
-        type: 'datetime'
-      },
-      yAxis: {
+        type: 'datetime',
         title: {
           text: ''
         }
       },
+      yAxis: {
+        title: {
+          text: 'kg'
+        }
+      },
       legend: {
-        enabled: false
+        enabled: (series.length > 1),
+        layout: 'horizontal'
       },
       plotOptions: {
         series: {
           connectNulls: true
         }
       },
-      series: [
-        {
-          name: 'Weight',
-          type: 'line',
-          data: data
-      }]
+      series: series
     });
-  }
-
-  ngOnChanges(){
-    this.ngOnInit();
-  }
-
-  onChangeDisplayType(selectedType: string){
-    this.displayType = selectedType;
   }
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-import { IExercise } from 'src/app/shared/interfaces/exercise';
 import { ExercisesService } from 'src/app/services/exercises.service';
 import { SessionsService } from 'src/app/services/sessions.service';
 import { SessionsHelper } from 'src/app/shared/helpers/sessions.helper';
 import { IDataValue } from 'src/app/shared/interfaces/dataValue';
+import { IDataValueGroup } from 'src/app/shared/interfaces/dataValueGroup';
+import { IQueryResults } from 'src/app/shared/interfaces/queryResults';
 
 @Component({
   selector: 'pm-charts',
@@ -13,17 +14,22 @@ import { IDataValue } from 'src/app/shared/interfaces/dataValue';
 export class ChartsMainComponent implements OnInit {
 
   addExerciseType: string;
-    exercises: IExercise[];
+    exercises: string[];
     selectedExercise: string;
     selectedMeasurement: string;
-    dataValues: IDataValue[] = [];
+    dataValues: IDataValueGroup[];
     title: string;
+    displayTypes: string[] = ['Chart','Table'];
+    displayType: string = 'Chart';
 
     constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
 
     ngOnInit(){
         this.exercisesService.subscribe(this.exercisesService.getExercises(), r => {
-            this.exercises = r.rows.map(row => row.value);
+          this.exercises = r.rows.map(row => row.value.name);
+          this.exercises.splice(0, 0, "All");
+          this.selectedExercise = this.exercises[0];
+          this.updateData();
         });
     }
 
@@ -39,17 +45,44 @@ export class ChartsMainComponent implements OnInit {
       if (!this.selectedMeasurement){
         this.selectedMeasurement = "max";
       }
+      
+      var newTitle = (this.selectedExercise === "All" ? "" : (this.selectedExercise + " ")) 
+        + (this.selectedMeasurement === "total" ? "Total" : "Maximum") 
+        + " Weight (kg)";
+
+      if (this.title === newTitle)
+        return;
+
+      this.title = newTitle;
       this.dataValues = [];
+      var exercise = this.selectedExercise === "All" ? null : this.selectedExercise;
+      
       if (this.selectedMeasurement === "total") {
-        this.title = this.selectedExercise + ' Total Weight (kg)';
-        this.exercisesService.subscribe(this.exercisesService.getTotalWeight(this.selectedExercise), r => {
-          this.dataValues = r.rows.map(row => row.value);
+        this.exercisesService.subscribe(this.exercisesService.getTotalWeight(exercise), r => {
+          this.populateDataValues(r);
         });
       } else {
-        this.title = this.selectedExercise + ' Maximum Weight (kg)';
-        this.exercisesService.subscribe(this.exercisesService.getMaxWeight(this.selectedExercise), r => {
-          this.dataValues = r.rows.map(row => row.value);
+        this.exercisesService.subscribe(this.exercisesService.getMaxWeight(exercise), r => {
+          this.populateDataValues(r);
         });
       }
+    }
+
+    populateDataValues(results: IQueryResults<IDataValue>) {
+      var newValues: IDataValueGroup[] = [];
+      var currentValuesGroup = null;
+      for (var row of results.rows){
+        var exercise = row.key[0];
+        if (!currentValuesGroup || (exercise != currentValuesGroup.name)){
+          currentValuesGroup = { name: exercise, dataValues: [] };
+          newValues.push(currentValuesGroup);
+        }
+        currentValuesGroup.dataValues.push({ date: row.value.date, value: row.value.value });
+      }
+      this.dataValues = newValues;
+    }
+
+    onChangeDisplayType(selectedType: string){
+      this.displayType = selectedType;
     }
 }

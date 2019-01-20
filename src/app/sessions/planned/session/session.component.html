@@ -1,6 +1,6 @@
-<div class="card" *ngIf='session'>
+<div class="card full-screen" *ngIf='session'>
     <div class="card-header icon-text">
-        <i class="far fa-file"></i>
+        <i class="far fa-calendar-alt"></i>
         Planned Session
     </div>
     <div class="card-body">
@@ -19,30 +19,32 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-4">
-                    <button class="btn btn-secondary full-width"
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-secondary full-width"
+                    data-toggle="modal" 
+                    data-target="#backConfirmationModal">
+                    <i class="fas fa-caret-left"></i>
+                    Back
+                </button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary full-width"
                         data-toggle="modal" 
-                        data-target="#backConfirmationModal">
-                        <i class="fas fa-caret-left"></i>
-                        Back
-                    </button>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-primary full-width"
-                            data-toggle="modal" 
-                            data-target="#addExercise">
-                        <i class="fas fa-dumbbell"></i>
-                        Add
-                    </button>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-success full-width"
-                        (click)='onSave()'>
-                        <i class="fas fa-save"></i>
-                        Save
-                    </button>
-                </div>
+                        data-target="#addExercise">
+                    <i class="fas fa-dumbbell"></i>
+                    Add
+                </button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-success full-width"
+                    (click)='onSave()'>
+                    <i class="fas fa-save"></i>
+                    Save
+                </button>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card full-screen">
     <div class="card-header icon-text" *ngIf='session'>
         <i class="far fa-calendar-alt"></i>
         {{session.started | date:'EEE dd/LL/yyyy HH\:mm'}}
@@ -19,38 +19,40 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-4">
-                    <button class="btn btn-secondary btn-block"
-                        data-toggle="modal" 
-                        data-target="#backConfirmationModal">
-                        <i class="fas fa-caret-left"></i>
-                        Back
-                    </button>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-primary btn-block"
-                            data-toggle="modal" 
-                            data-target="#addExercise">
-                        <i class="fas fa-dumbbell"></i>
-                        Add
-                    </button>
-                </div>
-                <div class="col-4">
-                    <button class="btn btn-primary btn-block"
-                        (click)='onSave()'>
-                        <i class="fas fa-save"></i>
-                        Save
-                    </button>
-                </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-secondary btn-block"
+                    data-toggle="modal" 
+                    data-target="#backConfirmationModal">
+                    <i class="fas fa-caret-left"></i>
+                    Back
+                </button>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <button class="btn btn-block btn-success"
-                        (click)='markComplete()'>
-                        Complete Session
-                    </button>
-                </div>
+            <div class="col-4">
+                <button class="btn btn-primary btn-block"
+                        data-toggle="modal" 
+                        data-target="#addExercise">
+                    <i class="fas fa-dumbbell"></i>
+                    Add
+                </button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary btn-block"
+                    (click)='onSave()'>
+                    <i class="fas fa-save"></i>
+                    Save
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-block btn-success"
+                    (click)='markComplete()'>
+                    Complete Session
+                </button>
             </div>
         </div>
     </div>
