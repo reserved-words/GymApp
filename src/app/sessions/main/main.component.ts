@@ -31,7 +31,7 @@ export class SessionsMainComponent {
     }
 
     ngOnInit(): void {
-        this.service.subscribe(this.service.getCompletedSessions(5), result => this.completed = result.rows.map(r => r.value));
+        this.service.subscribe(this.service.getCompletedSessions(3), result => this.completed = result.rows.map(r => r.value));
         this.service.subscribe(this.service.getPlannedSessions(3), result => {
             for (var i in result.rows){
                 var index = parseInt(i) + 1;
