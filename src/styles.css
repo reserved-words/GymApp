@@ -30,7 +30,7 @@ div.card.full-screen > .card-body {
 }
 
 div.card.full-screen > .card-header{
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 div.card.full-screen > .card-footer {
