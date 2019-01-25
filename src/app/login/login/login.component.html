@@ -12,7 +12,9 @@
         <input class="form-control" type="password" name='password' [(ngModel)]='password' />
       </div>
     </div>
-    <button type="button" (click)='submit()' class="btn btn-success">Submit</button>
+    <button type="button" (click)='submit()' class="btn btn-success btn-block">
+      <gym-caption text='Log In' [icon]='Icon.LogIn'></gym-caption>
+    </button>
   </form>
   <p style="color:red;">{{error}}</p>
 </div>
