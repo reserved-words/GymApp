@@ -2,18 +2,20 @@ import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 import { SessionsService } from "src/app/services/sessions.service";
-import { Observable } from "rxjs";
 import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
+import { Icon } from "src/app/shared/enums/icon.enum";
 
 @Component({
     templateUrl: "session.component.html",
     styleUrls: ["session.component.css"]
 })
 export class PlannedSessionComponent {
+    Icon = Icon;
     pageTitle: string = "Session";
     session: IPlannedSession;
     errorMessage: string;
     hasExercises: boolean;
+    
 
     constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
     }

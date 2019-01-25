@@ -5,12 +5,14 @@ import { IDropdownOption } from "src/app/shared/interfaces/dropdown-option";
 import { DropdownHelper } from "src/app/shared/helpers/dropdown.helper";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
+import { Icon } from "src/app/shared/enums/icon.enum";
 
 @Component({
     templateUrl: './exercise-detail.component.html'
 })
 export class ExerciseDetailComponent implements OnInit {
-    pageTitle: string = 'Edit Exercise';
+    Icon = Icon;
+    pageTitle: string;
     exercise: IExercise;
     errorMessage: string;
     frequencyOptions: IDropdownOption[];
@@ -22,7 +24,10 @@ export class ExerciseDetailComponent implements OnInit {
     ngOnInit(): void {
         let id = this.route.snapshot.paramMap.get('id');
         if (id != 'new'){
-            this.service.subscribe(this.service.getExercise(id), ex => this.exercise = ex);
+            this.service.subscribe(this.service.getExercise(id), ex => {
+                this.exercise = ex;
+                this.pageTitle = 'Edit Exercise: ' + ex.name;
+            });
         }
         else {
             this.exercise = {
@@ -37,6 +42,7 @@ export class ExerciseDetailComponent implements OnInit {
                 frequency: Frequency.EveryOtherSession,
                 addBodyWeight: false
             };
+            this.pageTitle = 'Add New Exercise';
         }
     }
     

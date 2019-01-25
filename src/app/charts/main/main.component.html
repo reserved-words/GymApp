@@ -19,12 +19,17 @@
   </div>
   <div class="card-footer">
     <div class="btn-group" role="group" style="width: 100%;">
-      <button *ngFor="let item of displayTypes"
-              type="button"
+      <button type="button"
               class="btn btn-primary" 
               style="width: 50%;"
-              (click)="onChangeDisplayType(item)"> 
-          {{item}}
+              (click)="onChangeDisplayType('Chart')"> 
+          <gym-caption text='Chart' [icon]='Icon.Chart'></gym-caption>
+      </button>
+      <button type="button"
+              class="btn btn-primary" 
+              style="width: 50%;"
+              (click)="onChangeDisplayType('Table')"> 
+        <gym-caption text='Table' [icon]='Icon.Table'></gym-caption>
       </button>
     </div>
   </div>

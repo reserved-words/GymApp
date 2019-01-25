@@ -3,12 +3,14 @@ import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 import { SessionsHelper } from "src/app/shared/helpers/sessions.helper";
 import { ICompletedExercise } from "src/app/shared/interfaces/completed-exercise";
 import { ExercisesService } from "src/app/services/exercises.service";
+import { Icon } from "src/app/shared/enums/icon.enum";
 
 @Component({
     selector: 'gym-current-exercise',
     templateUrl: 'exercise.component.html'
 })
 export class CurrentExerciseComponent {
+    Icon = Icon;
     @Input() exercise: ICurrentExercise;
     @Input() sessionStatus: string;
     @Output() removeFromSession: EventEmitter<string> = new EventEmitter<string>();

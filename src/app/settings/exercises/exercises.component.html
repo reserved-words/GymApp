@@ -1,19 +1,17 @@
 <div class="card">
     <div class="card-header">
-        {{pageTitle}}
+        <gym-caption text='Exercises' [icon]='Icon.Exercise' ></gym-caption>
     </div>
     <div class="card-body">
         <table *ngIf='list && list.length' class="table table-striped m-0">
             <tr *ngFor='let item of list'>
-                <td class="table-cell icon-text" (click)='goToExercise(item._id)'>
-                    <i class="fas fa-dumbbell"></i>
-                    <span>{{item.name}}</span>
+                <td class="table-cell" (click)='goToExercise(item._id)'>
+                    {{item.name}}
                 </td>
             </tr>
             <tr>
-                <td class="table-cell icon-text" (click)='addNewExercise()'>
-                    <i class="fas fa-plus"></i>
-                    <span>Add New</span>
+                <td class="table-cell" (click)='addNewExercise()'>
+                    <gym-caption text='Add New' [icon]='Icon.Add' ></gym-caption>
                 </td>
             </tr>
         </table>

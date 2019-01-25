@@ -2,13 +2,14 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 import { WeightService } from 'src/app/services/weight.service';
 import { IWeight } from 'src/app/shared/interfaces/weight';
 import { IDataValueGroup } from 'src/app/shared/interfaces/dataValueGroup';
+import { Icon } from 'src/app/shared/enums/icon.enum';
 
 @Component({
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
 export class WeightMainComponent implements OnInit {
-
+  Icon = Icon;
   list: IWeight[] = [];
   dataValues: IDataValueGroup[] = [];
   newEntry: IWeight = { date: new Date(), stones: 0, pounds: 0 }

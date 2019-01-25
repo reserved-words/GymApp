@@ -2,14 +2,14 @@ import { Component } from "@angular/core";
 import { SessionsService } from "../../services/sessions.service";
 import { Router } from "@angular/router";
 import { ICompletedSession } from "../../shared/interfaces/completed-session";
-import { Observable } from "rxjs";
+import { Icon } from "src/app/shared/enums/icon.enum";
 
 @Component({
     templateUrl: 'main.component.html',
     styleUrls: ['main.component.css']
 })
 export class SessionsMainComponent {
-    pageTitle: string = "Sessions";
+    Icon = Icon;
     completed: ICompletedSession[] = [];
     planned: any[] = [];
     errorMessage: string;

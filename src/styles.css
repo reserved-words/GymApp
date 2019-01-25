@@ -29,7 +29,7 @@ div.card.full-screen > .card-body {
   overflow-y: auto;
 }
 
-div.card.full-screen > .card-header{
+div.card.full-screen > .card-header {
   padding: 0.5rem;
 }
 
@@ -118,8 +118,12 @@ div.table-row-center div.table-cell {
   text-align: center;
 }
 
-.icon-text i {
-  margin-right: 0.75rem;
+.caption i {
+  margin-right: 0.5rem;
+}
+
+.btn .caption i {
+  margin-right: 0.25rem;
 }
 
 div.footer-buttons {

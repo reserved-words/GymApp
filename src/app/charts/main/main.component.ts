@@ -5,6 +5,7 @@ import { SessionsHelper } from 'src/app/shared/helpers/sessions.helper';
 import { IDataValue } from 'src/app/shared/interfaces/dataValue';
 import { IDataValueGroup } from 'src/app/shared/interfaces/dataValueGroup';
 import { IQueryResults } from 'src/app/shared/interfaces/queryResults';
+import { Icon } from 'src/app/shared/enums/icon.enum';
 
 @Component({
   selector: 'pm-charts',
@@ -12,8 +13,8 @@ import { IQueryResults } from 'src/app/shared/interfaces/queryResults';
   styleUrls: ['./main.component.css']
 })
 export class ChartsMainComponent implements OnInit {
-
-  addExerciseType: string;
+    Icon = Icon;
+    addExerciseType: string;
     exercises: string[];
     selectedExercise: string;
     selectedMeasurement: string;

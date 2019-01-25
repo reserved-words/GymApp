@@ -1,8 +1,7 @@
 <div class="card full-screen" *ngIf='session'>
     <div class="card-header">
-        <div class="card-title icon-text">
-            <i class="far fa-calendar-alt"></i>
-            Planned Session
+        <div class="card-title">
+            <gym-caption text='Planned Session' [icon]='Icon.PlannedSession'></gym-caption>
         </div>
     </div>
     <div class="card-body">
@@ -29,23 +28,20 @@
                 <button class="btn btn-secondary full-width"
                     data-toggle="modal" 
                     data-target="#backConfirmationModal">
-                    <i class="fas fa-caret-left"></i>
-                    Back
+                    <gym-caption text='Back' [icon]='Icon.Back'></gym-caption>
                 </button>
             </div>
             <div class="col-4">
                 <button class="btn btn-primary full-width"
                         data-toggle="modal" 
                         data-target="#addExercise">
-                    <i class="fas fa-dumbbell"></i>
-                    Add
+                    <gym-caption text='Add' [icon]='Icon.Add'></gym-caption>
                 </button>
             </div>
             <div class="col-4">
                 <button class="btn btn-success full-width"
                     (click)='onSave()'>
-                    <i class="fas fa-save"></i>
-                    Save
+                    <gym-caption text='Save' [icon]='Icon.Save'></gym-caption>
                 </button>
             </div>
         </div>

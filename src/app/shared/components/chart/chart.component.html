@@ -11,9 +11,8 @@
                 </th>
             </tr>
             <tr *ngFor='let item of group.dataValues'>
-                <td class="icon-text">
-                    <i class="far fa-calendar-alt"></i>
-                    <span>{{item.date | date:'dd/LL/yyyy'}}</span>
+                <td>
+                    <gym-caption [text]="item.date | date:'dd/LL/yyyy'" [icon]='Icon.Calendar'></gym-caption>
                 </td>
                 <td>
                     <span>{{item.value | number:'1.1-2'}}kg</span>
