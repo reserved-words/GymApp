@@ -208,3 +208,7 @@ ul.nav li a {
   font-size: 1.5rem;
   color: indigo;
 }
+
+input.date {
+  width: 7rem;
+}

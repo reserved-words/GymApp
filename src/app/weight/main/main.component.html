@@ -3,7 +3,7 @@
     <table>
       <tr>
         <td class="min-width pr-1">
-          Today:
+          <input type="text" class="form-control date" [(ngModel)]="newEntryDateAsString" (blur)="changeNewEntryDate()">
         </td>
         <td>
           <div class="input-group">
@@ -11,7 +11,7 @@
               <button class="btn btn-sm"
                   (click)='decreaseNewWeight()'>-</button>
             </div>
-            <input disabled value='{{newEntryAsString}}' type="text" class="form-control">
+            <input disabled value='{{newEntryWeightAsString}}' type="text" class="form-control">
             <div class="input-group-append">
               <button class="btn btn-sm"
                       (click)='increaseNewWeight()'>+</button>
