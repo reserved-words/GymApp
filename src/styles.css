@@ -33,6 +33,11 @@ div.card.full-screen > .card-header{
   padding: 0.5rem;
 }
 
+div.card.full-screen > .card-header > .card-title {
+  padding: 0.5rem;
+  margin: 0;
+}
+
 div.card.full-screen > .card-footer {
   padding: 0.5rem;
 }

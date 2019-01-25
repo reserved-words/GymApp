@@ -1,7 +1,9 @@
 <div class="card full-screen">
-    <div class="card-header icon-text" *ngIf='session'>
-        <i class="far fa-calendar-alt"></i>
-        {{session.started | date:'EEE dd/LL/yyyy HH\:mm'}}
+    <div class="card-header" *ngIf='session'>
+        <div class="card-title icon-text">
+            <i class="far fa-calendar-alt"></i>
+            {{session.started | date:'EEE dd/LL/yyyy HH\:mm'}}
+        </div>
     </div>
     <div class="card-body">
         <div class="container-fluid">
