@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { Icon } from 'src/app/shared/enums/icon.enum';
 
 @Component({
   selector: 'gym-login',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  Icon = Icon;
   username: string;
   password: string;
   error: string;

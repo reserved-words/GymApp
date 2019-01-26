@@ -1,11 +1,15 @@
 <div class="card full-screen">
     <div class="card-header">
-        Settings
+        <div class="card-title">
+            <gym-caption text='Settings' [icon]='Icon.Settings'></gym-caption>                
+        </div>
     </div>
     <div class="card-body">
         <gym-exercises></gym-exercises>
     </div>
     <div class="card-footer">
-        <button type="button" class="btn btn-primary btn-block mt-1" (click)="logout()" >Log Out</button>
+        <button type="button" class="btn btn-primary btn-block mt-1" (click)="logout()" >
+            <gym-caption text="Log Out" [icon]='Icon.LogOut'></gym-caption>
+        </button>
     </div>
 </div>

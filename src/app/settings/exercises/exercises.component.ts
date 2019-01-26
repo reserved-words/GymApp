@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { IExercise } from "../../shared/interfaces/exercise";
 import { ExercisesService } from "../../services/exercises.service";
 import { Router } from "@angular/router";
+import { Icon } from "../../shared/enums/icon.enum";
 
 @Component({
     selector: 'gym-exercises',
@@ -9,6 +10,7 @@ import { Router } from "@angular/router";
     styleUrls: [ 'exercises.component.css' ]
 })
 export class ExercisesComponent {
+    Icon = Icon;
     pageTitle: string = 'Exercises';
     list: IExercise[] = [];
     errorMessage: string;

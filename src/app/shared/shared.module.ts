@@ -7,6 +7,7 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
 import { BackConfirmationComponent } from './components/back-confirmation/back-confirmation.component';
 import { ChartComponent } from './components/chart/chart.component';
 import { ChartModule } from 'angular-highcharts';
+import { CaptionComponent } from './components/caption/caption.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { ChartModule } from 'angular-highcharts';
     AddExerciseComponent,
     ConfirmationComponent,
     BackConfirmationComponent,
-    ChartComponent
+    ChartComponent,
+    CaptionComponent
   ],
   exports: [
     NumComponent,
@@ -27,6 +29,7 @@ import { ChartModule } from 'angular-highcharts';
     ConfirmationComponent,
     BackConfirmationComponent,
     ChartComponent,
+    CaptionComponent,
     CommonModule,
     FormsModule
   ]

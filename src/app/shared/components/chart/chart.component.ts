@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Chart } from 'angular-highcharts';
 import { IDataValueGroup } from '../../interfaces/dataValueGroup';
+import { Icon } from '../../enums/icon.enum';
 
 @Component({
   selector: 'gym-chart',
@@ -8,7 +9,7 @@ import { IDataValueGroup } from '../../interfaces/dataValueGroup';
   styleUrls: ['./chart.component.css']
 })
 export class ChartComponent implements OnInit, OnChanges {
-
+  Icon = Icon;
   @Input() title: string;
   @Input() valueGroups: IDataValueGroup[];
   @Input() displayType: string;

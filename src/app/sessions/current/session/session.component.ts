@@ -8,11 +8,13 @@ import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
+import { Icon } from "src/app/shared/enums/icon.enum";
 
 @Component({
     templateUrl: "session.component.html"
 })
 export class CurrentSessionComponent {
+    Icon = Icon;
     pageTitle: string = "Session";
     errorMessage: string;
     session: ICurrentSession;

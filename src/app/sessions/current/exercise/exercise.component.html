@@ -36,9 +36,9 @@
                     <div class="col-12">
                         <div class="dropdown" *ngIf='!exercise.done'>
                             <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Edit
+                                <gym-caption text='Edit' [icon]='Icon.Edit'></gym-caption>
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" (click)='addWarmUpSet()'>Add warmup set</a>
                                 <a class="dropdown-item" (click)='addSet()'>Add set</a>
                                 <div class="dropdown-divider"></div>
@@ -47,9 +47,9 @@
                         </div>
                         <div class="dropdown" *ngIf='exercise.done && !exercise.nextSessionConfirmed'>
                             <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Edit
+                                <gym-caption text='Edit' [icon]='Icon.Edit'></gym-caption>
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" (click)='addPlannedWarmUpSet()'>Add warmup set</a>
                                 <a class="dropdown-item" (click)='removePlannedWarmUpSet()'>Remove warmup set</a>
                                 <a class="dropdown-item" (click)='addPlannedSet()'>Add set</a>
@@ -63,13 +63,13 @@
                 <div class="row">
                     <div class="col-12">
                         <button *ngIf='!exercise.done' type="button" class="btn btn-success btn-block" (click)='markDone()'>
-                            Complete Exercise
+                            <gym-caption text='Complete Exercise' [icon]='Icon.Check'></gym-caption>
                         </button>
                         <button *ngIf='exercise.done && !exercise.nextSessionConfirmed' type="button" class="btn btn-block btn-success" (click)='confirmPlannedSession()'>
-                            Confirm
+                            <gym-caption text='Confirm' [icon]='Icon.Check'></gym-caption>
                         </button>
                         <button *ngIf='exercise.done && exercise.nextSessionConfirmed' type="button" class="btn btn-block btn-secondary" (click)='markNotDone()'>
-                            Edit
+                            <gym-caption text='Edit' [icon]='Icon.Edit'></gym-caption>
                         </button>
                     </div>
                 </div>

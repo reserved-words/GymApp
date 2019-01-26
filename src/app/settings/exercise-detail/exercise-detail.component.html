@@ -1,7 +1,8 @@
 <div class="card full-screen" *ngIf='exercise'>
-    <div class="card-header icon-text">
-            <i class="fas fa-dumbbell"></i>
-        {{pageTitle}}: {{exercise.name}}
+    <div class="card-header">
+        <div class="card-title">
+            <gym-caption [text]='pageTitle' [icon]='Icon.Exercise'></gym-caption>
+        </div>
     </div>
     <div class="card-body p-2">
         <form>
@@ -64,15 +65,13 @@
                 <button class="btn btn-secondary btn-block"
                         data-toggle="modal" 
                         data-target="#backConfirmationModal">
-                    <i class="fas fa-caret-left"></i>
-                    Back
+                    <gym-caption text='Back' [icon]='Icon.Back'></gym-caption>
                 </button>
             </div>
             <div class="col-6">
                 <button class="btn btn-success btn-block"
                     (click)='onSave()'>
-                    <i class="fas fa-save"></i>
-                    Save
+                    <gym-caption text='Save' [icon]='Icon.Save'></gym-caption>
                 </button>   
             </div>
         </div>

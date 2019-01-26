@@ -1,7 +1,8 @@
 <div class="card full-screen">
-    <div class="card-header icon-text" *ngIf='session'>
-        <i class="far fa-calendar-alt"></i>
-        {{session.started | date:'EEE dd/LL/yyyy HH\:mm'}}
+    <div class="card-header" *ngIf='session'>
+        <div class="card-title">
+            <gym-caption [text]='session.started | date:"EEE dd/LL/yyyy HH\:mm"' [icon]='Icon.CurrentSession'></gym-caption>
+        </div>
     </div>
     <div class="card-body">
         <div class="container-fluid">
@@ -27,23 +28,20 @@
                 <button class="btn btn-secondary btn-block"
                     data-toggle="modal" 
                     data-target="#backConfirmationModal">
-                    <i class="fas fa-caret-left"></i>
-                    Back
+                    <gym-caption text='Back' [icon]='Icon.Back'></gym-caption>
                 </button>
             </div>
             <div class="col-4">
                 <button class="btn btn-primary btn-block"
-                        data-toggle="modal" 
-                        data-target="#addExercise">
-                    <i class="fas fa-dumbbell"></i>
-                    Add
+                    data-toggle="modal" 
+                    data-target="#addExercise">
+                    <gym-caption text='Add' [icon]='Icon.Add'></gym-caption>
                 </button>
             </div>
             <div class="col-4">
                 <button class="btn btn-primary btn-block"
                     (click)='onSave()'>
-                    <i class="fas fa-save"></i>
-                    Save
+                    <gym-caption text='Save' [icon]='Icon.Save'></gym-caption>
                 </button>
             </div>
         </div>
@@ -51,7 +49,7 @@
             <div class="col-12">
                 <button class="btn btn-block btn-success"
                     (click)='markComplete()'>
-                    Complete Session
+                    <gym-caption text='Complete Session' [icon]='Icon.Check'></gym-caption>
                 </button>
             </div>
         </div>

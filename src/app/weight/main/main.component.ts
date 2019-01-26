@@ -2,17 +2,19 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 import { WeightService } from 'src/app/services/weight.service';
 import { IWeight } from 'src/app/shared/interfaces/weight';
 import { IDataValueGroup } from 'src/app/shared/interfaces/dataValueGroup';
+import { Icon } from 'src/app/shared/enums/icon.enum';
 
 @Component({
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
 export class WeightMainComponent implements OnInit {
-
+  Icon = Icon;
   list: IWeight[] = [];
   dataValues: IDataValueGroup[] = [];
   newEntry: IWeight = { date: new Date(), stones: 0, pounds: 0 }
-  newEntryAsString: string;
+  newEntryDateAsString: string;
+  newEntryWeightAsString: string;
   errorMessage: string;
   displayTypes: string[] = ['Chart','Table'];
   displayType: string = 'Chart';
@@ -47,7 +49,7 @@ export class WeightMainComponent implements OnInit {
       this.newEntry.stones = 0;
       this.newEntry.pounds = 0;
     }
-    this.updateNewEntryString();
+    this.updateNewEntryStrings();
   }
 
   decreaseNewWeight(): void {
@@ -58,7 +60,7 @@ export class WeightMainComponent implements OnInit {
     else {
       this.newEntry.pounds = this.newEntry.pounds - this.minPoundsIncrement;
     }
-    this.updateNewEntryString();
+    this.updateNewEntryStrings();
   }
 
   increaseNewWeight(): void {
@@ -69,10 +71,23 @@ export class WeightMainComponent implements OnInit {
     else {
       this.newEntry.pounds = this.newEntry.pounds + this.minPoundsIncrement;
     }
-    this.updateNewEntryString();
+    this.updateNewEntryStrings();
+  }
+
+  changeNewEntryDate(): void {
+    console.log(this.newEntryDateAsString);
+    var parts = this.newEntryDateAsString.split("/");
+    this.newEntry.date = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+    console.log(this.newEntry.date);
+    this.updateNewEntryStrings();  
   }
 
   saveNewEntry(): void {
+    if (this.newEntryDateAsString == 'Invalid Date'){
+      alert('Invalid date');
+      return;
+    }
+    
     this.service.subscribe(this.service.insertWeight(this.newEntry),
       success => {
         this.ngOnInit();
@@ -80,8 +95,9 @@ export class WeightMainComponent implements OnInit {
     );
   }
 
-  updateNewEntryString(): void {
-    this.newEntryAsString = this.newEntry.stones + 'st ' + this.newEntry.pounds;
+  updateNewEntryStrings(): void {
+    this.newEntryWeightAsString = this.newEntry.stones + 'st ' + this.newEntry.pounds;
+    this.newEntryDateAsString = this.newEntry.date.toLocaleDateString("en-GB");
   }
 
   onChangeDisplayType(selectedType: string){

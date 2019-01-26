@@ -29,8 +29,13 @@ div.card.full-screen > .card-body {
   overflow-y: auto;
 }
 
-div.card.full-screen > .card-header{
+div.card.full-screen > .card-header {
   padding: 0.5rem;
+}
+
+div.card.full-screen > .card-header > .card-title {
+  padding: 0.5rem;
+  margin: 0;
 }
 
 div.card.full-screen > .card-footer {
@@ -113,8 +118,12 @@ div.table-row-center div.table-cell {
   text-align: center;
 }
 
-.icon-text i {
-  margin-right: 0.75rem;
+.caption i {
+  margin-right: 0.5rem;
+}
+
+.btn .caption i {
+  margin-right: 0.25rem;
 }
 
 div.footer-buttons {
@@ -171,19 +180,43 @@ i.fa-times {
   vertical-align: middle;
 }
 
-.btn-primary {
-  background-color: indigo;
-  border-color: white;
+.btn-primary,
+.btn-primary:focus,
+.btn-primary:visited,
+.btn-primary:active,
+.btn-primary:not(:disabled),
+.btn-primary:not(.disabled),
+.btn-primary:hover {
+  background-color: indigo !important;
+  border-color: white !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-.btn-secondary {
-  background-color: #777;
-  border-color: white;
+.btn-secondary,
+.btn-secondary:focus,
+.btn-secondary:visited,
+.btn-secondary:active,
+.btn-secondary:not(:disabled),
+.btn-secondary:not(.disabled),
+.btn-secondary:hover {
+  background-color: gray !important;
+  border-color: white !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
-.btn-success {
-  background-color: maroon;
-  border-color: white;
+.btn-success,
+.btn-success:focus,
+.btn-success:visited,
+.btn-success:active,
+.btn-success:not(:disabled),
+.btn-success:not(.disabled)
+.btn-success:hover {
+  background-color: maroon !important;
+  border-color: white !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .nav-link {
@@ -202,4 +235,8 @@ ul.nav li {
 ul.nav li a {
   font-size: 1.5rem;
   color: indigo;
+}
+
+input.date {
+  width: 7rem;
 }

@@ -2,6 +2,7 @@ import { Component, Input, EventEmitter, Output, OnInit } from "@angular/core";
 import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { IExercise } from "src/app/shared/interfaces/exercise";
+import { Icon } from "src/app/shared/enums/icon.enum";
 
 @Component({
     selector: 'gym-planned-exercise',
@@ -9,6 +10,7 @@ import { IExercise } from "src/app/shared/interfaces/exercise";
     styleUrls: ['exercise.component.css']
 })
 export class PlannedExerciseComponent implements OnInit {
+    Icon = Icon;
     @Input() exercise: IPlannedExercise;
     @Output() removeFromSession: EventEmitter<string> = new EventEmitter<string>();
     collapsed: boolean = true;
