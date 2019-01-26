@@ -15,11 +15,11 @@ export class WeightService extends BaseService {
         super(authService);
     }
 
-    getWeights(): Observable<IQueryResults<IWeight>> {
+    getWeights(): Promise<IQueryResults<IWeight>> {
         return this.db.getList<IWeight>(this.db.weightUrl, null, true);
     }
 
-    insertWeight(weight: IWeight): Observable<ISaveResponse> {
+    insertWeight(weight: IWeight): Promise<ISaveResponse> {
         return this.db.insert({ type: "weight", date: weight.date, stones: weight.stones, pounds: weight.pounds });
     }
 }

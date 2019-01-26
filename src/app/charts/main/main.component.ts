@@ -26,7 +26,7 @@ export class ChartsMainComponent implements OnInit {
     constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
 
     ngOnInit(){
-        this.exercisesService.subscribe(this.exercisesService.getExercises(), r => {
+        this.exercisesService.getExercises().then(r => {
           this.exercises = r.rows.map(row => row.value.name);
           this.exercises.splice(0, 0, "All");
           this.selectedExercise = this.exercises[0];
@@ -59,11 +59,11 @@ export class ChartsMainComponent implements OnInit {
       var exercise = this.selectedExercise === "All" ? null : this.selectedExercise;
       
       if (this.selectedMeasurement === "total") {
-        this.exercisesService.subscribe(this.exercisesService.getTotalWeight(exercise), r => {
+        this.exercisesService.getTotalWeight(exercise).then(r => {
           this.populateDataValues(r);
         });
       } else {
-        this.exercisesService.subscribe(this.exercisesService.getMaxWeight(exercise), r => {
+        this.exercisesService.getMaxWeight(exercise).then(r => {
           this.populateDataValues(r);
         });
       }

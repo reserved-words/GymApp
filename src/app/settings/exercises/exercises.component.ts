@@ -27,6 +27,9 @@ export class ExercisesComponent {
     }
 
     ngOnInit(): void {
-        this.service.subscribe(this.service.getExercises(), results => this.list = results.rows.map(r => r.value));
+        this.service.getExercises().then(results => {
+            console.log(results);
+            this.list = results.rows.map(r => r.value);
+        });
     }
 }

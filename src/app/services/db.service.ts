@@ -1,97 +1,105 @@
 import { HttpErrorResponse, HttpClient } from "@angular/common/http";
-import { throwError, Observable } from "rxjs";
-import { Injectable } from "@angular/core";
+import { throwError, Observable, of } from "rxjs";
+import { Injectable, OnInit } from "@angular/core";
 import { ISaveResponse } from "../shared/interfaces/saveResponse";
 import { tap, catchError } from "rxjs/operators";
 import { IQueryResults } from "../shared/interfaces/queryResults";
 import { ConfigService } from "./config.service";
 import { AuthService } from "./auth.service";
 import { Router } from "@angular/router";
+import * as PouchDB from 'pouchdb/dist/pouchdb';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DBService {
-    baseUrl: string = ConfigService.settings.api.baseUrl;
+    private db: PouchDB;
+    private baseUrl: string = ConfigService.settings.api.baseUrl;
 
-    authenticateUrl: string = this.baseUrl + '_session/';
-    exercisesUrl: string = this.baseUrl + '_design/exerciseDesignDoc/_view/exercises';
-    completedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedSessions';
-    completedExercisesUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedExercises';
-    plannedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions';
-    currentSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/currentSession';
-    weightUrl: string = this.baseUrl + '_design/weight/_view/weight';
-    maxWeightUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/sessionMaxWeight';
-    totalWeightUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/sessionTotalWeight';
+    exercisesUrl: string = 'exerciseDesignDoc/exercises';
+    completedSessionsUrl: string = 'sessionDesignDoc/completedSessions';
+    completedExercisesUrl: string = 'sessionDesignDoc/completedExercises';
+    plannedSessionsUrl: string = 'sessionDesignDoc/plannedSessions';
+    currentSessionUrl: string = 'sessionDesignDoc/currentSession';
+    weightUrl: string = 'weight';
+    maxWeightUrl: string = 'sessionDesignDoc/sessionMaxWeight';
+    totalWeightUrl: string = 'sessionDesignDoc/sessionTotalWeight';
 
-    constructor(private http: HttpClient, private authService: AuthService, private router: Router){}
+    constructor(private authService: AuthService){}
 
-    private getAuthHeader(): string {
-        return 'Basic ' + this.authService.id();
-    }
-
-    getDocumentUrl(id: string, rev: string = null){
-        return this.baseUrl + id + (rev ? ("?rev=" + rev) : "");
-    }
-
-    getList<T>(url: string, limit: number = null, desc: boolean = null, startKey: any = null, endKey: any = null){
-        url = url + "?descending=" + (desc ? "true" : "false");
-        if (limit){
-            url = url + "&limit=" + limit;
+    private localdb(): PouchDB {
+        if (!this.db){
+            this.db = new PouchDB('gymapp-local');
+            this.db.info().then(function (info) {
+                console.log(info);
+            });
+            var remoteDB = this.baseUrl.replace('http://', ('http://' + this.authService.id() + '@'));
+            console.log(remoteDB);
+            var sync = PouchDB.replicate(remoteDB, 'gymapp-local', {
+                live: false,
+                retry: false
+            }).on('change', function (info) {
+                console.log('change: ' + JSON.stringify(info));
+            }).on('paused', function (err) {
+                console.log('paused: ' + JSON.stringify(err));
+            }).on('active', function () {
+                console.log('active');
+            }).on('denied', function (err) {
+                console.log('denied: ' + JSON.stringify(err));
+            }).on('complete', function (info) {
+                console.log('complete: ' + JSON.stringify(info));
+            }).on('error', function (err) {
+                console.log('error: ' + JSON.stringify(err));
+            });
         }
-        if (startKey){
-            url = url + "&startkey=" + JSON.stringify(startKey);
-        }
-        if (endKey){
-            url = url + "&endkey=" + JSON.stringify(endKey);
-        }
-        return this.http.get<IQueryResults<T>>(url, {
-            headers: {'Authorization': this.getAuthHeader()}
-        }).pipe(catchError(this.handleError));
+        return this.db;
     }
 
-    getSingle<T>(id: string): Observable<T> {    
-        return this.http
-            .get<T>(this.getDocumentUrl(id), {
-                headers: {'Authorization': this.getAuthHeader()}
-            })
-            .pipe(catchError(this.handleError));
-    }
+    getList<T>(url: string, limit: number = null, desc: boolean = null, startKey: any = null, endKey: any = null): Promise<IQueryResults<T>>{
 
-    find<T>(url: string, selector: any, sort: any, limit: number): Observable<IQueryResults<T>>{
-        var criteria = {
-            selector: selector,
-            sort: sort,
+        var criteria: any;
+
+        criteria = {
+            descending: desc,
             limit: limit
         };
 
-        return this.http
-            .post<IQueryResults<T>>(this.baseUrl, JSON.stringify(criteria), {
-                headers: {'Content-Type':'application/json; charset=utf-8', 'Authorization': this.getAuthHeader()}
-             })
-            .pipe(
-                tap(data => console.log(JSON.stringify(data))),
-                catchError(this.handleError));
+        if (startKey){
+            criteria.startkey = startKey;
+        }
+
+        if (endKey){
+            criteria.endkey = endKey;
+        }
+
+        return this.localdb().query(url, criteria);
     }
 
-    insert(data: any): Observable<ISaveResponse> {
-        return this.http
-            .post<ISaveResponse>(this.baseUrl, JSON.stringify(data), {
-                headers: {'Content-Type':'application/json; charset=utf-8;', 'Authorization': this.getAuthHeader()}
-             })
-            .pipe(
-                tap(data => console.log(JSON.stringify(data))),
-                catchError(this.handleError));
+    getSingle<T>(id: string): Promise<T> {    
+        return this.localdb().get(id);
     }
 
-    update(id: string, rev: string, data: any): Observable<ISaveResponse> {
-        return this.http
-            .put<ISaveResponse>(this.getDocumentUrl(id, rev), JSON.stringify(data), {
-                headers: {'Authorization': this.getAuthHeader()}
-            })
-            .pipe(
-                tap(data => console.log(JSON.stringify(data))),
-                catchError(this.handleError));
+    find<T>(url: string, selector: any, sort: any, limit: number): Promise<IQueryResults<T>>{
+        var criteria = {
+            sort: sort,
+            limit: limit
+        };
+        return this.localdb().find(url, criteria);
+    }
+
+    private generateID(): string {
+        return new Date().getTime().toString();
+    }
+
+    insert(data: any): Promise<ISaveResponse> {
+        data._id = this.generateID();
+        return this.localdb().put(data);
+    }
+
+    update(id: string, rev: string, data: any): Promise<ISaveResponse> {
+        data._id = id;
+        data._rev = rev;
+        return this.localdb().put(data);
     }
 
     handleError(err: HttpErrorResponse){

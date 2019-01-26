@@ -25,12 +25,12 @@ export class CurrentSessionComponent {
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
         if (id) {
-            this.service.subscribe(this.service.getSession<ICurrentSession>(id), s => {
+            this.service.getSession<ICurrentSession>(id).then(s => {
                 this.session = s
             });
         }
         else {
-            this.service.subscribe(this.service.getPlannedSessions(1), s => {
+            this.service.getPlannedSessions(1).then(s => {
                 this.session = this.helper.createCurrentSession(s.rows[0].value);
             });
         }
@@ -48,20 +48,19 @@ export class CurrentSessionComponent {
             }
         }
 
-        this.service.subscribe(this.service.updateSession<ICurrentSession>(this.session._id, this.session),
+        this.service.updateSession<ICurrentSession>(this.session._id, this.session).then(
             s => {
                 this.session._rev = s.rev;
                 this.completeAndPlanNextSessions();
             });
     }
     onSave(): void {
-        this.service.updateSession<ICurrentSession>(this.session._id, this.session).subscribe(
+        this.service.updateSession<ICurrentSession>(this.session._id, this.session).then(
             s => {
                 this.session._rev = s.rev;
                 alert("Changes saved");
-            },
-            error => this.handleError(error)
-        );
+            }
+        ).catch(error => this.handleError(error));
     }
     handleError(error: any){
         this.errorMessage = <any>error;
@@ -69,7 +68,7 @@ export class CurrentSessionComponent {
     }
 
     completeAndPlanNextSessions() {
-        this.service.subscribe(this.service.getPlannedSessions(3),
+        this.service.getPlannedSessions(3).then(
             results => {
                 var plannedSessions = results.rows.map(r => r.value);
 
@@ -79,9 +78,9 @@ export class CurrentSessionComponent {
                     plannedSessions.push({ _id: null, _rev: null, type: "planned-session", index: index, exercises: [] });
                 }
 
-                this.service.subscribe(this.service.getCompletedSessions(1), lastSessions => {
+                this.service.getCompletedSessions(1).then(lastSessions => {
                     var lastSession = lastSessions.rows.map(r => r.value)[0];
-                    this.service.subscribe(this.exercisesService.getExercises(), exercises => {
+                    this.exercisesService.getExercises().then(exercises => {
                         for (let ex of this.session.exercises){
                             
                             var def = exercises.rows.map(r => r.value).filter(r => r.name === ex.type)[0];
@@ -118,20 +117,20 @@ export class CurrentSessionComponent {
 
     savePlannedSession(session: IPlannedSession): void {
         if (session._id){
-            this.service.subscribe(this.service.updateSession(session._id, session));
+            this.service.updateSession(session._id, session);
         }
         else {
-            this.service.subscribe(this.service.insertSession(session));
+            this.service.insertSession(session);
         }
     }
     saveCompletedSession():void {
         var completedSession = this.helper.completeCurrentSession(this.session);
-        this.service.updateSession<ICompletedSession>(this.session._id, completedSession).subscribe(
+        this.service.updateSession<ICompletedSession>(this.session._id, completedSession).then(
             s => { 
                 // this.router.navigate(['']) - only when all saved
-            }, 
-            error => this.handleError(error)
-        );
+            }
+        )
+        .catch(error => this.handleError(error));
     }
     removeExercise(exerciseType: string):void {
         var updatedList = [];

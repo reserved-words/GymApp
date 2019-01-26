@@ -8,21 +8,21 @@ export class BaseService {
         this.auth.logout();
     }
 
-    subscribe<T>(obs: Observable<T>, onSuccess: Function = null, onError: Function = null): void {
-        obs.subscribe(
-            response => { 
-                if (onSuccess){ 
-                    onSuccess(response); 
-                }},
-            error => {                
-                if (error === 'unauthorized'){
-                    this.onAuthError();
-                }
-                console.error(error);
-                if (onError){
-                    onError(error);
-                }
-            }
-        );
-    }
+    // subscribe<T>(obs: Observable<T>, onSuccess: Function = null, onError: Function = null): void {
+    //     obs.subscribe(
+    //         response => { 
+    //             if (onSuccess){ 
+    //                 onSuccess(response); 
+    //             }},
+    //         error => {                
+    //             if (error === 'unauthorized'){
+    //                 this.onAuthError();
+    //             }
+    //             console.error(error);
+    //             if (onError){
+    //                 onError(error);
+    //             }
+    //         }
+    //     );
+    // }
 }

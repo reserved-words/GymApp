@@ -20,11 +20,11 @@ export class SessionsService extends BaseService {
         super(authService);
     }
 
-    getCompletedSessions(limit: number): Observable<IQueryResults<ICompletedSession>>{
+    getCompletedSessions(limit: number): Promise<IQueryResults<ICompletedSession>>{
         return this.db.getList<ICompletedSession>(this.db.completedSessionsUrl, limit, true);
     };
 
-    getLastSession(exerciseType: string): Observable<IQueryResults<ICompletedExercise>>{
+    getLastSession(exerciseType: string): Promise<IQueryResults<ICompletedExercise>>{
         return this.db.find(
             this.db.completedExercisesUrl, 
             { "type": exerciseType },
@@ -32,23 +32,23 @@ export class SessionsService extends BaseService {
             1);
     }
 
-    getCurrentSession(): Observable<IQueryResults<ICurrentSession>>{
+    getCurrentSession(): Promise<IQueryResults<ICurrentSession>>{
         return this.db.getList<ICurrentSession>(this.db.currentSessionUrl);
     }
 
-    getPlannedSessions(limit: number): Observable<IQueryResults<IPlannedSession>>{
+    getPlannedSessions(limit: number): Promise<IQueryResults<IPlannedSession>>{
         return this.db.getList<IPlannedSession>(this.db.plannedSessionsUrl, limit);
     };
 
-    getSession<T>(id: string): Observable<T> {    
+    getSession<T>(id: string): Promise<T> {    
         return this.db.getSingle<T>(id);
     }
 
-    updateSession<T extends ISession>(id: string, session: T): Observable<ISaveResponse> {
+    updateSession<T extends ISession>(id: string, session: T): Promise<ISaveResponse> {
         return this.db.update(id, session._rev, session);
     }
 
-    insertSession(session: IPlannedSession): Observable<ISaveResponse> {
+    insertSession(session: IPlannedSession): Promise<ISaveResponse> {
         return this.db.insert({ type: session.type, index: session.index, exercises: session.exercises });
     }
 }

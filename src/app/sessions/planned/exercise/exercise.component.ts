@@ -19,7 +19,7 @@ export class PlannedExerciseComponent implements OnInit {
     constructor(private service: ExercisesService){}
 
     ngOnInit(): void {
-        this.service.subscribe(this.service.getExercises(), response => {
+        this.service.getExercises().then(response => {
             this.def = response.rows.map(r => r.value).filter(r => r.name === this.exercise.type)[0];
         });
     }

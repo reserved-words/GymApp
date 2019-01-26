@@ -31,14 +31,14 @@ export class SessionsMainComponent {
     }
 
     ngOnInit(): void {
-        this.service.subscribe(this.service.getCompletedSessions(3), result => this.completed = result.rows.map(r => r.value));
-        this.service.subscribe(this.service.getPlannedSessions(3), result => {
+        this.service.getCompletedSessions(3).then(result => this.completed = result.rows.map(r => r.value));
+        this.service.getPlannedSessions(3).then(result => {
             for (var i in result.rows){
                 var index = parseInt(i) + 1;
                 this.planned.push({ index: index, id: result.rows[i].value._id });
             }
         });
-        this.service.subscribe(this.service.getCurrentSession(), result => {
+        this.service.getCurrentSession().then(result => {
             this.currentSessionID = result.total_rows > 0 ? result.rows[0].value._id : null;
             this.startSessionText = this.currentSessionID ? "Resume Current Session" : "Start Next Session";
         });

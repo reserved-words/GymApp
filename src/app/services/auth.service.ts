@@ -14,7 +14,7 @@ export class AuthService {
     };
       
     id() : string {
-       return localStorage.getItem('authID');
+       return atob(localStorage.getItem('authID'));
     }
     
     login(username: string, password: string): boolean {

@@ -18,14 +18,14 @@ export class AddExerciseComponent{
     constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
 
     ngOnInit(){
-        this.exercisesService.subscribe(this.exercisesService.getExercises(), r => {
+        this.exercisesService.getExercises().then(r => {
             this.exercises = r.rows.map(row => row.value);
         });
     }
 
     addExercise():void {
         var exerciseType = this.exercises.filter(ex => ex.name === this.addExerciseType)[0];
-        this.sessionsService.subscribe(this.sessionsService.getLastSession(this.addExerciseType), r => 
+        this.sessionsService.getLastSession(this.addExerciseType).then(r => 
         {
             var lastSession = r.total_rows > 0
                 ? r.rows.map(r => r.value)[0]

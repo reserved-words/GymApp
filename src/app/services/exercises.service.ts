@@ -19,18 +19,18 @@ export class ExercisesService extends BaseService {
         super(authService);
     }
 
-    getExercises(): Observable<IQueryResults<IExercise>> {
+    getExercises(): Promise<IQueryResults<IExercise>> {
         if (this.exercises){
-            return of(this.exercises);
+            return new Promise(v => this.exercises);
         }
         return this.db.getList<IExercise>(this.db.exercisesUrl);
     } 
 
-    getExercise(id: string): Observable<IExercise> {
+    getExercise(id: string): Promise<IExercise> {
         return this.db.getSingle<IExercise>(id);
     }
 
-    insertExercise(exercise: IExercise): Observable<ISaveResponse> {
+    insertExercise(exercise: IExercise): Promise<ISaveResponse> {
         this.exercises = null;
         return this.db.insert({
             type: 'exercise',
@@ -44,12 +44,12 @@ export class ExercisesService extends BaseService {
         });
     }
 
-    updateExercise(exercise: IExercise): Observable<ISaveResponse> {
+    updateExercise(exercise: IExercise): Promise<ISaveResponse> {
         this.exercises = null;
         return this.db.update(exercise._id, exercise._rev, exercise);
     }
 
-    getMaxWeight(exercise: string): Observable<IQueryResults<IDataValue>>{
+    getMaxWeight(exercise: string): Promise<IQueryResults<IDataValue>>{
         if (!exercise){
             return this.db.getList<IDataValue>(this.db.maxWeightUrl);
         }
@@ -59,7 +59,7 @@ export class ExercisesService extends BaseService {
         }
     }
 
-    getTotalWeight(exercise: string): Observable<IQueryResults<IDataValue>>{
+    getTotalWeight(exercise: string): Promise<IQueryResults<IDataValue>>{
         if (!exercise){
             return this.db.getList<IDataValue>(this.db.totalWeightUrl);
         }

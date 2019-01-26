@@ -21,7 +21,7 @@ export class CompletedSessionComponent {
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
-        this.service.subscribe(this.service.getSession<ICompletedSession>(id), result => {
+        this.service.getSession<ICompletedSession>(id).then(result => {
             this.session = result;
             this.hasExercises = this.session.exercises.length > 0;
         });

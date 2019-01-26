@@ -27,7 +27,7 @@ export class WeightMainComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.service.subscribe(this.service.getWeights(), results => {
+    this.service.getWeights().then(results => {
       this.list = results.rows.map(r => r.value);
       this.dataValues = [];
       var values = [];
@@ -88,7 +88,7 @@ export class WeightMainComponent implements OnInit {
       return;
     }
     
-    this.service.subscribe(this.service.insertWeight(this.newEntry),
+    this.service.insertWeight(this.newEntry).then(
       success => {
         this.ngOnInit();
       }
