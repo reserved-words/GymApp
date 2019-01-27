@@ -25,14 +25,18 @@ export class CurrentSessionComponent {
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
         if (id) {
-            this.service.getSession<ICurrentSession>(id).then(s => {
-                this.session = s
-            });
+            this.service.getSession<ICurrentSession>(id)
+                .then(s => {
+                    this.session = s;
+                })
+                .catch(err =>  alert(err.message));
         }
         else {
-            this.service.getPlannedSessions(1).then(s => {
-                this.session = this.helper.createCurrentSession(s.rows[0].value);
-            });
+            this.service.getPlannedSessions(1)
+                .then(s => {
+                    this.session = this.helper.createCurrentSession(s.rows[0].value);
+                })
+                .catch(err =>  alert(err.message));
         }
     }
 

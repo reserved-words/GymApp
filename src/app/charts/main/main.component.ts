@@ -4,7 +4,7 @@ import { SessionsService } from 'src/app/services/sessions.service';
 import { SessionsHelper } from 'src/app/shared/helpers/sessions.helper';
 import { IDataValue } from 'src/app/shared/interfaces/dataValue';
 import { IDataValueGroup } from 'src/app/shared/interfaces/dataValueGroup';
-import { IQueryResults } from 'src/app/shared/interfaces/queryResults';
+import { IQueryResponse } from 'src/app/shared/interfaces/queryResponse';
 import { Icon } from 'src/app/shared/enums/icon.enum';
 
 @Component({
@@ -69,7 +69,7 @@ export class ChartsMainComponent implements OnInit {
       }
     }
 
-    populateDataValues(results: IQueryResults<IDataValue>) {
+    populateDataValues(results: IQueryResponse<IDataValue>) {
       var newValues: IDataValueGroup[] = [];
       var currentValuesGroup = null;
       for (var row of results.rows){

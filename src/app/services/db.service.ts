@@ -1,111 +1,100 @@
-import { HttpErrorResponse, HttpClient } from "@angular/common/http";
-import { throwError, Observable, of } from "rxjs";
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { ISaveResponse } from "../shared/interfaces/saveResponse";
-import { tap, catchError } from "rxjs/operators";
-import { IQueryResults } from "../shared/interfaces/queryResults";
+import { IQueryResponse } from "../shared/interfaces/queryResponse";
 import { ConfigService } from "./config.service";
 import { AuthService } from "./auth.service";
 import { Router } from "@angular/router";
 import * as PouchDB from 'pouchdb/dist/pouchdb';
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Injectable({
     providedIn: 'root'
 })
 export class DBService {
-    private db: PouchDB;
+    private localdb: PouchDB;
+    private localdbname: string = 'gymapp-local';
     private baseUrl: string = ConfigService.settings.api.baseUrl;
 
-    exercisesUrl: string = 'exerciseDesignDoc/exercises';
-    completedSessionsUrl: string = 'sessionDesignDoc/completedSessions';
-    completedExercisesUrl: string = 'sessionDesignDoc/completedExercises';
-    plannedSessionsUrl: string = 'sessionDesignDoc/plannedSessions';
-    currentSessionUrl: string = 'sessionDesignDoc/currentSession';
-    weightUrl: string = 'weight';
-    maxWeightUrl: string = 'sessionDesignDoc/sessionMaxWeight';
-    totalWeightUrl: string = 'sessionDesignDoc/sessionTotalWeight';
+    exercises: string = 'exerciseDesignDoc/exercises';
+    completedSessions: string = 'sessionDesignDoc/completedSessions';
+    completedExercises: string = 'sessionDesignDoc/completedExercises';
+    plannedSessions: string = 'sessionDesignDoc/plannedSessions';
+    currentSession: string = 'sessionDesignDoc/currentSession';
+    weight: string = 'weight';
+    maxWeight: string = 'sessionDesignDoc/sessionMaxWeight';
+    totalWeight: string = 'sessionDesignDoc/sessionTotalWeight';
 
-    constructor(private authService: AuthService){}
+    constructor(private authService: AuthService, private router: Router){}
 
-    private localdb(): PouchDB {
-        if (!this.db){
-            this.db = new PouchDB('gymapp-local');
-            this.db.info().then(function (info) {
-                console.log(info);
-            });
-            var remoteDB = this.baseUrl.replace('http://', ('http://' + this.authService.id() + '@'));
-            console.log(remoteDB);
-            var sync = PouchDB.replicate(remoteDB, 'gymapp-local', {
-                live: false,
-                retry: false
-            }).on('change', function (info) {
-                console.log('change: ' + JSON.stringify(info));
-            }).on('paused', function (err) {
-                console.log('paused: ' + JSON.stringify(err));
-            }).on('active', function () {
-                console.log('active');
-            }).on('denied', function (err) {
-                console.log('denied: ' + JSON.stringify(err));
-            }).on('complete', function (info) {
-                console.log('complete: ' + JSON.stringify(info));
-            }).on('error', function (err) {
-                console.log('error: ' + JSON.stringify(err));
-            });
-        }
-        return this.db;
-    }
+    getList<T>(view: string, limit: number = null, desc: boolean = null, startKey: any = null, endKey: any = null): Promise<IQueryResponse<T>>{
 
-    getList<T>(url: string, limit: number = null, desc: boolean = null, startKey: any = null, endKey: any = null): Promise<IQueryResults<T>>{
-
-        var criteria: any;
-
-        criteria = {
+        var criteria: any = {
             descending: desc,
             limit: limit
         };
 
-        if (startKey){
+        if (startKey)
             criteria.startkey = startKey;
-        }
 
-        if (endKey){
+        if (endKey)
             criteria.endkey = endKey;
-        }
 
-        return this.localdb().query(url, criteria);
+        return this.query(view, criteria);
     }
 
     getSingle<T>(id: string): Promise<T> {    
-        return this.localdb().get(id);
+        return this.get(id);
     }
 
-    find<T>(url: string, selector: any, sort: any, limit: number): Promise<IQueryResults<T>>{
-        var criteria = {
-            sort: sort,
-            limit: limit
-        };
-        return this.localdb().find(url, criteria);
+    insert(data: any): Promise<ISaveResponse> {
+        data._id = this.generateID();
+        return this.put(data);
+    }
+
+    update(id: string, rev: string, data: any): Promise<ISaveResponse> {
+        data._id = id;
+        data._rev = rev;
+        return this.put(data);
+    }
+
+    sync(): void {
+        if (!this.localdb){
+            this.localdb = new PouchDB(this.localdbname);
+        }
+        var remotedb = this.baseUrl.replace('http://', ('http://' + this.authService.id() + '@'));
+        var service = this;
+        console.log('Syncing');
+        var sync = PouchDB.sync(remotedb, this.localdbname, {
+            live: false,
+            retry: false
+        }).on('change', function (info) {
+            console.log('change: ' + JSON.stringify(info));
+        }).on('paused', function (err) {
+            console.log('sync paused');
+            this.handleError(err);
+        }).on('active', function () {
+            console.log('active');
+        }).on('denied', function (err) {
+            console.log('sync denied');
+            this.handleError(err);
+        }).on('complete', function (info) {
+            console.log('complete: ' + JSON.stringify(info));
+        }).on('error', function (err) {
+            console.log('sync error');
+            service.handleError(err);
+        });
     }
 
     private generateID(): string {
         return new Date().getTime().toString();
     }
 
-    insert(data: any): Promise<ISaveResponse> {
-        data._id = this.generateID();
-        return this.localdb().put(data);
-    }
-
-    update(id: string, rev: string, data: any): Promise<ISaveResponse> {
-        data._id = id;
-        data._rev = rev;
-        return this.localdb().put(data);
-    }
-
-    handleError(err: HttpErrorResponse){
+    private handleError(err: HttpErrorResponse){
         let errorMessage = '';
         if (err.status === 401){
-            errorMessage = 'unauthorized';     
+            this.authService.logout();
+            this.router.navigate(['/login']); 
+            return;
         }
         else if (err.error instanceof ErrorEvent){
             // A client-side or network error occurred
@@ -116,6 +105,38 @@ export class DBService {
             errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
         }
         console.error(errorMessage);
-        return throwError(errorMessage);    
+    }
+
+    private get<T>(id: string): Promise<T> {
+        return this.localdb.get(id)
+            .then(r => {
+                return r;
+            })
+            .catch(err => {
+                this.handleError(err);
+                throw err;
+            });
+    }
+
+    private query<T>(view: string, criteria: any): Promise<IQueryResponse<T>> {
+        return this.localdb.query(view, criteria)
+            .then(r => {
+                return r;
+            })
+            .catch(err => {
+                this.handleError(err);
+                throw err;
+            });
+    }
+
+    private put(data: any): Promise<ISaveResponse> {
+        return this.localdb.put(data)
+        .then(r => {
+            return r;
+        })
+        .catch(err => {
+            this.handleError(err);
+            throw err;
+        });
     }
 }

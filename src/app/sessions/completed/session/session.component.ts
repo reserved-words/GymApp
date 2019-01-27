@@ -21,10 +21,12 @@ export class CompletedSessionComponent {
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
-        this.service.getSession<ICompletedSession>(id).then(result => {
-            this.session = result;
-            this.hasExercises = this.session.exercises.length > 0;
-        });
+        this.service.getSession<ICompletedSession>(id)
+            .then(response => {
+                this.session = response;
+                this.hasExercises = this.session.exercises.length > 0;
+            })
+            .catch(err =>  alert(err.message));;
     }
 
     onBack(): void {

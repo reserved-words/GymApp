@@ -3,7 +3,7 @@ import { throwError, Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 import { ISaveResponse } from "../shared/interfaces/saveResponse";
 import { tap, catchError } from "rxjs/operators";
-import { IQueryResults } from "../shared/interfaces/queryResults";
+import { IQueryResponse } from "../shared/interfaces/queryResponse";
 import { ConfigService } from "./config.service";
 import { AuthService } from "./auth.service";
 import { Router } from "@angular/router";
@@ -45,7 +45,7 @@ export class DBService {
         if (endKey){
             url = url + "&endkey=" + JSON.stringify(endKey);
         }
-        return this.http.get<IQueryResults<T>>(url, {
+        return this.http.get<IQueryResponse<T>>(url, {
             headers: {'Authorization': this.getAuthHeader()}
         }).pipe(catchError(this.handleError));
     }
@@ -58,7 +58,7 @@ export class DBService {
             .pipe(catchError(this.handleError));
     }
 
-    find<T>(url: string, selector: any, sort: any, limit: number): Observable<IQueryResults<T>>{
+    find<T>(url: string, selector: any, sort: any, limit: number): Observable<IQueryResponse<T>>{
         var criteria = {
             selector: selector,
             sort: sort,
@@ -66,7 +66,7 @@ export class DBService {
         };
 
         return this.http
-            .post<IQueryResults<T>>(this.baseUrl, JSON.stringify(criteria), {
+            .post<IQueryResponse<T>>(this.baseUrl, JSON.stringify(criteria), {
                 headers: {'Content-Type':'application/json; charset=utf-8', 'Authorization': this.getAuthHeader()}
              })
             .pipe(

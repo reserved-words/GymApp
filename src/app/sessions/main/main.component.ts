@@ -3,6 +3,7 @@ import { SessionsService } from "../../services/sessions.service";
 import { Router } from "@angular/router";
 import { ICompletedSession } from "../../shared/interfaces/completed-session";
 import { Icon } from "src/app/shared/enums/icon.enum";
+import { DBService } from "src/app/services/couchdb.service";
 
 @Component({
     templateUrl: 'main.component.html',
@@ -31,16 +32,24 @@ export class SessionsMainComponent {
     }
 
     ngOnInit(): void {
-        this.service.getCompletedSessions(3).then(result => this.completed = result.rows.map(r => r.value));
-        this.service.getPlannedSessions(3).then(result => {
-            for (var i in result.rows){
-                var index = parseInt(i) + 1;
-                this.planned.push({ index: index, id: result.rows[i].value._id });
-            }
-        });
-        this.service.getCurrentSession().then(result => {
-            this.currentSessionID = result.total_rows > 0 ? result.rows[0].value._id : null;
-            this.startSessionText = this.currentSessionID ? "Resume Current Session" : "Start Next Session";
-        });
+        this.service.getCompletedSessions(3)
+            .then(result => this.completed = result.rows.map(r => r.value))
+            .catch(err => alert(err.message));
+        
+        this.service.getPlannedSessions(3)
+            .then(result => {
+                for (var i in result.rows){
+                    var index = parseInt(i) + 1;
+                    this.planned.push({ index: index, id: result.rows[i].value._id });
+                }
+            })
+            .catch(err => alert(err.message));
+
+        this.service.getCurrentSession()
+            .then(result => {
+                this.currentSessionID = result.total_rows > 0 ? result.rows[0].value._id : null;
+                this.startSessionText = this.currentSessionID ? "Resume Current Session" : "Start Next Session";
+            })
+            .catch(err => alert(err.message));
     }
 }

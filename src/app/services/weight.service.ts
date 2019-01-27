@@ -1,5 +1,5 @@
 import { Observable, of } from "rxjs";
-import { IQueryResults } from "../shared/interfaces/queryResults";
+import { IQueryResponse } from "../shared/interfaces/queryResponse";
 import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
 import { DBService } from "./db.service";
 import { Injectable } from "@angular/core";
@@ -12,11 +12,11 @@ import { BaseService } from "./base.service";
 })
 export class WeightService extends BaseService {
     constructor(private db: DBService, private authService: AuthService){
-        super(authService);
+        super(db, authService);
     }
 
-    getWeights(): Promise<IQueryResults<IWeight>> {
-        return this.db.getList<IWeight>(this.db.weightUrl, null, true);
+    getWeights(): Promise<IQueryResponse<IWeight>> {
+        return this.db.getList<IWeight>(this.db.weight, null, true);
     }
 
     insertWeight(weight: IWeight): Promise<ISaveResponse> {

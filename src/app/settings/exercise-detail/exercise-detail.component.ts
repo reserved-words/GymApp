@@ -24,10 +24,12 @@ export class ExerciseDetailComponent implements OnInit {
     ngOnInit(): void {
         let id = this.route.snapshot.paramMap.get('id');
         if (id != 'new'){
-            this.service.getExercise(id).then(ex => {
-                this.exercise = ex;
-                this.pageTitle = 'Edit Exercise: ' + ex.name;
-            });
+            this.service.getExercise(id)
+                .then(ex => {
+                    this.exercise = ex;
+                    this.pageTitle = 'Edit Exercise: ' + this.exercise.name;
+                })
+                .catch(err => { alert(err.message); });
         }
         else {
             this.exercise = {
@@ -48,7 +50,11 @@ export class ExerciseDetailComponent implements OnInit {
     
     onSave(): void {
         if (this.exercise._id){
-            this.service.updateExercise(this.exercise).then(r => this.router.navigate(['/settings']));
+            this.service.updateExercise(this.exercise)
+            .then(r => {
+                this.router.navigate(['/settings']);
+            })
+            .catch(err => alert(err.message));
         }
         else {
             this.service.insertExercise(this.exercise).then(r => this.router.navigate(['/settings']));
