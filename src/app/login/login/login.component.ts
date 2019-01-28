@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
 
   submit(): void {
     this.authService.login(this.username, this.password);
-    this.db.sync();
     this.router.navigate([this.authService.redirectUrl]);
   }
 

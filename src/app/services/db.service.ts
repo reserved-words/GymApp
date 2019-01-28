@@ -6,6 +6,7 @@ import { AuthService } from "./auth.service";
 import { Router } from "@angular/router";
 import * as PouchDB from 'pouchdb/dist/pouchdb';
 import { HttpErrorResponse } from "@angular/common/http";
+import { throwError } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -58,31 +59,33 @@ export class DBService {
     }
 
     sync(): void {
-        if (!this.localdb){
-            this.localdb = new PouchDB(this.localdbname);
-        }
+        if (this.localdb)
+            throwError("DB sync can only be initialised once");
+        
+        this.localdb = new PouchDB(this.localdbname);
         var remotedb = this.baseUrl.replace('http://', ('http://' + this.authService.id() + '@'));
         var service = this;
-        console.log('Syncing');
-        var sync = PouchDB.sync(remotedb, this.localdbname, {
-            live: false,
-            retry: false
-        }).on('change', function (info) {
-            console.log('change: ' + JSON.stringify(info));
-        }).on('paused', function (err) {
-            console.log('sync paused');
-            this.handleError(err);
-        }).on('active', function () {
-            console.log('active');
-        }).on('denied', function (err) {
-            console.log('sync denied');
-            this.handleError(err);
-        }).on('complete', function (info) {
-            console.log('complete: ' + JSON.stringify(info));
-        }).on('error', function (err) {
-            console.log('sync error');
-            service.handleError(err);
-        });
+        
+        var opts = { live: true, retry: true };
+        this.localdb.replicate.from(remotedb)
+            .on('complete', function(info) {
+                service.localdb.sync(remotedb, opts)
+                    .on('change', function (info) {
+                        console.log('change: ' + JSON.stringify(info));
+                    }).on('paused', function (info) {
+                        console.log('paused: ' + JSON.stringify(info));
+                    }).on('denied', function (err) {
+                        console.log('sync denied');
+                        this.handleError(err);
+                    }).on('complete', function (info) {
+                        console.log('complete: ' + JSON.stringify(info));
+                    }).on('error', function (err) {
+                        service.handleError(err);
+                    });
+            })
+            .on('error', function (err) {
+                service.handleError(err);
+            });
     }
 
     private generateID(): string {
@@ -96,7 +99,8 @@ export class DBService {
             this.router.navigate(['/login']); 
             return;
         }
-        else if (err.error instanceof ErrorEvent){
+    
+        if (err.error instanceof ErrorEvent){
             // A client-side or network error occurred
             errorMessage = `An error occurred: ${err.error.message}`;
         }

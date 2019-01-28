@@ -7,8 +7,4 @@ export class BaseService {
     onAuthError(): void {
         this.auth.logout();
     }
-
-    sync(): void {
-        this.dbService.sync();
-    }
 }
