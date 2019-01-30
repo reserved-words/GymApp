@@ -37,11 +37,11 @@
             "serviceWorker": true
           },
           "configurations": {
-            "deploy": {
+            "production": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.deploy.ts"
+                  "with": "src/environments/environment.production.ts"
                 }
               ],
               "optimization": true,
@@ -69,8 +69,8 @@
             "browserTarget": "gymapp:build"
           },
           "configurations": {
-            "deploy": {
-              "browserTarget": "gymapp:build:deploy"
+            "production": {
+              "browserTarget": "gymapp:build:production"
             }
           }
         },
