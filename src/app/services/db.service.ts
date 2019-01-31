@@ -16,18 +16,18 @@ export class DBService {
     private localdbname: string = 'gymapp-local';
     private baseUrl: string = ConfigService.settings.api.baseUrl;
 
-    exercises: string = 'exerciseDesignDoc/exercises';
-    completedSessions: string = 'sessionDesignDoc/completedSessions';
-    completedExercises: string = 'sessionDesignDoc/completedExercises';
-    plannedSessions: string = 'sessionDesignDoc/plannedSessions';
-    currentSession: string = 'sessionDesignDoc/currentSession';
+    exercises: string = 'exercises';
+    completedSessions: string = 'sessions/completed';
+    completedExercises: string = 'exercises/completed';
+    plannedSessions: string = 'sessions/planned';
+    currentSession: string = 'sessions/current';
     weight: string = 'weight';
-    maxWeight: string = 'sessionDesignDoc/sessionMaxWeight';
-    totalWeight: string = 'sessionDesignDoc/sessionTotalWeight';
+    maxWeight: string = 'sessions/max-weight';
+    totalWeight: string = 'sessions/total-weight';
 
     constructor(private authService: AuthService, private router: Router){}
 
-    getList<T>(view: string, limit: number = null, desc: boolean = null, startKey: any = null, endKey: any = null): Promise<IQueryResponse<T>>{
+    getList<T>(view: string, limit: number = 50, desc: boolean = false, startKey: any = null, endKey: any = null): Promise<IQueryResponse<T>>{
 
         var criteria: any = {
             descending: desc,
@@ -58,16 +58,16 @@ export class DBService {
         return this.put(data);
     }
 
-    sync(): void {
+    sync(): Promise<void> {
         if (this.localdb)
-            throwError("DB sync can only be initialised once");
+            return Promise.resolve();
         
         this.localdb = new PouchDB(this.localdbname);
         var remotedb = this.baseUrl.replace('http://', ('http://' + this.authService.id() + '@'));
         var service = this;
         
         var opts = { live: true, retry: true };
-        this.localdb.replicate.from(remotedb)
+        return this.localdb.replicate.from(remotedb)
             .on('complete', function(info) {
                 service.localdb.sync(remotedb, opts)
                     .on('change', function (info) {
@@ -112,10 +112,8 @@ export class DBService {
     }
 
     private get<T>(id: string): Promise<T> {
-        return this.localdb.get(id)
-            .then(r => {
-                return r;
-            })
+        return this.sync()
+            .then(r => this.localdb.get(id))
             .catch(err => {
                 this.handleError(err);
                 throw err;
@@ -123,10 +121,8 @@ export class DBService {
     }
 
     private query<T>(view: string, criteria: any): Promise<IQueryResponse<T>> {
-        return this.localdb.query(view, criteria)
-            .then(r => {
-                return r;
-            })
+        return this.sync()
+            .then(r => this.localdb.query(view, criteria))
             .catch(err => {
                 this.handleError(err);
                 throw err;
@@ -134,13 +130,11 @@ export class DBService {
     }
 
     private put(data: any): Promise<ISaveResponse> {
-        return this.localdb.put(data)
-        .then(r => {
-            return r;
-        })
-        .catch(err => {
-            this.handleError(err);
-            throw err;
-        });
+        return this.sync()
+            .then(() => this.localdb.put(data))
+            .catch(err => {
+                this.handleError(err);
+                throw err;
+            });
     }
 }
