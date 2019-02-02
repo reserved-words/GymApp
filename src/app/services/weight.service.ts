@@ -1,4 +1,3 @@
-import { Observable, of } from "rxjs";
 import { IQueryResponse } from "../shared/interfaces/queryResponse";
 import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
 import { DBService } from "./db.service";
@@ -20,6 +19,6 @@ export class WeightService extends BaseService {
     }
 
     insertWeight(weight: IWeight): Promise<ISaveResponse> {
-        return this.db.insert({ type: "weight", date: weight.date, stones: weight.stones, pounds: weight.pounds });
+        return this.db.insert({ type: "weight", date: weight.date, kg: weight.kg });
     }
 }
