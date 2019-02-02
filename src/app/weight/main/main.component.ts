@@ -12,15 +12,13 @@ export class WeightMainComponent implements OnInit {
   Icon = Icon;
   list: IWeight[] = [];
   dataValues: IDataValueGroup[] = [];
-  newEntry: IWeight = { date: new Date(), stones: 0, pounds: 0 }
+  newEntry: IWeight = { date: new Date(), kg: 0 };
   newEntryDateAsString: string;
   newEntryWeightAsString: string;
   errorMessage: string;
   displayTypes: string[] = ['Chart','Table'];
   displayType: string = 'Chart';
-
-  private poundsInAStone: number = 14;
-  private minPoundsIncrement: number = 0.25;
+  minIncrement: number = 0.25;
 
   constructor(private service: WeightService) { 
     this.resetNewEntry();
@@ -32,7 +30,7 @@ export class WeightMainComponent implements OnInit {
       this.dataValues = [];
       var values = [];
       for (var item of this.list){
-        values.push({ date: item.date, value: 0.453592 * (14 * item.stones + item.pounds) });
+        values.push({ date: item.date, value: item.kg });
       }
       this.dataValues.push({ name: 'Body Weight', dataValues: values });
       this.resetNewEntry();
@@ -41,36 +39,23 @@ export class WeightMainComponent implements OnInit {
 
   resetNewEntry(){
     if (this.list.length){
+      console.log(JSON.stringify(this.list));
       var lastEntry = this.list[0];
-      this.newEntry.stones = lastEntry.stones;
-      this.newEntry.pounds = lastEntry.pounds;
+      this.newEntry.kg = Math.round(lastEntry.kg / this.minIncrement)*this.minIncrement;
     }
     else {
-      this.newEntry.stones = 0;
-      this.newEntry.pounds = 0;
+      this.newEntry.kg = 0;
     }
     this.updateNewEntryStrings();
   }
 
   decreaseNewWeight(): void {
-    if (this.newEntry.pounds === 0){
-      this.newEntry.stones--;
-      this.newEntry.pounds = this.poundsInAStone - this.minPoundsIncrement;
-    }
-    else {
-      this.newEntry.pounds = this.newEntry.pounds - this.minPoundsIncrement;
-    }
+    this.newEntry.kg = this.newEntry.kg - this.minIncrement;
     this.updateNewEntryStrings();
   }
 
   increaseNewWeight(): void {
-    if (this.newEntry.pounds === this.poundsInAStone - this.minPoundsIncrement) {
-      this.newEntry.stones++;
-      this.newEntry.pounds = 0;
-    }
-    else {
-      this.newEntry.pounds = this.newEntry.pounds + this.minPoundsIncrement;
-    }
+    this.newEntry.kg = this.newEntry.kg + this.minIncrement;
     this.updateNewEntryStrings();
   }
 
@@ -96,7 +81,7 @@ export class WeightMainComponent implements OnInit {
   }
 
   updateNewEntryStrings(): void {
-    this.newEntryWeightAsString = this.newEntry.stones + 'st ' + this.newEntry.pounds;
+    this.newEntryWeightAsString = this.newEntry.kg + 'kg';
     this.newEntryDateAsString = this.newEntry.date.toLocaleDateString("en-GB");
   }
 

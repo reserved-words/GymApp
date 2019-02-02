@@ -19,7 +19,8 @@ export class CurrentSessionComponent {
     errorMessage: string;
     session: ICurrentSession;
 
-    constructor(private service: SessionsService, private helper: SessionsHelper, private route: ActivatedRoute, private exercisesService: ExercisesService){        
+    constructor(private service: SessionsService, private helper: SessionsHelper, private route: ActivatedRoute, 
+        private exercisesService: ExercisesService){        
     }
 
     ngOnInit(){
@@ -103,8 +104,6 @@ export class CurrentSessionComponent {
                             var nextSession = plannedSessions[nextSessionIndex-1];
                             nextSession.exercises.push(ex.nextSession);
                         }
-        
-                        // Need to know when ALL save processes finished so can return to home page
                         this.saveSessions(plannedSessions);
                     })    
                 })
@@ -127,14 +126,12 @@ export class CurrentSessionComponent {
             this.service.insertSession(session);
         }
     }
-    saveCompletedSession():void {
-        var completedSession = this.helper.completeCurrentSession(this.session);
-        this.service.updateSession<ICompletedSession>(this.session._id, completedSession).then(
-            s => { 
-                // this.router.navigate(['']) - only when all saved
-            }
-        )
-        .catch(error => this.handleError(error));
+    saveCompletedSession(): Promise<void> {
+        return this.helper.completeCurrentSession(this.session)
+            .then(completedSession => {
+                this.service.updateSession<ICompletedSession>(this.session._id, completedSession);
+            })
+            .catch(error => this.handleError(error));
     }
     removeExercise(exerciseType: string):void {
         var updatedList = [];

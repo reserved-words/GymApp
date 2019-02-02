@@ -8,6 +8,9 @@
         <gym-exercises></gym-exercises>
     </div>
     <div class="card-footer">
+        <button type="button" class="btn btn-primary btn-block mt-1" (click)="runUpdates()" >
+            <gym-caption text="Run Data Updates"></gym-caption>
+        </button>
         <button type="button" class="btn btn-primary btn-block mt-1" (click)="logout()" >
             <gym-caption text="Log Out" [icon]='Icon.LogOut'></gym-caption>
         </button>

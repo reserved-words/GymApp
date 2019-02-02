@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { ICompletedSession } from "../../shared/interfaces/completed-session";
 import { Icon } from "src/app/shared/enums/icon.enum";
 import { DBService } from "src/app/services/couchdb.service";
+import { UpdatesService } from "src/app/services/updates.service";
 
 @Component({
     templateUrl: 'main.component.html',

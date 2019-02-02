@@ -16,7 +16,6 @@ export class PlannedSessionComponent {
     errorMessage: string;
     hasExercises: boolean;
     
-
     constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
     }
 

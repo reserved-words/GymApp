@@ -19,7 +19,7 @@
     "@angular/http": "~7.0.0",
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
-    "@angular/pwa": "^0.12.3",
+    "@angular/pwa": "^0.12.4",
     "@angular/router": "~7.0.0",
     "@angular/service-worker": "~7.0.0",
     "angular-highcharts": "^6.2.6",
