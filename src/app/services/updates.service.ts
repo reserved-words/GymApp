@@ -16,13 +16,14 @@ export class UpdatesService extends BaseService {
     }
 
     runUpdates(): Promise<void> {
-        return this.roundExistingWeights()
-            .then(r0 => this.addBodyWeightPropertyToExercises())
-            .then(r1 => this.correctCompletedBodyWeightExercises())
-            .then(r3 => this.addBodyWeightToCompletedSessions())
-            .then(r4 => this.addBodyWeightMarkerToPlannedExercises())
-            .then(r5 => this.addBodyWeightMarkerToCurrentExercises())
-            .catch(err => console.log(JSON.stringify(err)));
+        return Promise.resolve();
+        // return this.roundExistingWeights()
+        //     .then(r0 => this.addBodyWeightPropertyToExercises())
+        //     .then(r1 => this.correctCompletedBodyWeightExercises())
+        //     .then(r3 => this.addBodyWeightToCompletedSessions())
+        //     .then(r4 => this.addBodyWeightMarkerToPlannedExercises())
+        //     .then(r5 => this.addBodyWeightMarkerToCurrentExercises())
+        //     .catch(err => console.log(JSON.stringify(err)));
     }
 
     roundExistingWeights(): Promise<void> {
