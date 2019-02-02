@@ -9,13 +9,14 @@ import { ISet } from "../interfaces/set";
 import { IPlannedExercise } from "../interfaces/planned-exercise";
 import { IExercise } from "../interfaces/exercise";
 import { ExercisesService } from "src/app/services/exercises.service";
+import { WeightService } from "src/app/services/weight.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class SessionsHelper {
 
-    constructor(private service: ExercisesService){}
+    constructor(private service: ExercisesService, private weightService: WeightService){}
 
     addSet(sets: ISet[], exercise: string): void {
         this.service.getExercises().then(
@@ -80,15 +81,19 @@ export class SessionsHelper {
         };
     }
 
-    completeCurrentSession(session: ICurrentSession): ICompletedSession {
-        return {
-            _id: session._id,
-            _rev: session._rev,
-            type: "completed-session",
-            started: session.started,
-            completed: new Date(),
-            exercises: this.convertCurrentToCompletedExercises(session.exercises)
-        };
+    completeCurrentSession(session: ICurrentSession): Promise<ICompletedSession> {
+        return this.weightService.getCurrent()
+            .then(c => {
+                return {
+                    _id: session._id,
+                    _rev: session._rev,
+                    type: "completed-session",
+                    started: session.started,
+                    completed: new Date(),
+                    bodyweight: c.kg,
+                    exercises: this.convertCurrentToCompletedExercises(session.exercises)
+                };
+            });
     }
 
     convertPlannedToCurrentExercises(plannedExercises: IPlannedExercise[]): ICurrentExercise[] {

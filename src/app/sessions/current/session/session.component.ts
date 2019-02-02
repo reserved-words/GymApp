@@ -9,6 +9,7 @@ import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 import { Icon } from "src/app/shared/enums/icon.enum";
+import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
 
 @Component({
     templateUrl: "session.component.html"
@@ -127,14 +128,12 @@ export class CurrentSessionComponent {
             this.service.insertSession(session);
         }
     }
-    saveCompletedSession():void {
-        var completedSession = this.helper.completeCurrentSession(this.session);
-        this.service.updateSession<ICompletedSession>(this.session._id, completedSession).then(
-            s => { 
-                // this.router.navigate(['']) - only when all saved
-            }
-        )
-        .catch(error => this.handleError(error));
+    saveCompletedSession(): Promise<void> {
+        return this.helper.completeCurrentSession(this.session)
+            .then(completedSession => {
+                this.service.updateSession<ICompletedSession>(this.session._id, completedSession);
+            })
+            .catch(error => this.handleError(error));
     }
     removeExercise(exerciseType: string):void {
         var updatedList = [];

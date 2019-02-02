@@ -14,6 +14,13 @@ export class WeightService extends BaseService {
         super(db, authService);
     }
 
+    getCurrent(): Promise<IWeight> {
+        return this.db.getList<IWeight>(this.db.weight, 1, true)
+            .then(w => {
+                return w.rows[0].value;
+            });
+    }
+
     getWeights(): Promise<IQueryResponse<IWeight>> {
         return this.db.getList<IWeight>(this.db.weight, null, true);
     }
