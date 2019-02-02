@@ -27,7 +27,7 @@ export class DBService {
 
     constructor(private authService: AuthService, private router: Router){}
 
-    getList<T>(view: string, limit: number = 50, desc: boolean = false, startKey: any = null, endKey: any = null): Promise<IQueryResponse<T>>{
+    getList<T>(view: string, limit: number = null, desc: boolean = false, startKey: any = null, endKey: any = null): Promise<IQueryResponse<T>>{
 
         var criteria: any = {
             descending: desc,
