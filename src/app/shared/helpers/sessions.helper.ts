@@ -65,6 +65,7 @@ export class SessionsHelper {
     getNextSession(current: ICurrentExercise): IPlannedExercise {
         return {
             type: current.type,
+            addBodyWeight: current.addBodyWeight,
             warmup: this.convertCurrentToPlannedWarmup(current.warmup),
             sets: this.convertCurrentToPlannedSets(current.sets)
         }
@@ -90,7 +91,7 @@ export class SessionsHelper {
                     type: "completed-session",
                     started: session.started,
                     completed: new Date(),
-                    bodyweight: c.kg,
+                    bodyWeight: c.kg,
                     exercises: this.convertCurrentToCompletedExercises(session.exercises)
                 };
             });
@@ -102,6 +103,7 @@ export class SessionsHelper {
             var plannedExercise = plannedExercises[i];
             currentExercises.push({ 
                 type: plannedExercise.type, 
+                addBodyWeight: plannedExercise.addBodyWeight,
                 warmup: this.convertPlannedToCurrentSets(plannedExercise.warmup), 
                 sets: this.convertPlannedToCurrentSets(plannedExercise.sets), 
                 done: false 
@@ -122,6 +124,7 @@ export class SessionsHelper {
     convertCurrentToCompletedExercise(currentExercise: ICurrentExercise): ICompletedExercise {
         return {
             type: currentExercise.type, 
+            addBodyWeight: currentExercise.addBodyWeight,
             warmup: this.convertCurrentToCompletedSets(currentExercise.warmup), 
             sets: this.convertCurrentToCompletedSets(currentExercise.sets)
         };
@@ -194,9 +197,10 @@ export class SessionsHelper {
         return [{ quantity: quantity, weight: weight, reps: reps }];
     }
 
-    convertCompletedToPlannedExercise(completed: ICompletedExercise, type: IExercise){
+    convertCompletedToPlannedExercise(completed: ICompletedExercise, type: IExercise): IPlannedExercise {
         var ex = { 
             type: type.name,
+            addBodyWeight: type.addBodyWeight,
             warmup: [],
             sets: [],
             minIncrement: type.minIncrement
@@ -222,7 +226,7 @@ export class SessionsHelper {
         else {
             ex.sets.push({ quantity: type.sets, weight: type.minWeight, reps: type.minReps })
         }
-                
+        console.log(ex);
         return ex;
     }
 }

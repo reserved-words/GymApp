@@ -4,6 +4,7 @@ import { AuthService } from "./auth.service";
 import { BaseService } from "./base.service";
 import { IWeight } from "../shared/interfaces/weight";
 import { IExercise } from "../shared/interfaces/exercise";
+import { ICurrentSession } from "../shared/interfaces/current-session";
 
 @Injectable({
     providedIn: 'root'
@@ -16,13 +17,16 @@ export class UpdatesService extends BaseService {
 
     runUpdates(): Promise<void> {
         return this.roundExistingWeights()
-             .then(r1 => this.correctBodyweightExercises())
-             .then(r2 => this.addBodyweightToCompletedSessions())
-             .catch(err => console.log(JSON.stringify(err)));
+            .then(r0 => this.addBodyWeightPropertyToExercises())
+            .then(r1 => this.correctCompletedBodyWeightExercises())
+            .then(r3 => this.addBodyWeightToCompletedSessions())
+            .then(r4 => this.addBodyWeightMarkerToPlannedExercises())
+            .then(r5 => this.addBodyWeightMarkerToCurrentExercises())
+            .catch(err => console.log(JSON.stringify(err)));
     }
 
     roundExistingWeights(): Promise<void> {
-        console.log("Fixing bodyweight units");
+        console.log("Fixing bodyWeight units");
         var minIncrement = 0.25;
         return this.db.getList<any>(this.db.weight)
             .then(weights => {
@@ -36,37 +40,113 @@ export class UpdatesService extends BaseService {
             });
     }
 
-    correctBodyweightExercises(): Promise<void> {
-        console.log("Correcting bodyweight exercises completed");
-        var exercises: string[] = [];
+    addBodyWeightPropertyToExercises(): Promise<void> {
+        console.log("Adding addBodyWeight property to exercises");
         return this.db.getList<IExercise>(this.db.exercises)
-            .then(ex => {
-                exercises = ex.rows.map(r => r.value).filter(e => e.addBodyWeight === true).map(e => e.name);
+            .then(result => {
+                for (var row of result.rows){
+                    var ex = row.value;
+                    if (!ex.addBodyWeight){
+                        ex.addBodyWeight = false;
+                        this.db.update(ex._id, ex._rev, ex);
+                    }
+                }
+            });
+    }
+
+    correctCompletedBodyWeightExercises(): Promise<void> {
+        console.log("Correcting bodyWeight exercises completed");
+        var bodyWeightExercises: string[] = [];
+        return this.db.getList<IExercise>(this.db.exercises)
+            .then(result => {
+                bodyWeightExercises = result.rows.map(r => r.value).filter(e => e.addBodyWeight === true).map(e => e.name);
                 return this.db.getList<any>(this.db.completedSessions)
                     .then(sessions => {
                         for (var s of sessions.rows.map(r => r.value)){
-                            var exercisesToCorrect = s.exercises.filter(e => exercises.indexOf(e.type) >= 0);
-                            
-                            if (exercisesToCorrect.length === 0)
-                                continue;
-
-                            for (var ex of exercisesToCorrect){
-                                for (var wu of ex.warmup){
-                                    wu.weight = wu.weight - 50;
-                                }
-                                for (var set of ex.sets){
-                                    set.weight = set.weight - 50;
+                            for (var ex of s.exercises){
+                                ex.addBodyWeight = bodyWeightExercises.indexOf(ex.type) >= 0;
+                                if (ex.addBodyWeight){
+                                    for (var wu of ex.warmup){
+                                        if (wu.weight > 0){
+                                            wu.weight = wu.weight - 50;
+                                        }
+                                    }
+                                    for (var set of ex.sets){
+                                        if (set.weight > 0){
+                                            set.weight = set.weight - 50;
+                                        }
+                                    }
                                 }
                             }
+                            this.db.update(s._id, s._rev, s);
+                        }
+                    })
+                });
+    }
+    
+    addBodyWeightMarkerToCurrentExercises(): any {
+        console.log("Adding bodyWeight marker to current exercises");
+        var bodyWeightExercises: string[] = [];
+        return this.db.getList<IExercise>(this.db.exercises)
+            .then(result => {
+                bodyWeightExercises = result.rows.map(r => r.value).filter(e => e.addBodyWeight === true).map(e => e.name);
+                return this.db.getList<ICurrentSession>(this.db.currentSession)
+                    .then(sessions => {
+                        if (sessions.total_rows === 0)
+                            return;
+                        var session = sessions[0];
+                        for (var ex of session.exercises){
+                            ex.addBodyWeight = bodyWeightExercises.indexOf(ex.type) >= 0;
+                            if (ex.addBodyWeight){
+                                for (var wu of ex.warmup){
+                                    if (wu.weight > 0){
+                                        wu.weight = wu.weight - 50;
+                                    }
+                                }
+                                for (var set of ex.sets){
+                                    if (set.weight > 0){
+                                        set.weight = set.weight - 50;
+                                    }
+                                }
+                            }
+                        }
+                        this.db.update(session._id, session._rev, session);
+                    })
+                });
+    }
 
+    addBodyWeightMarkerToPlannedExercises(): any {
+        console.log("Adding bodyWeight marker to planned exercises");
+        var bodyWeightExercises: string[] = [];
+        return this.db.getList<IExercise>(this.db.exercises)
+            .then(result => {
+                bodyWeightExercises = result.rows.map(r => r.value).filter(e => e.addBodyWeight === true).map(e => e.name);
+                return this.db.getList<any>(this.db.plannedSessions)
+                    .then(sessions => {
+                        for (var s of sessions.rows.map(r => r.value)){
+                            for (var ex of s.exercises){
+                                ex.addBodyWeight = bodyWeightExercises.indexOf(ex.type) >= 0;
+                                if (ex.addBodyWeight){
+                                    for (var wu of ex.warmup){
+                                        if (wu.weight > 0){
+                                            wu.weight = wu.weight - 50;
+                                        }
+                                    }
+                                    for (var set of ex.sets){
+                                        if (set.weight > 0){
+                                            set.weight = set.weight - 50;
+                                        }
+                                    }
+                                }
+                            }
                             this.db.update(s._id, s._rev, s);
                         }
                     })
                 });
     }
 
-    addBodyweightToCompletedSessions(): Promise<void> {
-        console.log("Adding bodyweight to completed sessions");
+    addBodyWeightToCompletedSessions(): Promise<void> {
+        console.log("Adding bodyWeight to completed sessions");
         var weights: IWeight[] = [];
         return this.db.getList<IWeight>(this.db.weight)
             .then(wghts => {
@@ -74,12 +154,12 @@ export class UpdatesService extends BaseService {
                 return this.db.getList<any>(this.db.completedSessions)
                     .then(sessions => {
                         for (var s of sessions.rows.map(r => r.value)){
-                            s.bodyweight = weights[0].kg;
+                            s.bodyWeight = weights[0].kg;
                             for (var w of weights){
                                 if (w.date > s.started){
                                     continue;
                                 }
-                                s.bodyweight = w.kg;
+                                s.bodyWeight = w.kg;
                             }
                             this.db.update(s._id, s._rev, s);
                         }

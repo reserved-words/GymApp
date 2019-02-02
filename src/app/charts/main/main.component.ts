@@ -6,6 +6,7 @@ import { IDataValue } from 'src/app/shared/interfaces/dataValue';
 import { IDataValueGroup } from 'src/app/shared/interfaces/dataValueGroup';
 import { IQueryResponse } from 'src/app/shared/interfaces/queryResponse';
 import { Icon } from 'src/app/shared/enums/icon.enum';
+import { IChartType } from 'src/app/shared/interfaces/chart-type';
 
 @Component({
   selector: 'pm-charts',
@@ -15,17 +16,23 @@ import { Icon } from 'src/app/shared/enums/icon.enum';
 export class ChartsMainComponent implements OnInit {
     Icon = Icon;
     addExerciseType: string;
-    exercises: string[];
-    selectedExercise: string;
-    selectedMeasurement: string;
     dataValues: IDataValueGroup[];
     title: string;
+    exercises: string[];
     displayTypes: string[] = ['Chart','Table'];
-    displayType: string = 'Chart';
-
+    chartTypes: IChartType[] = [];
+    selectedExercise: string;
+    selectedDisplayType: string = 'Chart';
+    selectedChartType: number = 1;
+    
     constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
 
     ngOnInit(){
+        this.chartTypes = [
+          { id: 1, name: 'Max Weight', view: 'max-weight'},
+          { id: 2, name: 'Max Ratio', view: 'max-weight-ratio'},
+          { id: 3, name: 'Total Weight', view: 'total-weight'}
+        ];
         this.exercisesService.getExercises().then(r => {
           this.exercises = r.rows.map(row => row.value.name);
           this.exercises.splice(0, 0, "All");
@@ -38,18 +45,18 @@ export class ChartsMainComponent implements OnInit {
       this.updateData();
     }
 
-    onChangeMeasurementType(){
+    onChangeChartType(){
       this.updateData();
     }
 
     updateData(){
-      if (!this.selectedMeasurement){
-        this.selectedMeasurement = "max";
+      if (!this.selectedChartType){
+        this.selectedChartType = 1;
       }
+
+      var chartType = this.chartTypes.filter(m => m.id == this.selectedChartType)[0];
       
-      var newTitle = (this.selectedExercise === "All" ? "" : (this.selectedExercise + " ")) 
-        + (this.selectedMeasurement === "total" ? "Total" : "Maximum") 
-        + " Weight (kg)";
+      var newTitle = (this.selectedExercise === "All" ? "" : (this.selectedExercise + " ")) + chartType.name;
 
       if (this.title === newTitle)
         return;
@@ -58,15 +65,9 @@ export class ChartsMainComponent implements OnInit {
       this.dataValues = [];
       var exercise = this.selectedExercise === "All" ? null : this.selectedExercise;
       
-      if (this.selectedMeasurement === "total") {
-        this.exercisesService.getTotalWeight(exercise).then(r => {
-          this.populateDataValues(r);
-        });
-      } else {
-        this.exercisesService.getMaxWeight(exercise).then(r => {
-          this.populateDataValues(r);
-        });
-      }
+      this.exercisesService.getView(chartType.view, exercise).then(r => {
+        this.populateDataValues(r);
+      });
     }
 
     populateDataValues(results: IQueryResponse<IDataValue>) {
@@ -84,6 +85,6 @@ export class ChartsMainComponent implements OnInit {
     }
 
     onChangeDisplayType(selectedType: string){
-      this.displayType = selectedType;
+      this.selectedDisplayType = selectedType;
     }
 }

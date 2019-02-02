@@ -7,15 +7,14 @@
         </select>
       </div>
       <div class="col-6">
-        <select [(ngModel)]='selectedMeasurement' class='form-control' (change)='onChangeMeasurementType()'>
-          <option value='max'>Max Weight</option>
-          <option value='total'>Total Weight</option>
+        <select [(ngModel)]='selectedChartType' class='form-control' (change)='onChangeChartType()'>
+          <option *ngFor='let opt of chartTypes' value={{opt.id}}>{{opt.name}}</option>
         </select>
       </div>
     </div>
   </div>
   <div class="card-body">
-    <gym-chart [title]='title' [valueGroups]='dataValues' [displayType]='displayType'></gym-chart>
+    <gym-chart [title]='title' [valueGroups]='dataValues' [displayType]='selectedDisplayType'></gym-chart>
   </div>
   <div class="card-footer">
     <div class="btn-group" role="group" style="width: 100%;">

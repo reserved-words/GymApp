@@ -1,9 +1,8 @@
 import { Component, Output, EventEmitter } from "@angular/core";
 import { ExercisesService } from "src/app/services/exercises.service";
-import { IExercise } from "../../interfaces/exercise";
-import { Observable } from "rxjs";
 import { SessionsService } from "src/app/services/sessions.service";
 import { SessionsHelper } from "../../helpers/sessions.helper";
+import { IExercise } from "../../interfaces/exercise";
 
 @Component({
     selector: 'gym-add-exercise',
@@ -19,7 +18,9 @@ export class AddExerciseComponent{
 
     ngOnInit(){
         this.exercisesService.getExercises().then(r => {
+            console.log(r.rows);
             this.exercises = r.rows.map(row => row.value);
+            console.log(this.exercises);
         });
     }
 

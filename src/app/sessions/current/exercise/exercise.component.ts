@@ -24,7 +24,9 @@ export class CurrentExerciseComponent {
         if (this.exercise.done){
             this.completedExercise = this.sessionsHelper.convertCurrentToCompletedExercise(this.exercise);
         }
+        console.log('ngOnInit');
         this.service.getExercises().then(response => {
+            console.log(response);
             this.minIncrement = response.rows.map(r => r.value).filter(r => r.name === this.exercise.type)[0].minIncrement;
         });
     }

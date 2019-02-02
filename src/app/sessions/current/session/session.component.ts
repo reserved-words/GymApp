@@ -9,7 +9,6 @@ import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 import { Icon } from "src/app/shared/enums/icon.enum";
-import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
 
 @Component({
     templateUrl: "session.component.html"
@@ -20,7 +19,8 @@ export class CurrentSessionComponent {
     errorMessage: string;
     session: ICurrentSession;
 
-    constructor(private service: SessionsService, private helper: SessionsHelper, private route: ActivatedRoute, private exercisesService: ExercisesService){        
+    constructor(private service: SessionsService, private helper: SessionsHelper, private route: ActivatedRoute, 
+        private exercisesService: ExercisesService){        
     }
 
     ngOnInit(){
@@ -104,8 +104,6 @@ export class CurrentSessionComponent {
                             var nextSession = plannedSessions[nextSessionIndex-1];
                             nextSession.exercises.push(ex.nextSession);
                         }
-        
-                        // Need to know when ALL save processes finished so can return to home page
                         this.saveSessions(plannedSessions);
                     })    
                 })

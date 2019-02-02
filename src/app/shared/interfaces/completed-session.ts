@@ -4,6 +4,6 @@ import { ISession } from "./session";
 export interface ICompletedSession extends ISession {
     started: Date;
     completed: Date;
-    bodyweight: number;
+    bodyWeight: number;
     exercises: ICompletedExercise[];
 }
