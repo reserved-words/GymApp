@@ -22,10 +22,12 @@ export class PlannedSessionComponent {
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
-        this.service.subscribe(this.service.getSession<IPlannedSession>(id), s => {
-            this.session = s;
-            this.hasExercises = this.session.exercises.length > 0;
-        });
+        this.service.getSession<IPlannedSession>(id)
+            .then(s => {
+                this.session = s;
+                this.hasExercises = this.session.exercises.length > 0;
+            })
+            .catch(err =>  alert(err.message));
     }
 
     addExercise(exerciseToAdd: IPlannedExercise):void {
@@ -44,8 +46,10 @@ export class PlannedSessionComponent {
         this.session.exercises = updatedList;
     }
     onSave(): void {
-        this.service.subscribe(this.service.updateSession(this.session._id, this.session), s => {
-            this.router.navigate(['']);
-        });
+        this.service.updateSession(this.session._id, this.session)
+            .then(s => {
+                this.router.navigate(['']);
+            })
+            .catch(err => alert(err.message));
     }
 }

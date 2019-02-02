@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -7,20 +6,17 @@ import { Router } from "@angular/router";
 export class AuthService {
     redirectUrl: string = "/";
     
-    constructor(private router: Router){}
-
     isLoggedIn(): boolean {
-        return this.id() != null;
+        return localStorage.getItem('authID') != null;
     };
       
     id() : string {
-       return localStorage.getItem('authID');
+       return atob(localStorage.getItem('authID'));
     }
     
-    login(username: string, password: string): boolean {
+    login(username: string, password: string): void {
         var base64 = btoa(username + ':' + password);
         localStorage.setItem('authID', base64);
-        return true;
     }
       
     logout(): void {

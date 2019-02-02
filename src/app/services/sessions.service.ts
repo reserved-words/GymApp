@@ -1,6 +1,5 @@
 import { ICompletedSession } from "../shared/interfaces/completed-session";
-import { Observable } from "rxjs";
-import { IQueryResults } from "../shared/interfaces/queryResults";
+import { IQueryResponse } from "../shared/interfaces/queryResponse";
 import { IPlannedSession } from "../shared/interfaces/planned-session";
 import { ICurrentSession } from "src/app/shared/interfaces/current-session";
 import { ISession } from "src/app/shared/interfaces/session";
@@ -17,38 +16,34 @@ import { BaseService } from "./base.service";
 export class SessionsService extends BaseService {
 
     constructor(private db: DBService, private authService: AuthService){
-        super(authService);
+        super(db, authService);
     }
 
-    getCompletedSessions(limit: number): Observable<IQueryResults<ICompletedSession>>{
-        return this.db.getList<ICompletedSession>(this.db.completedSessionsUrl, limit, true);
+    getCompletedSessions(limit: number): Promise<IQueryResponse<ICompletedSession>>{
+        return this.db.getList<ICompletedSession>(this.db.completedSessions, limit, true);
     };
 
-    getLastSession(exerciseType: string): Observable<IQueryResults<ICompletedExercise>>{
-        return this.db.find(
-            this.db.completedExercisesUrl, 
-            { "type": exerciseType },
-            [ { started : "desc"} ],
-            1);
+    getLastSession(exerciseType: string): Promise<IQueryResponse<ICompletedExercise>>{
+        return this.db.getList<ICompletedExercise>(this.db.completedExercises, 1, true, [exerciseType, {}], [exerciseType]);
     }
 
-    getCurrentSession(): Observable<IQueryResults<ICurrentSession>>{
-        return this.db.getList<ICurrentSession>(this.db.currentSessionUrl);
+    getCurrentSession(): Promise<IQueryResponse<ICurrentSession>>{
+        return this.db.getList<ICurrentSession>(this.db.currentSession);
     }
 
-    getPlannedSessions(limit: number): Observable<IQueryResults<IPlannedSession>>{
-        return this.db.getList<IPlannedSession>(this.db.plannedSessionsUrl, limit);
+    getPlannedSessions(limit: number): Promise<IQueryResponse<IPlannedSession>>{
+        return this.db.getList<IPlannedSession>(this.db.plannedSessions, limit);
     };
 
-    getSession<T>(id: string): Observable<T> {    
+    getSession<T>(id: string): Promise<T> {    
         return this.db.getSingle<T>(id);
     }
 
-    updateSession<T extends ISession>(id: string, session: T): Observable<ISaveResponse> {
+    updateSession<T extends ISession>(id: string, session: T): Promise<ISaveResponse> {
         return this.db.update(id, session._rev, session);
     }
 
-    insertSession(session: IPlannedSession): Observable<ISaveResponse> {
+    insertSession(session: IPlannedSession): Promise<ISaveResponse> {
         return this.db.insert({ type: session.type, index: session.index, exercises: session.exercises });
     }
 }

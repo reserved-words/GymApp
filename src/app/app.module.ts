@@ -15,6 +15,8 @@ import { ConfigService } from './services/config.service';
 import { HttpModule } from '@angular/http';
 import { AuthGuard } from './auth/auth.guard';
 import { LoginModule } from './login/login/login.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 export function initializeApp(configService: ConfigService){
   return () => configService.load();
@@ -39,7 +41,8 @@ export function initializeApp(configService: ConfigService){
     WeightModule,
     SettingsModule,
     ServicesModule,
-    LoginModule
+    LoginModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   declarations: [
     AppComponent

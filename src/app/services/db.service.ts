@@ -1,105 +1,106 @@
-import { HttpErrorResponse, HttpClient } from "@angular/common/http";
-import { throwError, Observable } from "rxjs";
 import { Injectable } from "@angular/core";
 import { ISaveResponse } from "../shared/interfaces/saveResponse";
-import { tap, catchError } from "rxjs/operators";
-import { IQueryResults } from "../shared/interfaces/queryResults";
+import { IQueryResponse } from "../shared/interfaces/queryResponse";
 import { ConfigService } from "./config.service";
 import { AuthService } from "./auth.service";
 import { Router } from "@angular/router";
+import * as PouchDB from 'pouchdb/dist/pouchdb';
+import { HttpErrorResponse } from "@angular/common/http";
+import { throwError } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
 export class DBService {
-    baseUrl: string = ConfigService.settings.api.baseUrl;
+    private localdb: PouchDB;
+    private localdbname: string = 'gymapp-local';
+    private baseUrl: string = ConfigService.settings.api.baseUrl;
 
-    authenticateUrl: string = this.baseUrl + '_session/';
-    exercisesUrl: string = this.baseUrl + '_design/exerciseDesignDoc/_view/exercises';
-    completedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedSessions';
-    completedExercisesUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/completedExercises';
-    plannedSessionsUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/plannedSessions';
-    currentSessionUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/currentSession';
-    weightUrl: string = this.baseUrl + '_design/weight/_view/weight';
-    maxWeightUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/sessionMaxWeight';
-    totalWeightUrl: string = this.baseUrl + '_design/sessionDesignDoc/_view/sessionTotalWeight';
+    exercises: string = 'exercises';
+    completedSessions: string = 'sessions/completed';
+    completedExercises: string = 'exercises/completed';
+    plannedSessions: string = 'sessions/planned';
+    currentSession: string = 'sessions/current';
+    weight: string = 'weight';
+    maxWeight: string = 'sessions/max-weight';
+    totalWeight: string = 'sessions/total-weight';
 
-    constructor(private http: HttpClient, private authService: AuthService, private router: Router){}
+    constructor(private authService: AuthService, private router: Router){}
 
-    private getAuthHeader(): string {
-        return 'Basic ' + this.authService.id();
-    }
+    getList<T>(view: string, limit: number = 50, desc: boolean = false, startKey: any = null, endKey: any = null): Promise<IQueryResponse<T>>{
 
-    getDocumentUrl(id: string, rev: string = null){
-        return this.baseUrl + id + (rev ? ("?rev=" + rev) : "");
-    }
-
-    getList<T>(url: string, limit: number = null, desc: boolean = null, startKey: any = null, endKey: any = null){
-        url = url + "?descending=" + (desc ? "true" : "false");
-        if (limit){
-            url = url + "&limit=" + limit;
-        }
-        if (startKey){
-            url = url + "&startkey=" + JSON.stringify(startKey);
-        }
-        if (endKey){
-            url = url + "&endkey=" + JSON.stringify(endKey);
-        }
-        return this.http.get<IQueryResults<T>>(url, {
-            headers: {'Authorization': this.getAuthHeader()}
-        }).pipe(catchError(this.handleError));
-    }
-
-    getSingle<T>(id: string): Observable<T> {    
-        return this.http
-            .get<T>(this.getDocumentUrl(id), {
-                headers: {'Authorization': this.getAuthHeader()}
-            })
-            .pipe(catchError(this.handleError));
-    }
-
-    find<T>(url: string, selector: any, sort: any, limit: number): Observable<IQueryResults<T>>{
-        var criteria = {
-            selector: selector,
-            sort: sort,
+        var criteria: any = {
+            descending: desc,
             limit: limit
         };
 
-        return this.http
-            .post<IQueryResults<T>>(this.baseUrl, JSON.stringify(criteria), {
-                headers: {'Content-Type':'application/json; charset=utf-8', 'Authorization': this.getAuthHeader()}
-             })
-            .pipe(
-                tap(data => console.log(JSON.stringify(data))),
-                catchError(this.handleError));
+        if (startKey)
+            criteria.startkey = startKey;
+
+        if (endKey)
+            criteria.endkey = endKey;
+
+        return this.query(view, criteria);
     }
 
-    insert(data: any): Observable<ISaveResponse> {
-        return this.http
-            .post<ISaveResponse>(this.baseUrl, JSON.stringify(data), {
-                headers: {'Content-Type':'application/json; charset=utf-8;', 'Authorization': this.getAuthHeader()}
-             })
-            .pipe(
-                tap(data => console.log(JSON.stringify(data))),
-                catchError(this.handleError));
+    getSingle<T>(id: string): Promise<T> {    
+        return this.get(id);
     }
 
-    update(id: string, rev: string, data: any): Observable<ISaveResponse> {
-        return this.http
-            .put<ISaveResponse>(this.getDocumentUrl(id, rev), JSON.stringify(data), {
-                headers: {'Authorization': this.getAuthHeader()}
+    insert(data: any): Promise<ISaveResponse> {
+        data._id = this.generateID();
+        return this.put(data);
+    }
+
+    update(id: string, rev: string, data: any): Promise<ISaveResponse> {
+        data._id = id;
+        data._rev = rev;
+        return this.put(data);
+    }
+
+    sync(): Promise<void> {
+        if (this.localdb)
+            return Promise.resolve();
+        
+        this.localdb = new PouchDB(this.localdbname);
+        var remotedb = this.baseUrl.replace('http://', ('http://' + this.authService.id() + '@'));
+        var service = this;
+        
+        var opts = { live: true, retry: true };
+        return this.localdb.replicate.from(remotedb)
+            .on('complete', function(info) {
+                service.localdb.sync(remotedb, opts)
+                    .on('change', function (info) {
+                        console.log('change: ' + JSON.stringify(info));
+                    }).on('paused', function (info) {
+                        console.log('paused: ' + JSON.stringify(info));
+                    }).on('denied', function (err) {
+                        console.log('sync denied');
+                        this.handleError(err);
+                    }).on('complete', function (info) {
+                        console.log('complete: ' + JSON.stringify(info));
+                    }).on('error', function (err) {
+                        service.handleError(err);
+                    });
             })
-            .pipe(
-                tap(data => console.log(JSON.stringify(data))),
-                catchError(this.handleError));
+            .on('error', function (err) {
+                service.handleError(err);
+            });
     }
 
-    handleError(err: HttpErrorResponse){
+    private generateID(): string {
+        return new Date().getTime().toString();
+    }
+
+    private handleError(err: HttpErrorResponse){
         let errorMessage = '';
         if (err.status === 401){
-            errorMessage = 'unauthorized';     
+            this.authService.logout();
+            this.router.navigate(['/login']); 
+            return;
         }
-        else if (err.error instanceof ErrorEvent){
+    
+        if (err.error instanceof ErrorEvent){
             // A client-side or network error occurred
             errorMessage = `An error occurred: ${err.error.message}`;
         }
@@ -108,6 +109,32 @@ export class DBService {
             errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
         }
         console.error(errorMessage);
-        return throwError(errorMessage);    
+    }
+
+    private get<T>(id: string): Promise<T> {
+        return this.sync()
+            .then(r => this.localdb.get(id))
+            .catch(err => {
+                this.handleError(err);
+                throw err;
+            });
+    }
+
+    private query<T>(view: string, criteria: any): Promise<IQueryResponse<T>> {
+        return this.sync()
+            .then(r => this.localdb.query(view, criteria))
+            .catch(err => {
+                this.handleError(err);
+                throw err;
+            });
+    }
+
+    private put(data: any): Promise<ISaveResponse> {
+        return this.sync()
+            .then(() => this.localdb.put(data))
+            .catch(err => {
+                this.handleError(err);
+                throw err;
+            });
     }
 }

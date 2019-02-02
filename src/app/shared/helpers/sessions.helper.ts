@@ -18,7 +18,7 @@ export class SessionsHelper {
     constructor(private service: ExercisesService){}
 
     addSet(sets: ISet[], exercise: string): void {
-        this.service.getExercises().subscribe(
+        this.service.getExercises().then(
             response => {
                 var def = response.rows.map(r => r.value).filter(r => r.name === exercise)[0];
                 if (sets.length){
@@ -37,7 +37,7 @@ export class SessionsHelper {
     }
 
     addCurrentSet(sets: ICurrentSet[], exercise: string): void {
-        this.service.getExercises().subscribe(
+        this.service.getExercises().then(
             response => {
                 var def = response.rows.map(r => r.value).filter(r => r.name === exercise)[0];
                 if (sets.length){
