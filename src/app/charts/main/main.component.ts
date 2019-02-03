@@ -24,6 +24,7 @@ export class ChartsMainComponent implements OnInit {
     selectedExercise: string;
     selectedDisplayType: string = 'Chart';
     selectedChartType: number = 1;
+    loading: boolean = true;
     
     constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
 
@@ -38,6 +39,11 @@ export class ChartsMainComponent implements OnInit {
           this.exercises.splice(0, 0, "All");
           this.selectedExercise = this.exercises[0];
           this.updateData();
+          this.loading = false;
+        })
+        .catch(err => {
+          this.loading = false;
+          alert(err.message);
         });
     }
 
@@ -61,6 +67,7 @@ export class ChartsMainComponent implements OnInit {
       if (this.title === newTitle)
         return;
 
+      this.loading = true;
       this.title = newTitle;
       this.dataValues = [];
       var exercise = this.selectedExercise === "All" ? null : this.selectedExercise;
@@ -82,6 +89,7 @@ export class ChartsMainComponent implements OnInit {
         currentValuesGroup.dataValues.push({ date: row.value.date, value: row.value.value });
       }
       this.dataValues = newValues;
+      this.loading = false;
     }
 
     onChangeDisplayType(selectedType: string){

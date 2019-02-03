@@ -15,6 +15,7 @@ export class PlannedSessionComponent {
     session: IPlannedSession;
     errorMessage: string;
     hasExercises: boolean;
+    loading: boolean = true;
     
     constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
     }
@@ -25,6 +26,7 @@ export class PlannedSessionComponent {
             .then(s => {
                 this.session = s;
                 this.hasExercises = this.session.exercises.length > 0;
+                this.loading = false;
             })
             .catch(err =>  alert(err.message));
     }
@@ -45,10 +47,15 @@ export class PlannedSessionComponent {
         this.session.exercises = updatedList;
     }
     onSave(): void {
+        this.loading = true;
         this.service.updateSession(this.session._id, this.session)
             .then(s => {
+                this.loading = false;
                 this.router.navigate(['']);
             })
-            .catch(err => alert(err.message));
+            .catch(err => {
+                this.loading = false;
+                alert(err.message);
+            });
     }
 }

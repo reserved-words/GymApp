@@ -71,7 +71,7 @@ export class DBService {
             .on('complete', function(info) {
                 service.localdb.sync(remotedb, opts)
                     .on('change', function (info) {
-                        console.log('change: ' + JSON.stringify(info));
+                        console.log('change logged');
                     }).on('paused', function (info) {
                         console.log('paused: ' + JSON.stringify(info));
                     }).on('denied', function (err) {

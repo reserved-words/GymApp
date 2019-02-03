@@ -19,6 +19,7 @@ export class WeightMainComponent implements OnInit {
   displayTypes: string[] = ['Chart','Table'];
   displayType: string = 'Chart';
   minIncrement: number = 0.25;
+  loading: boolean = true;  
 
   constructor(private service: WeightService) { 
     this.resetNewEntry();
@@ -34,12 +35,12 @@ export class WeightMainComponent implements OnInit {
       }
       this.dataValues.push({ name: 'Body Weight', dataValues: values });
       this.resetNewEntry();
+      this.loading = false;
     });
   }
 
   resetNewEntry(){
     if (this.list.length){
-      console.log(JSON.stringify(this.list));
       var lastEntry = this.list[0];
       this.newEntry.kg = Math.round(lastEntry.kg / this.minIncrement)*this.minIncrement;
     }
@@ -60,10 +61,8 @@ export class WeightMainComponent implements OnInit {
   }
 
   changeNewEntryDate(): void {
-    console.log(this.newEntryDateAsString);
     var parts = this.newEntryDateAsString.split("/");
     this.newEntry.date = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-    console.log(this.newEntry.date);
     this.updateNewEntryStrings();  
   }
 

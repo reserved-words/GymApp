@@ -20,6 +20,7 @@ export class CurrentSessionComponent {
     errorMessage: string;
     session: ICurrentSession;
     numPlannedSessions: number = 3;
+    loading: boolean = true;
 
     constructor(private router: Router, private service: SessionsService, private helper: SessionsHelper, private route: ActivatedRoute, private exercisesService: ExercisesService){        
     }
@@ -28,13 +29,25 @@ export class CurrentSessionComponent {
         let id = this.route.snapshot.paramMap.get('id');
         if (id) {
             this.service.getSession<ICurrentSession>(id)
-                .then(s => this.session = s)
-                .catch(err => alert(err.message));
+                .then(s => {
+                    this.session = s;
+                    this.loading = false;
+                })
+                .catch(err => {
+                    alert(err.message);
+                    this.loading = false;
+                });
         }
         else {
             this.service.getPlannedSessions(1)
-                .then(s => this.session = this.helper.createCurrentSession(s.rows[0].value))
-                .catch(err =>  this.handleError(err));
+                .then(s => {
+                    this.session = this.helper.createCurrentSession(s.rows[0].value);
+                    this.loading = false;
+                })
+                .catch(err => {
+                    this.loading = false;
+                    this.handleError;
+                });
         }
     }
 
@@ -50,22 +63,32 @@ export class CurrentSessionComponent {
             }
         }
 
+        this.loading = true;
+
         this.service.updateSession<ICurrentSession>(this.session._id, this.session)
             .then(s => {
                 this.session._rev = s.rev;
                 return Promise.resolve();
             })
             .then(r => this.completeAndPlanNextSessions())
-            .catch(err => this.handleError(err));
+            .catch(err => {
+                this.loading = false;
+                this.handleError(err);
+            });
     }
 
     onSave(): void {
+        this.loading = true;
         this.service.updateSession<ICurrentSession>(this.session._id, this.session).then(
             s => {
                 this.session._rev = s.rev;
+                this.loading = false;
                 alert("Changes saved");
             }
-        ).catch(error => this.handleError(error));
+        ).catch(error => {
+            this.loading = false;
+            this.handleError(error);
+        });
     }
     
     handleError(error: any){
@@ -117,7 +140,10 @@ export class CurrentSessionComponent {
                 return Promise.resolve();
             })
             .then(r => this.saveSessions(plannedSessions))
-            .catch(error => this.handleError(error));
+            .catch(error => {
+                this.loading = false;
+                this.handleError(error);
+            });
     }
 
     saveSessions(plannedSessions: IPlannedSession[]): void {
@@ -126,8 +152,14 @@ export class CurrentSessionComponent {
             .then(r0 => this.savePlannedSession(plannedSessions[1]))
             .then(r1 => this.savePlannedSession(plannedSessions[2]))
             .then(r2 => this.saveCompletedSession())
-            .then(r3 => this.router.navigate(['/sessions']))
-            .catch(error => this.handleError(error));
+            .then(r3 => {
+                this.loading = false;
+                this.router.navigate(['/sessions']);
+            })
+            .catch(error => {
+                this.loading = false;
+                this.handleError(error);
+            });
     }
 
     savePlannedSession(session: IPlannedSession): Promise<ISaveResponse> {
