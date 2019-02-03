@@ -10,6 +10,7 @@ import { Frequency } from "src/app/shared/enums/frequency.enum";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 import { Icon } from "src/app/shared/enums/icon.enum";
 import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 
 @Component({
     templateUrl: "session.component.html"
@@ -187,5 +188,9 @@ export class CurrentSessionComponent {
             }
         }
         this.session.exercises = updatedList;
+    }
+
+    drop(event: CdkDragDrop<string[]>) {
+        moveItemInArray(this.session.exercises, event.previousIndex, event.currentIndex);
     }
 }

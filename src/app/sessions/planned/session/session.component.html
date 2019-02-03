@@ -14,8 +14,8 @@
                 </div>
             </div>
             <div class="row" *ngIf='hasExercises'>
-                <div class="col-12">
-                    <div class="row" *ngFor='let item of session.exercises'>
+                <div class="col-12" cdkDropList (cdkDropListDropped)="drop($event)">
+                    <div class="row"  *ngFor='let item of session.exercises' cdkDrag>
                         <div class="col-12">
                             <gym-planned-exercise [exercise]='item' (removeFromSession)='removeExercise($event)'></gym-planned-exercise>
                         </div>

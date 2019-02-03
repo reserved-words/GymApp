@@ -4,6 +4,7 @@ import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 import { SessionsService } from "src/app/services/sessions.service";
 import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 import { Icon } from "src/app/shared/enums/icon.enum";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 
 @Component({
     templateUrl: "session.component.html",
@@ -46,6 +47,7 @@ export class PlannedSessionComponent {
         }
         this.session.exercises = updatedList;
     }
+
     onSave(): void {
         this.loading = true;
         this.service.updateSession(this.session._id, this.session)
@@ -57,5 +59,9 @@ export class PlannedSessionComponent {
                 this.loading = false;
                 alert(err.message);
             });
+    }
+
+    drop(event: CdkDragDrop<string[]>) {
+        moveItemInArray(this.session.exercises, event.previousIndex, event.currentIndex);
     }
 }

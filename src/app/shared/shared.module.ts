@@ -9,12 +9,14 @@ import { ChartComponent } from './components/chart/chart.component';
 import { ChartModule } from 'angular-highcharts';
 import { CaptionComponent } from './components/caption/caption.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ChartModule
+    ChartModule,
+    DragDropModule
   ],
   declarations: [
     NumComponent,
@@ -34,7 +36,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     CaptionComponent,
     LoadingComponent,
     CommonModule,
-    FormsModule
+    FormsModule,
+    DragDropModule
   ]
 })
 export class SharedModule { }
