@@ -118,6 +118,34 @@ export class CurrentSessionComponent {
             })
             .then(r => this.saveSessions(plannedSessions))
             .catch(error => this.handleError(error));
+
+    //         this.service.getCompletedSessions(1).then(lastSessions => {
+    //             var lastSession = lastSessions.rows.map(r => r.value)[0];
+    //             this.exercisesService.getExercises().then(exercises => {
+    //                 for (let ex of this.session.exercises){
+                        
+    //                     var def = exercises.rows.map(r => r.value).filter(r => r.name === ex.type)[0];
+    
+    //                     var nextSessionIndex =
+    //                         (def.frequency == Frequency.EverySession ? 1 :
+    //                         (def.frequency == Frequency.EveryOtherSession ? 2 :
+    //                         (def.frequency == Frequency.EveryThirdSession ? 3 : 1)));
+    
+    //                     if (def.frequency == Frequency.TwoInEveryThreeSessions){
+    //                         var exerciseInLastSession = lastSession.exercises.filter(ex => ex.type === def.name);
+    //                         var doneInPreviousSession = exerciseInLastSession.length > 0;                        
+    //                         nextSessionIndex = doneInPreviousSession ? 2 : 1;
+    //                     }
+    
+    //                     var nextSession = plannedSessions[nextSessionIndex-1];
+    //                     nextSession.exercises.push(ex.nextSession);
+    //                 }
+    //                 this.saveSessions(plannedSessions);
+    //             })    
+    //         })
+    //     }
+    // );
+
     }
 
     saveSessions(plannedSessions: IPlannedSession[]): void {
@@ -138,10 +166,19 @@ export class CurrentSessionComponent {
             return this.service.insertSession(session);
         }
     }
+
     saveCompletedSession(): Promise<ISaveResponse> {
         var completedSession = this.helper.completeCurrentSession(this.session);
         return this.service.updateSession<ICompletedSession>(this.session._id, completedSession);
+
+        // saveCompletedSession(): Promise<void> {
+    //     return this.helper.completeCurrentSession(this.session)
+    //         .then(completedSession => {
+    //             this.service.updateSession<ICompletedSession>(this.session._id, completedSession);
+    //         })
+    //         .catch(error => this.handleError(error));
     }
+
     removeExercise(exerciseType: string):void {
         var updatedList = [];
         for (var i in this.session.exercises){

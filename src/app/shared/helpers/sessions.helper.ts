@@ -9,13 +9,14 @@ import { ISet } from "../interfaces/set";
 import { IPlannedExercise } from "../interfaces/planned-exercise";
 import { IExercise } from "../interfaces/exercise";
 import { ExercisesService } from "src/app/services/exercises.service";
+import { WeightService } from "src/app/services/weight.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class SessionsHelper {
 
-    constructor(private service: ExercisesService){}
+    constructor(private service: ExercisesService, private weightService: WeightService){}
 
     addSet(sets: ISet[], exercise: string): void {
         this.service.getExercises().then(
@@ -64,6 +65,7 @@ export class SessionsHelper {
     getNextSession(current: ICurrentExercise): IPlannedExercise {
         return {
             type: current.type,
+            addBodyWeight: current.addBodyWeight,
             warmup: this.convertCurrentToPlannedWarmup(current.warmup),
             sets: this.convertCurrentToPlannedSets(current.sets)
         }
@@ -80,15 +82,19 @@ export class SessionsHelper {
         };
     }
 
-    completeCurrentSession(session: ICurrentSession): ICompletedSession {
-        return {
-            _id: session._id,
-            _rev: session._rev,
-            type: "completed-session",
-            started: session.started,
-            completed: new Date(),
-            exercises: this.convertCurrentToCompletedExercises(session.exercises)
-        };
+    completeCurrentSession(session: ICurrentSession): Promise<ICompletedSession> {
+        return this.weightService.getCurrent()
+            .then(c => {
+                return {
+                    _id: session._id,
+                    _rev: session._rev,
+                    type: "completed-session",
+                    started: session.started,
+                    completed: new Date(),
+                    bodyWeight: c.kg,
+                    exercises: this.convertCurrentToCompletedExercises(session.exercises)
+                };
+            });
     }
 
     convertPlannedToCurrentExercises(plannedExercises: IPlannedExercise[]): ICurrentExercise[] {
@@ -97,6 +103,7 @@ export class SessionsHelper {
             var plannedExercise = plannedExercises[i];
             currentExercises.push({ 
                 type: plannedExercise.type, 
+                addBodyWeight: plannedExercise.addBodyWeight,
                 warmup: this.convertPlannedToCurrentSets(plannedExercise.warmup), 
                 sets: this.convertPlannedToCurrentSets(plannedExercise.sets), 
                 done: false 
@@ -117,6 +124,7 @@ export class SessionsHelper {
     convertCurrentToCompletedExercise(currentExercise: ICurrentExercise): ICompletedExercise {
         return {
             type: currentExercise.type, 
+            addBodyWeight: currentExercise.addBodyWeight,
             warmup: this.convertCurrentToCompletedSets(currentExercise.warmup), 
             sets: this.convertCurrentToCompletedSets(currentExercise.sets)
         };
@@ -189,9 +197,10 @@ export class SessionsHelper {
         return [{ quantity: quantity, weight: weight, reps: reps }];
     }
 
-    convertCompletedToPlannedExercise(completed: ICompletedExercise, type: IExercise){
+    convertCompletedToPlannedExercise(completed: ICompletedExercise, type: IExercise): IPlannedExercise {
         var ex = { 
             type: type.name,
+            addBodyWeight: type.addBodyWeight,
             warmup: [],
             sets: [],
             minIncrement: type.minIncrement
@@ -217,7 +226,7 @@ export class SessionsHelper {
         else {
             ex.sets.push({ quantity: type.sets, weight: type.minWeight, reps: type.minReps })
         }
-                
+        console.log(ex);
         return ex;
     }
 }

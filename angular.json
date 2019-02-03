@@ -23,7 +23,8 @@
               "src/api",
               "src/favicon.ico",
               "src/manifest.json",
-              "src/web.config"
+              "src/web.config",
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.css"
@@ -59,7 +60,8 @@
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 }
-              ]
+              ],
+              "serviceWorker": true
             }
           }
         },
@@ -95,6 +97,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/api",
+              "src/manifest.json",
               "src/manifest.json"
             ]
           }

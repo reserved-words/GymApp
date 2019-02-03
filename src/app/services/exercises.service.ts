@@ -1,4 +1,3 @@
-import { Observable, of } from "rxjs";
 import { IExercise } from "../shared/interfaces/exercise";
 import { IQueryResponse } from "../shared/interfaces/queryResponse";
 import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
@@ -12,16 +11,11 @@ import { IDataValue } from "../shared/interfaces/dataValue";
     providedIn: 'root'
 })
 export class ExercisesService extends BaseService {
-    private exercises: IQueryResponse<IExercise>;
-
     constructor(private db: DBService, private authService: AuthService){
         super(db, authService);
     }
 
     getExercises(): Promise<IQueryResponse<IExercise>> {
-        if (this.exercises){
-            return new Promise(v => this.exercises);
-        }
         return this.db.getList<IExercise>(this.db.exercises);
     } 
 
@@ -30,7 +24,6 @@ export class ExercisesService extends BaseService {
     }
 
     insertExercise(exercise: IExercise): Promise<ISaveResponse> {
-        this.exercises = null;
         return this.db.insert({
             type: 'exercise',
             name: exercise.name,
@@ -39,31 +32,22 @@ export class ExercisesService extends BaseService {
             sets: exercise.sets,
             minWeight: exercise.minWeight,
             minIncrement: exercise.minIncrement,
-            frequency: exercise.frequency
+            frequency: exercise.frequency,
+            addBodyWeight: exercise.addBodyWeight
         });
     }
 
     updateExercise(exercise: IExercise): Promise<ISaveResponse> {
-        this.exercises = null;
         return this.db.update(exercise._id, exercise._rev, exercise);
     }
 
-    getMaxWeight(exercise: string): Promise<IQueryResponse<IDataValue>>{
+    getView(view: string, exercise: string): Promise<IQueryResponse<IDataValue>>{
+        var fullViewName = 'sessions/' + view;
         if (!exercise){
-            return this.db.getList<IDataValue>(this.db.maxWeight);
+            return this.db.getList<IDataValue>(fullViewName);
         }
         else {
-            return this.db.getList<IDataValue>(this.db.maxWeight, null, true, [exercise, {}], [exercise]);
-        
-        }
-    }
-
-    getTotalWeight(exercise: string): Promise<IQueryResponse<IDataValue>>{
-        if (!exercise){
-            return this.db.getList<IDataValue>(this.db.totalWeight);
-        }
-        else {
-            return this.db.getList<IDataValue>(this.db.totalWeight, null, true, [exercise, {}], [exercise]);
+            return this.db.getList<IDataValue>(fullViewName, null, true, [exercise, {}], [exercise]);
         }
     }
 }

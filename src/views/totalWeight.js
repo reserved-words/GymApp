@@ -11,7 +11,8 @@ function (doc) {
       }
       for (k in exercise.sets){
         var s = exercise.sets[k];
-        value = value + s.reps * s.weight * s.quantity;
+        var w = exercise.addBodyWeight ? (s.weight + doc.bodyWeight) : s.weight;
+        value = value + s.reps * w * s.quantity;
       }
       emit(key, { date: date, value: value });
     }

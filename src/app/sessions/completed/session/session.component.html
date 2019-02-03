@@ -1,16 +1,16 @@
 <div class="card full-screen" *ngIf='session'>
     <div class="card-header">
         <div class="card-title">
-            <gym-caption [text]='session.started | date:"EEE dd/LL/yyyy HH\:mm"' [icon]='Icon.CompletedSession'></gym-caption>
+            <table class="full-width">
+                <tr>
+                    <td><gym-caption [text]='session.started | date:"EEE dd/LL/yyyy HH\:mm"' [icon]='Icon.CompletedSession'></gym-caption></td>
+                    <td class="min-width text-right"><span>{{session.bodyWeight}}kg</span></td>
+                </tr>
+            </table>
         </div>
     </div>
     <div class="card-body">
         <div class="container-fluid">
-            <div *ngIf='!hasExercises' class="row">
-                <div class="col-12">
-                    <p>No exercises added yet.</p>
-                </div>
-            </div>
             <div class="row" *ngIf='hasExercises'>
                 <div class="col-12">
                     <div *ngFor='let item of session.exercises' class="row">
