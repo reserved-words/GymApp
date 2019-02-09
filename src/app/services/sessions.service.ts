@@ -23,7 +23,7 @@ export class SessionsService extends BaseService {
         return this.db.getList<ICompletedSession>(this.db.completedSessions, limit, true);
     };
 
-    getLastSession(exerciseType: string): Promise<IQueryResponse<ICompletedExercise>>{
+    getLastInstance(exerciseType: string): Promise<IQueryResponse<ICompletedExercise>>{
         return this.db.getList<ICompletedExercise>(this.db.completedExercises, 1, true, [exerciseType, {}], [exerciseType]);
     }
 

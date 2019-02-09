@@ -14,7 +14,7 @@ import { WeightService } from "src/app/services/weight.service";
 @Injectable({
     providedIn: 'root'
 })
-export class SessionsHelper {
+export class SessionHelper {
 
     constructor(private service: ExercisesService, private weightService: WeightService){}
 
@@ -110,6 +110,18 @@ export class SessionsHelper {
             });
         }
         return currentExercises;
+    }
+
+    convertPlannedToCurrentExercise(plannedExercise: IPlannedExercise): ICurrentExercise {
+        return { 
+            type: plannedExercise.type, 
+            addBodyWeight: plannedExercise.addBodyWeight,
+            warmup: this.convertPlannedToCurrentSets(plannedExercise.warmup), 
+            sets: this.convertPlannedToCurrentSets(plannedExercise.sets), 
+            done: false,
+            nextSession: null,
+            nextSessionConfirmed: false
+        };
     }
 
     convertCurrentToCompletedExercises(currentExercises: ICurrentExercise[]): ICompletedExercise[] {
@@ -227,6 +239,44 @@ export class SessionsHelper {
             ex.sets.push({ quantity: type.sets, weight: type.minWeight, reps: type.minReps })
         }
         console.log(ex);
+        return ex;
+    }
+
+    convertCompletedToCurrentExercise(lastInstance: ICompletedExercise, def: IExercise): ICurrentExercise {
+        var ex = { 
+            type: def.name,
+            addBodyWeight: def.addBodyWeight,
+            warmup: [],
+            sets: [],
+            minIncrement: def.minIncrement,
+            done: false,
+            nextSession: null,
+            nextSessionConfirmed: false
+        };
+
+        if (lastInstance == null){
+            for (var i = 0; i < def.sets; i++){
+                ex.sets.push({ reps: def.minReps, weight: def.minWeight, done: false });
+            }
+            return ex;
+        }
+
+        var weight = 0;
+        var reps = 0;
+
+        for (let completedSet of lastInstance.sets){
+            if (completedSet.weight > weight){
+                weight = completedSet.weight;
+                reps = completedSet.reps;
+            }
+            else if (completedSet.weight === weight && completedSet.reps > reps){
+                reps = completedSet.reps;
+            }
+        }
+        
+        ex.warmup = lastInstance.warmup;
+        ex.sets = [{ quantity: lastInstance.sets, weight: weight, reps: reps }];
+
         return ex;
     }
 }

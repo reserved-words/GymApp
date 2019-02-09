@@ -1,9 +1,11 @@
 import { Component, Input, EventEmitter, Output } from "@angular/core";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
-import { SessionsHelper } from "src/app/shared/helpers/sessions.helper";
+import { SessionPlanner } from "src/app/shared/helpers/session.planner";
 import { ICompletedExercise } from "src/app/shared/interfaces/completed-exercise";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { Icon } from "src/app/shared/enums/icon.enum";
+import { SessionCompleter } from "src/app/shared/helpers/session.completer";
+import { SessionHelper } from "src/app/shared/helpers/session.helper";
 
 @Component({
     selector: 'gym-current-exercise',
@@ -18,11 +20,11 @@ export class CurrentExerciseComponent {
     completedExercise: ICompletedExercise;
     minIncrement: number;
     
-    constructor(private sessionsHelper: SessionsHelper, private service: ExercisesService){}
+    constructor(private helper: SessionHelper, private service: ExercisesService, private completer: SessionCompleter){}
 
     ngOnInit(): void{
         if (this.exercise.done){
-            this.completedExercise = this.sessionsHelper.convertCurrentToCompletedExercise(this.exercise);
+            this.completedExercise = this.completer.convertCurrentToCompletedExercise(this.exercise);
         }
         console.log('ngOnInit');
         this.service.getExercises().then(response => {
@@ -32,10 +34,10 @@ export class CurrentExerciseComponent {
     }
 
     addWarmUpSet(): void {
-        this.sessionsHelper.addCurrentSet(this.exercise.warmup, this.exercise.type);
+        this.helper.addCurrentSet(this.exercise.warmup, this.exercise.type);
     }
     addSet(): void {
-        this.sessionsHelper.addCurrentSet(this.exercise.sets, this.exercise.type);
+        this.helper.addCurrentSet(this.exercise.sets, this.exercise.type);
     }
     markDone() {
         this.exercise.done = true;
@@ -45,8 +47,8 @@ export class CurrentExerciseComponent {
         for (var i in this.exercise.sets){
             this.exercise.sets[i].done = true;
         }
-        this.exercise.nextSession = this.sessionsHelper.getNextSession(this.exercise);
-        this.completedExercise = this.sessionsHelper.convertCurrentToCompletedExercise(this.exercise);
+        this.exercise.nextSession = this.helper.getNextSession(this.exercise);
+        this.completedExercise = this.completer.convertCurrentToCompletedExercise(this.exercise);
     }
     markNotDone() {
         this.exercise.done = false;
@@ -69,18 +71,18 @@ export class CurrentExerciseComponent {
     }
     addPlannedWarmUpSet(): void {
         var warmups = this.exercise.nextSession.warmup;
-        this.sessionsHelper.addSet(warmups, this.exercise.type);
+        this.helper.addSet(warmups, this.exercise.type);
     }
     removePlannedWarmUpSet(): void {
         var warmups = this.exercise.nextSession.warmup;
-        this.sessionsHelper.removeSet(warmups, 0);
+        this.helper.removeSet(warmups, 0);
     }
     addPlannedSet(): void {
         var sets = this.exercise.nextSession.sets;
-        this.sessionsHelper.addSet(sets, this.exercise.type);
+        this.helper.addSet(sets, this.exercise.type);
     }
     removePlannedSet(): void {
         var sets = this.exercise.nextSession.sets;
-        this.sessionsHelper.removeSet(sets, 1);
+        this.helper.removeSet(sets, 1);
     }
 }

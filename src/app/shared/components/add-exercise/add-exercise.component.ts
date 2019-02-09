@@ -1,8 +1,9 @@
-import { Component, Output, EventEmitter } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { ExercisesService } from "src/app/services/exercises.service";
-import { SessionsService } from "src/app/services/sessions.service";
-import { SessionsHelper } from "../../helpers/sessions.helper";
+import { SessionPlanner } from "../../helpers/session.planner";
 import { IExercise } from "../../interfaces/exercise";
+import { IPlannedSession } from "../../interfaces/planned-session";
+import { ICurrentSession } from "../../interfaces/current-session";
 
 @Component({
     selector: 'gym-add-exercise',
@@ -12,28 +13,34 @@ export class AddExerciseComponent{
     addExerciseType: string;
     exerciseToAdd: any;
     exercises: IExercise[];
-    @Output() onAddExercise: EventEmitter<any> = new EventEmitter<any>();
+    @Input() id: string;
+    @Input() planned: IPlannedSession[];
+    @Input() current: ICurrentSession;
 
-    constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
+    constructor(private exercisesService: ExercisesService, private planner: SessionPlanner){}
 
     ngOnInit(){
         this.exercisesService.getExercises().then(r => {
-            console.log(r.rows);
             this.exercises = r.rows.map(row => row.value);
-            console.log(this.exercises);
         });
     }
 
     addExercise():void {
-        var exerciseType = this.exercises.filter(ex => ex.name === this.addExerciseType)[0];
-        this.sessionsService.getLastSession(this.addExerciseType).then(r => 
-        {
-            var lastSession = r.total_rows > 0
-                ? r.rows.map(r => r.value)[0]
-                : null;
-            var plannedExercise = this.helper.convertCompletedToPlannedExercise(lastSession, exerciseType);
-            this.addExerciseType = null;
-            this.onAddExercise.emit(plannedExercise);
-        });
+        
+        var def = this.exercises.filter(ex => ex.name === this.addExerciseType)[0];
+
+        if (this.current != null && this.current._id === this.id){
+            this.planner.addToCurrentSession(this.current, this.planned, def)
+            .then(() => { this.finish(); });
+        }
+        else {
+            var session = this.planned.filter(s => s._id === this.id)[0];
+            this.planner.addToPlannedSession(session, this.planned, this.current, def)
+                .then(() => { this.finish(); });
+        }
+    }
+
+    finish(): void {
+        this.addExerciseType = null;
     }
 }

@@ -2,15 +2,15 @@ import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SessionsService } from "src/app/services/sessions.service";
 import { ICurrentSession } from "src/app/shared/interfaces/current-session";
-import { SessionsHelper } from "src/app/shared/helpers/sessions.helper";
+import { SessionHelper } from "src/app/shared/helpers/session.helper";
 import { ICompletedSession } from "src/app/shared/interfaces/completed-session";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
-import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
 import { Icon } from "src/app/shared/enums/icon.enum";
 import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { SessionCompleter } from "src/app/shared/helpers/session.completer";
 
 @Component({
     templateUrl: "session.component.html"
@@ -20,40 +20,38 @@ export class CurrentSessionComponent {
     pageTitle: string = "Session";
     errorMessage: string;
     session: ICurrentSession;
+    plannedSessions: IPlannedSession[];
     numPlannedSessions: number = 3;
     loading: boolean = true;
 
-    constructor(private router: Router, private service: SessionsService, private helper: SessionsHelper, private route: ActivatedRoute, private exercisesService: ExercisesService){        
+    constructor(private router: Router, private service: SessionsService, private helper: SessionHelper, private route: ActivatedRoute, 
+        private exercisesService: ExercisesService, private completer: SessionCompleter){        
     }
 
     ngOnInit(){
-        let id = this.route.snapshot.paramMap.get('id');
-        if (id) {
-            this.service.getSession<ICurrentSession>(id)
-                .then(s => {
-                    this.session = s;
-                    this.loading = false;
-                })
-                .catch(err => {
-                    alert(err.message);
-                    this.loading = false;
-                });
-        }
-        else {
-            this.service.getPlannedSessions(1)
-                .then(s => {
-                    this.session = this.helper.createCurrentSession(s.rows[0].value);
-                    this.loading = false;
-                })
-                .catch(err => {
-                    this.loading = false;
-                    this.handleError;
-                });
-        }
-    }
-
-    addExercise(exerciseToAdd: ICurrentExercise):void {
-        this.session.exercises.push(exerciseToAdd);
+        this.service.getPlannedSessions(this.numPlannedSessions)
+            .then(s => {
+                this.plannedSessions = s.rows.map(r => r.value);
+            })
+            .then(result => {
+                let id = this.route.snapshot.paramMap.get('id');
+                if (id) {
+                    this.service.getSession<ICurrentSession>(id)
+                        .then(s => {
+                            this.session = s;
+                            this.loading = false;
+                        });
+                }
+                else {
+                    this.plannedSessions.reverse();
+                    var nextPlanned = this.plannedSessions.pop();
+                    this.session = this.helper.createCurrentSession(nextPlanned);
+                }
+            })
+            .catch(err => {
+                this.loading = false;
+                this.handleError;
+            });
     }
     
     markComplete(): void {
@@ -80,6 +78,7 @@ export class CurrentSessionComponent {
 
     onSave(): void {
         this.loading = true;
+        // Need to save planned sessions as well as may be amended
         this.service.updateSession<ICurrentSession>(this.session._id, this.session).then(
             s => {
                 this.session._rev = s.rev;
@@ -173,7 +172,7 @@ export class CurrentSessionComponent {
     }
 
     saveCompletedSession(): Promise<ISaveResponse> {
-        return this.helper.completeCurrentSession(this.session)
+        return this.completer.completeCurrentSession(this.session)
             .then(completedSession => {
                 return this.service.updateSession<ICompletedSession>(this.session._id, completedSession);
             });

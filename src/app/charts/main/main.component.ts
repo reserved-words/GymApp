@@ -1,7 +1,5 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { ExercisesService } from 'src/app/services/exercises.service';
-import { SessionsService } from 'src/app/services/sessions.service';
-import { SessionsHelper } from 'src/app/shared/helpers/sessions.helper';
 import { IDataValue } from 'src/app/shared/interfaces/dataValue';
 import { IDataValueGroup } from 'src/app/shared/interfaces/dataValueGroup';
 import { IQueryResponse } from 'src/app/shared/interfaces/queryResponse';
@@ -26,7 +24,7 @@ export class ChartsMainComponent implements OnInit {
     selectedChartType: number = 1;
     loading: boolean = true;
     
-    constructor(private exercisesService: ExercisesService, private sessionsService: SessionsService, private helper: SessionsHelper){}
+    constructor(private exercisesService: ExercisesService){}
 
     ngOnInit(){
         this.chartTypes = [

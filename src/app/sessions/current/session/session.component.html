@@ -58,6 +58,6 @@
     </div>
 </div>
 
-<gym-add-exercise (onAddExercise)='addExercise($event)'></gym-add-exercise>
+<gym-add-exercise [id]='session._id' [planned]='plannedSessions' [current]='session'></gym-add-exercise>
 
 <gym-back-confirmation navigateTo="/sessions"></gym-back-confirmation>

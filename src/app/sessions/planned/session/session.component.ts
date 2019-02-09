@@ -5,6 +5,7 @@ import { SessionsService } from "src/app/services/sessions.service";
 import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 import { Icon } from "src/app/shared/enums/icon.enum";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { ICurrentSession } from "src/app/shared/interfaces/current-session";
 
 @Component({
     templateUrl: "session.component.html",
@@ -14,8 +15,9 @@ export class PlannedSessionComponent {
     Icon = Icon;
     pageTitle: string = "Session";
     session: IPlannedSession;
+    currentSession: ICurrentSession;
+    plannedSessions: IPlannedSession[];
     errorMessage: string;
-    hasExercises: boolean;
     loading: boolean = true;
     
     constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
@@ -23,18 +25,20 @@ export class PlannedSessionComponent {
 
     ngOnInit(){
         let id = this.route.snapshot.paramMap.get('id');
-        this.service.getSession<IPlannedSession>(id)
+        this.service.getPlannedSessions(3)
+            .then(result1 => {
+                this.plannedSessions = result1.rows.map(r => r.value);
+                this.session = this.plannedSessions.filter(s => s._id === id)[0];
+            })
+            .then(result2 => this.service.getCurrentSession())
             .then(s => {
-                this.session = s;
-                this.hasExercises = this.session.exercises.length > 0;
+                this.currentSession = s.total_rows > 0 ? s.rows.map(r => r.value)[0] : null;
                 this.loading = false;
             })
-            .catch(err =>  alert(err.message));
-    }
-
-    addExercise(exerciseToAdd: IPlannedExercise):void {
-        this.session.exercises.push(exerciseToAdd);
-        this.hasExercises = true;
+            .catch(err => {
+                this.loading = false;
+                alert(err.message);
+            });
     }
 
     removeExercise(exerciseType: string):void {
@@ -50,6 +54,7 @@ export class PlannedSessionComponent {
 
     onSave(): void {
         this.loading = true;
+        // Need to save all planned sessions
         this.service.updateSession(this.session._id, this.session)
             .then(s => {
                 this.loading = false;

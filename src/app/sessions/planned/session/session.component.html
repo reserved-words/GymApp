@@ -8,12 +8,12 @@
     </div>
     <div class="card-body">
         <div class="container-fluid">
-            <div class="row" *ngIf='!hasExercises'>
+            <div class="row" *ngIf='session.exercises.length === 0'>
                 <div class="col-12">
                     <p>No exercises added yet.</p>
                 </div>
             </div>
-            <div class="row" *ngIf='hasExercises'>
+            <div class="row">
                 <div class="col-12" cdkDropList (cdkDropListDropped)="drop($event)">
                     <div class="row"  *ngFor='let item of session.exercises' cdkDrag>
                         <div class="col-12">
@@ -50,6 +50,6 @@
     </div>
 </div>
 
-<gym-add-exercise (onAddExercise)='addExercise($event)'></gym-add-exercise>
+<gym-add-exercise *ngIf='session' [id]='session._id' [planned]='plannedSessions' [current]='currentSession'></gym-add-exercise>
 
 <gym-back-confirmation navigateTo="/sessions"></gym-back-confirmation>
