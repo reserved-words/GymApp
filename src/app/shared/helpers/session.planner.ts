@@ -13,11 +13,11 @@ export class SessionPlanner {
 
     constructor(private service: SessionsService, private helper: SessionHelper){}
 
-    addToPlannedSession(session: IPlannedSession, planned: IPlannedSession[], current: ICurrentSession, def: IExercise): Promise<void> {
+    private canAddToPlannedSession(session: IPlannedSession, planned: IPlannedSession[], current: ICurrentSession, def: IExercise): boolean {
         
         if (current != null){
-            alert("You cannot add an exercise to a planned session before the current session is completed");
-            return Promise.resolve();
+            alert("You cannot amend a planned session before the current session is completed");
+            return false;
         }
         
         var existingInstance = this.getExistingPlannedInstance(planned, def.name);
@@ -25,8 +25,21 @@ export class SessionPlanner {
         if (existingInstance != null){
             if (existingInstance.session._id === session._id){
                 alert("This exercise has already been added to this session");
-                return Promise.resolve();
+                return false;
             }
+        }
+
+        return true;
+    }
+
+    addToPlannedSession(session: IPlannedSession, planned: IPlannedSession[], current: ICurrentSession, def: IExercise): Promise<void> {
+        
+        if (!this.canAddToPlannedSession(session, planned, current, def))
+            return Promise.resolve();
+
+        var existingInstance = this.getExistingPlannedInstance(planned, def.name);
+
+        if (existingInstance != null){
             alert("This will be moved from another planned session.");
             session.exercises.push(existingInstance.exercise);
             planned[existingInstance.sessionIndex].exercises.splice(existingInstance.exerciseIndex, 1);
@@ -39,8 +52,18 @@ export class SessionPlanner {
             });
     }
 
+    private canAddToCurrentSession(current: ICurrentSession, planned: IPlannedSession[], def: IExercise): boolean {
+        if (current.exercises.filter(e => e.type === def.name).length > 0){
+            return false;
+        }
+        return true;
+    }
+
     addToCurrentSession(current: ICurrentSession, planned: IPlannedSession[], def: IExercise): Promise<void> {
-        console.log(JSON.stringify(current));
+        
+        if (!this.canAddToCurrentSession(current, planned, def))
+            return Promise.resolve();
+
         if (current.exercises.filter(e => e.type === def.name).length > 0){
             alert("This exercise has already been added to this session");
             return Promise.resolve();
@@ -59,6 +82,50 @@ export class SessionPlanner {
             .then(lastInstance => {
                 current.exercises.push(this.helper.convertCompletedToCurrentExercise(lastInstance, def));
             });
+    }
+
+    private canRemoveFromPlannedSession(session: IPlannedSession, planned: IPlannedSession[], current: ICurrentSession, exerciseType: string): boolean {
+        if (current != null){
+            alert("You cannot amend a planned session before the current session is completed");
+            return false;
+        }
+        return true;
+    }
+
+    removeFromPlannedSession(session: IPlannedSession, planned: IPlannedSession[], current: ICurrentSession, exerciseType: string): void {
+        // TO DO: Ask which session (if any) want to move to
+        // FOR NOW: Just move to the next planned session if one exists
+
+        if (!this.canRemoveFromPlannedSession(session, planned, current, exerciseType))
+            return;
+
+        var indexToRemove = session.exercises.findIndex(ex => ex.type === exerciseType);
+        var removedExercise = session.exercises.splice(indexToRemove, 1)[0];
+        var sessionIndex = planned.indexOf(session);
+        if (sessionIndex === 2){
+            alert("No later planned sessions exist so completely removed");
+        }
+        else {
+            planned[sessionIndex + 1].exercises.push(removedExercise);
+            alert("Moved to the next planned session");
+        }
+    }
+
+    private canRemoveFromCurrentSession(current: ICurrentSession, planned: IPlannedSession[], exerciseType: string): boolean {
+        return true;
+    }
+
+    removeFromCurrentSession(current: ICurrentSession, planned: IPlannedSession[], exerciseType: string): void {
+        // TO DO: Ask which session (if any) want to move to
+        // FOR NOW: Just move to the next planned session
+
+        if (!this.canRemoveFromCurrentSession(current, planned, exerciseType))
+            return;
+
+        var indexToRemove = current.exercises.findIndex(ex => ex.type === exerciseType);
+        var removedExercise = current.exercises.splice(indexToRemove, 1)[0];
+        planned[0].exercises.push(this.helper.convertCurrentToPlannedExercise(removedExercise));
+        alert("Moved to the next planned session");
     }
 
     private getExistingPlannedInstance(planned: IPlannedSession[], name: string): any {

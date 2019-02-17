@@ -1,11 +1,12 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { IPlannedSession } from "src/app/shared/interfaces/planned-session";
 import { SessionsService } from "src/app/services/sessions.service";
-import { IPlannedExercise } from "src/app/shared/interfaces/planned-exercise";
 import { Icon } from "src/app/shared/enums/icon.enum";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { ICurrentSession } from "src/app/shared/interfaces/current-session";
+import { SessionPlanner } from "src/app/shared/helpers/session.planner";
+import { ExercisesService } from "src/app/services/exercises.service";
 
 @Component({
     templateUrl: "session.component.html",
@@ -20,7 +21,7 @@ export class PlannedSessionComponent {
     errorMessage: string;
     loading: boolean = true;
     
-    constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
+    constructor(private exercisesService: ExercisesService, private service: SessionsService, private route: ActivatedRoute, private planner: SessionPlanner){
     }
 
     ngOnInit(){
@@ -42,21 +43,13 @@ export class PlannedSessionComponent {
     }
 
     removeExercise(exerciseType: string):void {
-        var updatedList = [];
-        for (var i in this.session.exercises){
-            var ex = this.session.exercises[i];
-            if (ex.type != exerciseType){
-                updatedList.push(ex);
-            }
-        }
-        this.session.exercises = updatedList;
+        this.planner.removeFromPlannedSession(this.session, this.plannedSessions, this.currentSession, exerciseType);
     }
 
     onSave(): void {
         this.loading = true;
         this.service.updateSessions(this.currentSession, this.plannedSessions)
             .then(values => {
-                console.log(JSON.stringify(values));
                 this.loading = false;
                 alert("Changes saved");
             })

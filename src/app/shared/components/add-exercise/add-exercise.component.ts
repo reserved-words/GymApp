@@ -31,7 +31,7 @@ export class AddExerciseComponent{
 
         if (this.current != null && this.current._id === this.id){
             this.planner.addToCurrentSession(this.current, this.planned, def)
-            .then(() => { this.finish(); });
+                .then(() => { this.finish(); });
         }
         else {
             var session = this.planned.filter(s => s._id === this.id)[0];

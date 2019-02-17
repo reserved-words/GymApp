@@ -9,8 +9,9 @@ import { ExercisesService } from "src/app/services/exercises.service";
 import { Frequency } from "src/app/shared/enums/frequency.enum";
 import { Icon } from "src/app/shared/enums/icon.enum";
 import { ISaveResponse } from "src/app/shared/interfaces/saveResponse";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { SessionCompleter } from "src/app/shared/helpers/session.completer";
+import { SessionPlanner } from "src/app/shared/helpers/session.planner";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 
 @Component({
     templateUrl: "session.component.html"
@@ -25,7 +26,7 @@ export class CurrentSessionComponent {
     loading: boolean = true;
 
     constructor(private router: Router, private service: SessionsService, private helper: SessionHelper, private route: ActivatedRoute, 
-        private exercisesService: ExercisesService, private completer: SessionCompleter){        
+        private exercisesService: ExercisesService, private completer: SessionCompleter, private planner: SessionPlanner){        
     }
 
     ngOnInit(){
@@ -178,14 +179,7 @@ export class CurrentSessionComponent {
     }
 
     removeExercise(exerciseType: string):void {
-        var updatedList = [];
-        for (var i in this.session.exercises){
-            var ex = this.session.exercises[i];
-            if (ex.type != exerciseType){
-                updatedList.push(ex);
-            }
-        }
-        this.session.exercises = updatedList;
+        this.planner.removeFromCurrentSession(this.session, this.plannedSessions, exerciseType);
     }
 
     drop(event: CdkDragDrop<string[]>) {

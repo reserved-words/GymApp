@@ -15,7 +15,6 @@ import { WeightService } from "src/app/services/weight.service";
     providedIn: 'root'
 })
 export class SessionHelper {
-
     constructor(private service: ExercisesService, private weightService: WeightService){}
 
     addSet(sets: ISet[], exercise: string): void {
@@ -171,6 +170,15 @@ export class SessionHelper {
             }
         }
         return completedSets;
+    }
+
+    convertCurrentToPlannedExercise(exercise: ICurrentExercise): IPlannedExercise {
+        return { 
+            type: exercise.type,
+            addBodyWeight: exercise.addBodyWeight,
+            warmup: this.convertCurrentToPlannedWarmup(exercise.warmup),
+            sets: this.convertCurrentToPlannedSets(exercise.sets)
+        };
     }
 
     convertCurrentToPlannedWarmup(currentSets: ICurrentSet[]): ISet[] {
