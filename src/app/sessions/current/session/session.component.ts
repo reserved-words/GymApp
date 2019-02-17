@@ -46,6 +46,7 @@ export class CurrentSessionComponent {
                     this.plannedSessions.reverse();
                     var nextPlanned = this.plannedSessions.pop();
                     this.session = this.helper.createCurrentSession(nextPlanned);
+                    this.loading = false;
                 }
             })
             .catch(err => {
@@ -78,17 +79,15 @@ export class CurrentSessionComponent {
 
     onSave(): void {
         this.loading = true;
-        // Need to save planned sessions as well as may be amended
-        this.service.updateSession<ICurrentSession>(this.session._id, this.session).then(
-            s => {
-                this.session._rev = s.rev;
+        this.service.updateSessions(this.session, this.plannedSessions)
+            .then(values => {
                 this.loading = false;
                 alert("Changes saved");
-            }
-        ).catch(error => {
-            this.loading = false;
-            this.handleError(error);
-        });
+            })
+            .catch(error => {
+                this.loading = false;
+                this.handleError(error);
+            });
     }
     
     handleError(error: any){

@@ -43,6 +43,32 @@ export class SessionsService extends BaseService {
         return this.db.update(id, session._rev, session);
     }
 
+    updateSessions(current: ICurrentSession, planned: IPlannedSession[]): Promise<any[]> {
+        let promiseArray = [];
+        
+        planned.forEach(session => {
+            promiseArray.push(new Promise((resolve, reject) => {
+                this.updateSession<IPlannedSession>(session._id, session).then(
+                    response => {
+                        session._rev = response.rev;
+                        resolve();
+                    });
+            }));
+        });
+
+        if (current != null){
+            promiseArray.push(new Promise((resolve, reject) => {
+                this.updateSession<ICurrentSession>(current._id, current).then(
+                    response => {
+                        current._rev = response.rev;
+                        resolve();
+                    });
+            }));    
+        }
+
+        return Promise.all(promiseArray);
+    }
+
     insertSession(session: IPlannedSession): Promise<ISaveResponse> {
         return this.db.insert({ type: session.type, index: session.index, exercises: session.exercises });
     }

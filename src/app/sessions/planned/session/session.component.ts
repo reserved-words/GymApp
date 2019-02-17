@@ -54,11 +54,11 @@ export class PlannedSessionComponent {
 
     onSave(): void {
         this.loading = true;
-        // Need to save all planned sessions
-        this.service.updateSession(this.session._id, this.session)
-            .then(s => {
+        this.service.updateSessions(this.currentSession, this.plannedSessions)
+            .then(values => {
+                console.log(JSON.stringify(values));
                 this.loading = false;
-                this.router.navigate(['']);
+                alert("Changes saved");
             })
             .catch(err => {
                 this.loading = false;
