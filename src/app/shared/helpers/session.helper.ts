@@ -143,8 +143,7 @@ export class SessionHelper {
 
     convertPlannedToCurrentSets(plannedSets: ISet[]): ICurrentSet[]{
         var currentSets = [];
-        for (var i in plannedSets){
-            var plannedSet = plannedSets[i];
+        for (var plannedSet of plannedSets){
             for (var j = 0; j < plannedSet.quantity; j++){
                 currentSets.push({ reps: plannedSet.reps, weight: plannedSet.weight, done: false });
             }
@@ -154,11 +153,9 @@ export class SessionHelper {
 
     convertCurrentToCompletedSets(currentSets: ICurrentSet[]): ISet[] {
         var completedSets = [];
-        for (var j in currentSets){
-            var currentSet = currentSets[j];
+        for (var currentSet of currentSets){
             var found = false;
-            for (var k in completedSets){
-                var completedSet = completedSets[k];
+            for (var completedSet of completedSets){
                 if (completedSet.weight === currentSet.weight && completedSet.reps === currentSet.reps){
                     found = true;
                     completedSet.quantity++;
@@ -185,11 +182,10 @@ export class SessionHelper {
         var plannedSets = [];
         for (let currentSet of currentSets){
             var found = false;
-            for (var k in plannedSets){
-                var completedSet = plannedSets[k];
-                if (completedSet.weight === currentSet.weight && completedSet.reps === currentSet.reps){
+            for (var plannedSet of plannedSets){
+                if (plannedSet.weight === currentSet.weight && plannedSet.reps === currentSet.reps){
                     found = true;
-                    completedSet.quantity++;
+                    plannedSet.quantity++;
                     break;
                 }
             }
@@ -201,12 +197,11 @@ export class SessionHelper {
     }
 
     convertCurrentToPlannedSets(currentSets: ICurrentSet[]): ISet[] {
-        var quantity = currentSets.length;
-        var weight = 0;
-        var reps = 0;
-
+        var weight: number;
+        var reps: number;
+        
         for (let currentSet of currentSets){
-            if (currentSet.weight > weight){
+            if (!weight || currentSet.weight > weight){
                 weight = currentSet.weight;
                 reps = currentSet.reps;
             }
@@ -214,7 +209,7 @@ export class SessionHelper {
                 reps = currentSet.reps;
             }
         }
-        return [{ quantity: quantity, weight: weight, reps: reps }];
+        return [{ quantity: currentSets.length, weight: weight, reps: reps }];
     }
 
     convertCompletedToPlannedExercise(completed: ICompletedExercise, type: IExercise): IPlannedExercise {
@@ -227,11 +222,11 @@ export class SessionHelper {
         };
 
         if (completed){
-            var weight = 0;
-            var reps = 0;
+            var weight: number;
+            var reps: number;
     
             for (let completedSet of completed.sets){
-                if (completedSet.weight > weight){
+                if (!weight || completedSet.weight > weight){
                     weight = completedSet.weight;
                     reps = completedSet.reps;
                 }
@@ -246,7 +241,6 @@ export class SessionHelper {
         else {
             ex.sets.push({ quantity: type.sets, weight: type.minWeight, reps: type.minReps })
         }
-        console.log(ex);
         return ex;
     }
 
@@ -269,11 +263,11 @@ export class SessionHelper {
             return ex;
         }
 
-        var weight = 0;
-        var reps = 0;
+        var weight: number;
+        var reps: number;
 
         for (let completedSet of lastInstance.sets){
-            if (completedSet.weight > weight){
+            if (!weight || completedSet.weight > weight){
                 weight = completedSet.weight;
                 reps = completedSet.reps;
             }

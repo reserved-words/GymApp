@@ -5,6 +5,7 @@ import { IDataValueGroup } from 'src/app/shared/interfaces/dataValueGroup';
 import { IQueryResponse } from 'src/app/shared/interfaces/queryResponse';
 import { Icon } from 'src/app/shared/enums/icon.enum';
 import { IChartType } from 'src/app/shared/interfaces/chart-type';
+import { View } from 'src/app/shared/enums/view.enum';
 
 @Component({
   selector: 'pm-charts',
@@ -28,9 +29,9 @@ export class ChartsMainComponent implements OnInit {
 
     ngOnInit(){
         this.chartTypes = [
-          { id: 1, name: 'Max Weight', view: 'max-weight'},
-          { id: 2, name: 'Max Ratio', view: 'max-weight-ratio'},
-          { id: 3, name: 'Total Weight', view: 'total-weight'}
+          { id: 1, name: 'Max Weight', view: View.MaxWeight },
+          { id: 2, name: 'Max Ratio', view: View.MaxWeightRatio },
+          { id: 3, name: 'Total Weight', view: View.TotalWeight }
         ];
         this.exercisesService.getExercises().then(r => {
           this.exercises = r.rows.map(row => row.value.name);

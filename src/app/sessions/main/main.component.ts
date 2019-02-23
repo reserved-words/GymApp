@@ -51,7 +51,11 @@ export class SessionsMainComponent {
             })
             .catch(err => {
                 this.loading = false;
-                alert(err.message);
+                if (err && err != 'undefined'){
+                    alert(err.length);
+                    alert(err.message);
+                    alert('hahah');
+                }
             });
     }
 }

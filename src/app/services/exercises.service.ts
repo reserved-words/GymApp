@@ -6,6 +6,7 @@ import { Injectable } from "@angular/core";
 import { AuthService } from "./auth.service";
 import { BaseService } from "./base.service";
 import { IDataValue } from "../shared/interfaces/dataValue";
+import { View } from "../shared/enums/view.enum";
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,7 @@ export class ExercisesService extends BaseService {
     }
 
     getExercises(): Promise<IQueryResponse<IExercise>> {
-        return this.db.getList<IExercise>(this.db.exercises);
+        return this.db.getList<IExercise>(View.Exercises);
     } 
 
     getExercise(id: string): Promise<IExercise> {
@@ -41,13 +42,12 @@ export class ExercisesService extends BaseService {
         return this.db.update(exercise._id, exercise._rev, exercise);
     }
 
-    getView(view: string, exercise: string): Promise<IQueryResponse<IDataValue>>{
-        var fullViewName = 'sessions/' + view;
+    getView(view: View, exercise: string): Promise<IQueryResponse<IDataValue>>{
         if (!exercise){
-            return this.db.getList<IDataValue>(fullViewName);
+            return this.db.getList<IDataValue>(view);
         }
         else {
-            return this.db.getList<IDataValue>(fullViewName, null, true, [exercise, {}], [exercise]);
+            return this.db.getList<IDataValue>(view, null, true, [exercise, {}], [exercise]);
         }
     }
 }

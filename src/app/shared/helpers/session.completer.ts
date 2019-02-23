@@ -1,14 +1,10 @@
 import { Injectable } from "@angular/core";
 import { ICurrentSession } from "../interfaces/current-session";
-import { IPlannedSession } from "../interfaces/planned-session";
 import { ICompletedSession } from "../interfaces/completed-session";
 import { ICurrentExercise } from "../interfaces/current-exercise";
 import { ICompletedExercise } from "../interfaces/completed-exercise";
 import { ICurrentSet } from "../interfaces/current-set";
 import { ISet } from "../interfaces/set";
-import { IPlannedExercise } from "../interfaces/planned-exercise";
-import { IExercise } from "../interfaces/exercise";
-import { ExercisesService } from "src/app/services/exercises.service";
 import { WeightService } from "src/app/services/weight.service";
 
 @Injectable({
@@ -16,7 +12,7 @@ import { WeightService } from "src/app/services/weight.service";
 })
 export class SessionCompleter {
 
-    constructor(private service: ExercisesService, private weightService: WeightService){}
+    constructor(private weightService: WeightService){}
 
     completeCurrentSession(session: ICurrentSession): Promise<ICompletedSession> {
         return this.weightService.getCurrent()
@@ -53,11 +49,9 @@ export class SessionCompleter {
 
     convertCurrentToCompletedSets(currentSets: ICurrentSet[]): ISet[] {
         var completedSets = [];
-        for (var j in currentSets){
-            var currentSet = currentSets[j];
+        for (var currentSet of currentSets){
             var found = false;
-            for (var k in completedSets){
-                var completedSet = completedSets[k];
+            for (var completedSet of completedSets){
                 if (completedSet.weight === currentSet.weight && completedSet.reps === currentSet.reps){
                     found = true;
                     completedSet.quantity++;

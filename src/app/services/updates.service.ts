@@ -5,6 +5,7 @@ import { BaseService } from "./base.service";
 import { IWeight } from "../shared/interfaces/weight";
 import { IExercise } from "../shared/interfaces/exercise";
 import { ICurrentSession } from "../shared/interfaces/current-session";
+import { View } from "../shared/enums/view.enum";
 
 @Injectable({
     providedIn: 'root'
@@ -29,7 +30,7 @@ export class UpdatesService extends BaseService {
     roundExistingWeights(): Promise<void> {
         console.log("Fixing bodyWeight units");
         var minIncrement = 0.25;
-        return this.db.getList<any>(this.db.weight)
+        return this.db.getList<any>(View.Weight)
             .then(weights => {
                 for (var w of weights.rows.map(r => r.value)){
                     if (!w.kg){
@@ -43,7 +44,7 @@ export class UpdatesService extends BaseService {
 
     addBodyWeightPropertyToExercises(): Promise<void> {
         console.log("Adding addBodyWeight property to exercises");
-        return this.db.getList<IExercise>(this.db.exercises)
+        return this.db.getList<IExercise>(View.Exercises)
             .then(result => {
                 for (var row of result.rows){
                     var ex = row.value;
@@ -58,10 +59,10 @@ export class UpdatesService extends BaseService {
     correctCompletedBodyWeightExercises(): Promise<void> {
         console.log("Correcting bodyWeight exercises completed");
         var bodyWeightExercises: string[] = [];
-        return this.db.getList<IExercise>(this.db.exercises)
+        return this.db.getList<IExercise>(View.Exercises)
             .then(result => {
                 bodyWeightExercises = result.rows.map(r => r.value).filter(e => e.addBodyWeight === true).map(e => e.name);
-                return this.db.getList<any>(this.db.completedSessions)
+                return this.db.getList<any>(View.CompletedSessions)
                     .then(sessions => {
                         for (var s of sessions.rows.map(r => r.value)){
                             for (var ex of s.exercises){
@@ -88,10 +89,10 @@ export class UpdatesService extends BaseService {
     addBodyWeightMarkerToCurrentExercises(): any {
         console.log("Adding bodyWeight marker to current exercises");
         var bodyWeightExercises: string[] = [];
-        return this.db.getList<IExercise>(this.db.exercises)
+        return this.db.getList<IExercise>(View.Exercises)
             .then(result => {
                 bodyWeightExercises = result.rows.map(r => r.value).filter(e => e.addBodyWeight === true).map(e => e.name);
-                return this.db.getList<ICurrentSession>(this.db.currentSession)
+                return this.db.getList<ICurrentSession>(View.CurrentSession)
                     .then(sessions => {
                         if (sessions.total_rows === 0)
                             return;
@@ -119,10 +120,10 @@ export class UpdatesService extends BaseService {
     addBodyWeightMarkerToPlannedExercises(): any {
         console.log("Adding bodyWeight marker to planned exercises");
         var bodyWeightExercises: string[] = [];
-        return this.db.getList<IExercise>(this.db.exercises)
+        return this.db.getList<IExercise>(View.Exercises)
             .then(result => {
                 bodyWeightExercises = result.rows.map(r => r.value).filter(e => e.addBodyWeight === true).map(e => e.name);
-                return this.db.getList<any>(this.db.plannedSessions)
+                return this.db.getList<any>(View.PlannedSessions)
                     .then(sessions => {
                         for (var s of sessions.rows.map(r => r.value)){
                             for (var ex of s.exercises){
@@ -149,10 +150,10 @@ export class UpdatesService extends BaseService {
     addBodyWeightToCompletedSessions(): Promise<void> {
         console.log("Adding bodyWeight to completed sessions");
         var weights: IWeight[] = [];
-        return this.db.getList<IWeight>(this.db.weight)
+        return this.db.getList<IWeight>(View.Weight)
             .then(wghts => {
                 weights = wghts.rows.map(r => r.value);
-                return this.db.getList<any>(this.db.completedSessions)
+                return this.db.getList<any>(View.CompletedSessions)
                     .then(sessions => {
                         for (var s of sessions.rows.map(r => r.value)){
                             s.bodyWeight = weights[0].kg;
