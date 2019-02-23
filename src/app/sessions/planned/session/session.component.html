@@ -1,3 +1,5 @@
+<gym-loading *ngIf='loading'></gym-loading>
+
 <div class="card full-screen" *ngIf='session'>
     <div class="card-header">
         <div class="card-title">
@@ -6,14 +8,14 @@
     </div>
     <div class="card-body">
         <div class="container-fluid">
-            <div class="row" *ngIf='!hasExercises'>
+            <div class="row" *ngIf='session.exercises.length === 0'>
                 <div class="col-12">
                     <p>No exercises added yet.</p>
                 </div>
             </div>
-            <div class="row" *ngIf='hasExercises'>
-                <div class="col-12">
-                    <div class="row" *ngFor='let item of session.exercises'>
+            <div class="row">
+                <div class="col-12" cdkDropList (cdkDropListDropped)="drop($event)">
+                    <div class="row"  *ngFor='let item of session.exercises' cdkDrag>
                         <div class="col-12">
                             <gym-planned-exercise [exercise]='item' (removeFromSession)='removeExercise($event)'></gym-planned-exercise>
                         </div>
@@ -24,21 +26,14 @@
     </div>
     <div class="card-footer">
         <div class="row">
-            <div class="col-4">
-                <button class="btn btn-secondary full-width"
-                    data-toggle="modal" 
-                    data-target="#backConfirmationModal">
-                    <gym-caption text='Back' [icon]='Icon.Back'></gym-caption>
-                </button>
-            </div>
-            <div class="col-4">
+            <div class="col-6">
                 <button class="btn btn-primary full-width"
                         data-toggle="modal" 
                         data-target="#addExercise">
-                    <gym-caption text='Add' [icon]='Icon.Add'></gym-caption>
+                    <gym-caption text='Add Exercise' [icon]='Icon.Add'></gym-caption>
                 </button>
             </div>
-            <div class="col-4">
+            <div class="col-6">
                 <button class="btn btn-success full-width"
                     (click)='onSave()'>
                     <gym-caption text='Save' [icon]='Icon.Save'></gym-caption>
@@ -48,6 +43,6 @@
     </div>
 </div>
 
-<gym-add-exercise (onAddExercise)='addExercise($event)'></gym-add-exercise>
+<gym-add-exercise *ngIf='session' [id]='session._id' [planned]='plannedSessions' [current]='currentSession'></gym-add-exercise>
 
 <gym-back-confirmation navigateTo="/sessions"></gym-back-confirmation>

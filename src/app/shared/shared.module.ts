@@ -8,12 +8,15 @@ import { BackConfirmationComponent } from './components/back-confirmation/back-c
 import { ChartComponent } from './components/chart/chart.component';
 import { ChartModule } from 'angular-highcharts';
 import { CaptionComponent } from './components/caption/caption.component';
+import { LoadingComponent } from './components/loading/loading.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ChartModule
+    ChartModule,
+    DragDropModule
   ],
   declarations: [
     NumComponent,
@@ -21,7 +24,8 @@ import { CaptionComponent } from './components/caption/caption.component';
     ConfirmationComponent,
     BackConfirmationComponent,
     ChartComponent,
-    CaptionComponent
+    CaptionComponent,
+    LoadingComponent
   ],
   exports: [
     NumComponent,
@@ -30,8 +34,10 @@ import { CaptionComponent } from './components/caption/caption.component';
     BackConfirmationComponent,
     ChartComponent,
     CaptionComponent,
+    LoadingComponent,
     CommonModule,
-    FormsModule
+    FormsModule,
+    DragDropModule
   ]
 })
 export class SharedModule { }

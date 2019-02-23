@@ -3,8 +3,6 @@ import { SessionsService } from "../../services/sessions.service";
 import { Router } from "@angular/router";
 import { ICompletedSession } from "../../shared/interfaces/completed-session";
 import { Icon } from "src/app/shared/enums/icon.enum";
-import { DBService } from "src/app/services/couchdb.service";
-import { UpdatesService } from "src/app/services/updates.service";
 
 @Component({
     templateUrl: 'main.component.html',
@@ -12,6 +10,7 @@ import { UpdatesService } from "src/app/services/updates.service";
 })
 export class SessionsMainComponent {
     Icon = Icon;
+    loading: boolean = true;
     completed: ICompletedSession[] = [];
     planned: any[] = [];
     errorMessage: string;
@@ -46,11 +45,17 @@ export class SessionsMainComponent {
                             .then(result => {
                                 this.currentSessionID = result.total_rows > 0 ? result.rows[0].value._id : null;
                                 this.startSessionText = this.currentSessionID ? "Resume Current Session" : "Start Next Session";
+                                this.loading = false;
                             })
-                            .catch(err => alert('Error getting current session ' + err.message));
                     })
-                    .catch(err => alert('Error getting planned sessions ' + err.message));
             })
-            .catch(err => alert('Error getting completed sessions ' + err.message));
+            .catch(err => {
+                this.loading = false;
+                if (err && err != 'undefined'){
+                    alert(err.length);
+                    alert(err.message);
+                    alert('hahah');
+                }
+            });
     }
 }

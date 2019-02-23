@@ -14,6 +14,7 @@ export class CompletedSessionComponent {
     errorMessage: string;
     hasExercises: boolean;
     showWarmups: boolean;
+    loading: boolean = true;
     
     constructor(private service: SessionsService, private route: ActivatedRoute, private router: Router){
         
@@ -25,6 +26,7 @@ export class CompletedSessionComponent {
             .then(response => {
                 this.session = response;
                 this.hasExercises = this.session.exercises.length > 0;
+                this.loading = false;
             })
             .catch(err =>  alert(err.message));;
     }

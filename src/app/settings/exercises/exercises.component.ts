@@ -14,6 +14,7 @@ export class ExercisesComponent {
     pageTitle: string = 'Exercises';
     list: IExercise[] = [];
     errorMessage: string;
+    loading: boolean = true;
 
     constructor(private service: ExercisesService, private router: Router){
     }
@@ -27,9 +28,14 @@ export class ExercisesComponent {
     }
 
     ngOnInit(): void {
-        this.service.getExercises().then(results => {
-            console.log(results);
-            this.list = results.rows.map(r => r.value);
-        });
+        this.service.getExercises()
+            .then(results => {
+                this.list = results.rows.map(r => r.value);
+                this.loading = false;
+            })
+            .catch(err => {
+                this.loading = false;
+                alert(err.message);
+            });
     }
 }
