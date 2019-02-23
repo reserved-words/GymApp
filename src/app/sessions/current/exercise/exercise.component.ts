@@ -1,6 +1,5 @@
 import { Component, Input, EventEmitter, Output } from "@angular/core";
 import { ICurrentExercise } from "src/app/shared/interfaces/current-exercise";
-import { SessionPlanner } from "src/app/shared/helpers/session.planner";
 import { ICompletedExercise } from "src/app/shared/interfaces/completed-exercise";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { Icon } from "src/app/shared/enums/icon.enum";
@@ -16,6 +15,7 @@ export class CurrentExerciseComponent {
     @Input() exercise: ICurrentExercise;
     @Input() sessionStatus: string;
     @Output() removeFromSession: EventEmitter<string> = new EventEmitter<string>();
+    @Output() saveChanges: EventEmitter<void> = new EventEmitter<void>();
     collapsed: boolean = true;
     completedExercise: ICompletedExercise;
     minIncrement: number;
@@ -36,9 +36,11 @@ export class CurrentExerciseComponent {
     addWarmUpSet(): void {
         this.helper.addCurrentSet(this.exercise.warmup, this.exercise.type);
     }
+
     addSet(): void {
         this.helper.addCurrentSet(this.exercise.sets, this.exercise.type);
     }
+
     markDone() {
         this.exercise.done = true;
         for (var i in this.exercise.warmup){
@@ -49,40 +51,52 @@ export class CurrentExerciseComponent {
         }
         this.exercise.nextSession = this.helper.getNextSession(this.exercise);
         this.completedExercise = this.completer.convertCurrentToCompletedExercise(this.exercise);
+        this.saveChanges.emit();
     }
+
     markNotDone() {
         this.exercise.done = false;
         this.exercise.nextSession = null;
         this.exercise.nextSessionConfirmed = false;
         this.completedExercise = null;
+        this.saveChanges.emit();
     }
+
     remove() {
         this.removeFromSession.emit(this.exercise.type);
     }
+
     toggleCollapsed(): void {
         this.collapsed = !this.collapsed;
     }
+
     confirmPlannedSession() {
         this.exercise.nextSessionConfirmed = true;
+        this.saveChanges.emit();
         this.collapsed = true;
     }
-    removeFromPlannedSession(){
-        alert("Not implemented yet");
-    }
+
     addPlannedWarmUpSet(): void {
         var warmups = this.exercise.nextSession.warmup;
         this.helper.addSet(warmups, this.exercise.type);
     }
+
     removePlannedWarmUpSet(): void {
         var warmups = this.exercise.nextSession.warmup;
         this.helper.removeSet(warmups, 0);
     }
+    
     addPlannedSet(): void {
         var sets = this.exercise.nextSession.sets;
         this.helper.addSet(sets, this.exercise.type);
     }
+    
     removePlannedSet(): void {
         var sets = this.exercise.nextSession.sets;
         this.helper.removeSet(sets, 1);
+    }
+
+    saveSetChanges(): void {
+        this.saveChanges.emit();
     }
 }

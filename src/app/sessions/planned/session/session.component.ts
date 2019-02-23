@@ -6,7 +6,6 @@ import { Icon } from "src/app/shared/enums/icon.enum";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { ICurrentSession } from "src/app/shared/interfaces/current-session";
 import { SessionPlanner } from "src/app/shared/helpers/session.planner";
-import { ExercisesService } from "src/app/services/exercises.service";
 
 @Component({
     templateUrl: "session.component.html",
@@ -21,7 +20,7 @@ export class PlannedSessionComponent {
     errorMessage: string;
     loading: boolean = true;
     
-    constructor(private exercisesService: ExercisesService, private service: SessionsService, private route: ActivatedRoute, private planner: SessionPlanner){
+    constructor(private service: SessionsService, private route: ActivatedRoute, private planner: SessionPlanner){
     }
 
     ngOnInit(){
@@ -51,7 +50,7 @@ export class PlannedSessionComponent {
         this.service.updateSessions(this.currentSession, this.plannedSessions)
             .then(values => {
                 this.loading = false;
-                alert("Changes saved");
+
             })
             .catch(err => {
                 this.loading = false;

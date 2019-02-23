@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { ICurrentSet } from "src/app/shared/interfaces/current-set";
 
 
@@ -9,6 +9,7 @@ import { ICurrentSet } from "src/app/shared/interfaces/current-set";
 export class CurrentSetComponent {
     @Input() set: ICurrentSet;
     @Input() stepSize: number;
+    @Output() saveChanges: EventEmitter<void> = new EventEmitter<void>();
 
     onWeightValueChanged(newValue: number): void {
         this.set.weight = newValue;
@@ -20,9 +21,11 @@ export class CurrentSetComponent {
 
     markDone(): void {
         this.set.done = true;
+        this.saveChanges.emit();
     }
 
     markNotDone(): void {
         this.set.done = false;
+        this.saveChanges.emit();
     }
 }

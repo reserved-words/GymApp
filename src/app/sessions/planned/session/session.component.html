@@ -26,21 +26,14 @@
     </div>
     <div class="card-footer">
         <div class="row">
-            <div class="col-4">
-                <button class="btn btn-secondary full-width"
-                    data-toggle="modal" 
-                    data-target="#backConfirmationModal">
-                    <gym-caption text='Back' [icon]='Icon.Back'></gym-caption>
-                </button>
-            </div>
-            <div class="col-4">
+            <div class="col-6">
                 <button class="btn btn-primary full-width"
                         data-toggle="modal" 
                         data-target="#addExercise">
-                    <gym-caption text='Add' [icon]='Icon.Add'></gym-caption>
+                    <gym-caption text='Add Exercise' [icon]='Icon.Add'></gym-caption>
                 </button>
             </div>
-            <div class="col-4">
+            <div class="col-6">
                 <button class="btn btn-success full-width"
                     (click)='onSave()'>
                     <gym-caption text='Save' [icon]='Icon.Save'></gym-caption>

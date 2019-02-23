@@ -83,7 +83,6 @@ export class CurrentSessionComponent {
         this.service.updateSessions(this.session, this.plannedSessions)
             .then(values => {
                 this.loading = false;
-                alert("Changes saved");
             })
             .catch(error => {
                 this.loading = false;
@@ -180,9 +179,19 @@ export class CurrentSessionComponent {
 
     removeExercise(exerciseType: string):void {
         this.planner.removeFromCurrentSession(this.session, this.plannedSessions, exerciseType);
+        this.onSave();
+    }
+
+    saveExerciseChanges(): void {
+        this.onSave();
     }
 
     drop(event: CdkDragDrop<string[]>) {
         moveItemInArray(this.session.exercises, event.previousIndex, event.currentIndex);
+        this.onSave();
+    }
+
+    onAddExercise(): void {
+        this.onSave();
     }
 }

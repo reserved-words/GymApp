@@ -26,13 +26,7 @@
     </div>
     <div class="card-footer">
         <div class="row">
-            <div class="col-6">
-                <button class="btn btn-secondary btn-block"
-                    (click)='onBack()'>
-                    <gym-caption text='Back' [icon]='Icon.Back'></gym-caption>
-                </button>
-            </div>
-            <div class="col-6">
+            <div class="col-12">
                 <button *ngIf='!showWarmups' class="btn btn-primary btn-block"
                     (click)='toggleWarmups()'>
                     <gym-caption text='Show Warmups' [icon]='Icon.Warmup'></gym-caption>                

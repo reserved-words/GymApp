@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { ExercisesService } from "src/app/services/exercises.service";
 import { SessionPlanner } from "../../helpers/session.planner";
 import { IExercise } from "../../interfaces/exercise";
@@ -16,6 +16,7 @@ export class AddExerciseComponent{
     @Input() id: string;
     @Input() planned: IPlannedSession[];
     @Input() current: ICurrentSession;
+    @Output() onAdded: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(private exercisesService: ExercisesService, private planner: SessionPlanner){}
 
@@ -42,5 +43,6 @@ export class AddExerciseComponent{
 
     finish(): void {
         this.addExerciseType = null;
+        this.onAdded.emit();
     }
 }
